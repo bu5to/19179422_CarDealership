@@ -14,7 +14,7 @@ class User(Base, UserMixin):
     address = Column(String)
     profilePic = Column(String)
     phone = Column(Integer)
-    def __init__(self, id, name, email, password, is_admin=False):
+    def __init__(self, id, name, email, password, role, address, profilePic, phone):
         self.id = id
         self.name = name
         self.email = email
@@ -82,6 +82,10 @@ class Car:
         self.price = price
         self.images = images
 
+    def __init__(self, brand, model): #Another constructor is created with only the brand and the model.
+        self.brand = brand
+        self.model = model
+
     def parseDictToCars(carsDict):
         carslist = []
         for x in carsDict:
@@ -94,8 +98,8 @@ class Car:
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
-        carsdicts = mycol.find()
-        carslist = Car.parseDictToCars(carsdicts)
+        carsDicts = mycol.find()
+        carslist = Car.parseDictToCars(carsDicts)
         return carslist
 
     def getCarsByAttribute(attr, value):
@@ -130,4 +134,15 @@ class Car:
             carsdicts = mycol.find({"description": {$regex : value}})
 
         carslist = Car.parseDictToCars(carsdicts)
+        return carslist
+
+    def getDistinctModels():
+        myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
+        mydb = myclient["myapp"]
+        mycol = mydb["models"]
+        carslist = []
+        carsDicts = mycol.find()
+        for x in carsDicts:
+            car = Car(x['brand'], x['model'])
+            carslist.append(car)
         return carslist
