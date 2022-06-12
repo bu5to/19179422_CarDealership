@@ -69,28 +69,36 @@ class User(Base, UserMixin):
         return None
 
 class Car:
-    def __init__(self, brand, model, year, mileage, fuel, power, description, type, city, price, images):
-        self.brand = brand
+    def __init__(self, id, make, model, heading, year, mileage, bodyType, fuel, transmission, description, engineSize,
+                 color, insuranceGroup, city, emissions, price, images):
+        self.id = id
+        self.make = make
         self.model = model
+        self.heading = heading
         self.year = year
         self.mileage = mileage
+        self.bodyType = bodyType
         self.fuel = fuel
-        self.power = power
+        self.transmission = transmission
         self.description = description
-        self.type = type
+        self.engineSize = engineSize
+        self.color = color
+        self.insuranceGroup = insuranceGroup
         self.city = city
+        self.emissions = emissions
         self.price = price
         self.images = images
 
-    def __init__(self, brand, model): #Another constructor is created with only the brand and the model.
-        self.brand = brand
+    def __init__(self, make, model): #Another constructor is created with only the make and the model.
+        self.make = make
         self.model = model
 
     def parseDictToCars(carsDict):
         carslist = []
         for x in carsDict:
-            car = Car(x['brand'], x['model'], x['year'], x['mileage'], x['fuel'],
-                      x['power'], x['description'], x['type'], x['city'], x['price'], x['images'])
+            car = Car(x['id'], x['make'], x['model'], x['year'], x['miles'],x['body_type'],x['fuel_type'],
+                      x['transmission'], x['features'], x['engine_size'], x['exterior_color'], x['insurance_group'],
+                      , x['city'], x['co2_emission'], x['price'], x['photo_url'])
             carslist.append(car)
         return carslist
 
@@ -114,24 +122,26 @@ class Car:
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
-        if attr == "brand":
-            carsdicts = mycol.find({"brand": value})
+        if attr == "make":
+            carsdicts = mycol.find({"make": value})
         if attr == "model":
             carsdicts = mycol.find({"model": value})
-        if attr == "mileage":
-            carsdicts = mycol.find({"mileage": {$gte:value[0], $lte:value[1]}})
+        if attr == "miles":
+            carsdicts = mycol.find({"miles": {$gte:value[0], $lte:value[1]}})
         if attr == "fuel":
             carsdicts = mycol.find({"fuel": value})
         if attr == "type":
             carsdicts = mycol.find({"type": value})
-        if attr == "power":
-            carsdicts = mycol.find({"power": {$gte: value[0], $lte: value[1]}})
+        if attr == "engine_size":
+            carsdicts = mycol.find({"engine_size": {$gte: value[0], $lte: value[1]}})
         if attr == "price":
             carsdicts = mycol.find({"price": {$gte: value[0], $lte: value[1]}})
         if attr == "year":
             carsdicts = mycol.find({"year": value})
-        if attr == "description":
-            carsdicts = mycol.find({"description": {$regex : value}})
+        if attr == "exterior_color":
+            carsdicts = mycol.find({"exterior_color": value})
+        if attr == "heading":
+            carsdicts = mycol.find({"heading": {$regex : value}})
 
         carslist = Car.parseDictToCars(carsdicts)
         return carslist
@@ -143,6 +153,6 @@ class Car:
         carslist = []
         carsDicts = mycol.find()
         for x in carsDicts:
-            car = Car(x['brand'], x['model'])
+            car = Car(x['make'], x['model'])
             carslist.append(car)
         return carslist
