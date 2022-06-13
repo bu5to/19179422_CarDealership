@@ -98,7 +98,7 @@ class Car:
         for x in carsDict:
             car = Car(x['id'], x['make'], x['model'], x['year'], x['miles'],x['body_type'],x['fuel_type'],
                       x['transmission'], x['features'], x['engine_size'], x['exterior_color'], x['insurance_group'],
-                      , x['city'], x['co2_emission'], x['price'], x['photo_url'])
+                       x['city'], x['co2_emission'], x['price'], x['photo_url'])
             carslist.append(car)
         return carslist
 
@@ -127,21 +127,21 @@ class Car:
         if attr == "model":
             carsdicts = mycol.find({"model": value})
         if attr == "miles":
-            carsdicts = mycol.find({"miles": {$gte:value[0], $lte:value[1]}})
+            carsdicts = mycol.find({"miles": {"$gte":value[0], "$lte":value[1]}})
         if attr == "fuel":
             carsdicts = mycol.find({"fuel": value})
         if attr == "type":
             carsdicts = mycol.find({"type": value})
         if attr == "engine_size":
-            carsdicts = mycol.find({"engine_size": {$gte: value[0], $lte: value[1]}})
+            carsdicts = mycol.find({"engine_size": {"$gte": value[0], "$lte": value[1]}})
         if attr == "price":
-            carsdicts = mycol.find({"price": {$gte: value[0], $lte: value[1]}})
+            carsdicts = mycol.find({"price": {"$gte": value[0], "$lte": value[1]}})
         if attr == "year":
             carsdicts = mycol.find({"year": value})
         if attr == "exterior_color":
             carsdicts = mycol.find({"exterior_color": value})
         if attr == "heading":
-            carsdicts = mycol.find({"heading": {$regex : value}})
+            carsdicts = mycol.find({"heading": {"$regex" : value}})
 
         carslist = Car.parseDictToCars(carsdicts)
         return carslist
