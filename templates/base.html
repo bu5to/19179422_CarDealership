@@ -103,29 +103,27 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse yamm" id="navigation">
                     <div class="button navbar-right">
-                        <button class="navbar-btn nav-button wow bounceInRight login" onclick=" window.location.href='{{ url_for('register') }}" data-wow-delay="0.4s">Login</button>
+                        <button class="navbar-btn nav-button wow bounceInRight login" onclick=" window.location.href='{{ url_for('login') }}" data-wow-delay="0.4s">Login</button>
                         <button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('submit-property.html')" data-wow-delay="0.5s">Submit</button>
                     </div>
                     <ul class="main-nav nav navbar-nav navbar-right">
+                        {% if current_user.is_authenticated %}
                         <li class="dropdown ymm-sw " data-wow-delay="0.1s">
-                            <a href="index.html" class="dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Home <b class="caret"></b></a>
+                            <a href="index.html" class="dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Hello, {{current_user.name}} <b class="caret"></b></a>
                             <ul class="dropdown-menu navbar-nav">
                                 <li>
-                                    <a href="index-2.html">Home Style 2</a>
+                                    <a href="index-2.html">My cars</a>
                                 </li>
                                 <li>
-                                    <a href="index-3.html">Home Style 3</a>
+                                    <a href="index-3.html">Account settings</a>
                                 </li>
                                 <li>
-                                    <a href="index-4.html">Home Style 4</a>
-                                </li>
-                                <li>
-                                    <a href="index-5.html">Home Style 5</a>
+                                    <a href="index-4.html">Log out</a>
                                 </li>
 
                             </ul>
                         </li>
-
+                        {% endif %}
                         <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="properties.html">Properties</a></li>
                         <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="property.html">Property</a></li>
                         <li class="dropdown yamm-fw" data-wow-delay="0.1s">

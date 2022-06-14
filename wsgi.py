@@ -36,9 +36,11 @@ def load_user(user_id):
     '''
     users = User.get_users()
     for user in users:
-        if user.id == int(user_id):
-            return user
-    return None
+        try:
+            if user.id == user_id:
+                return user
+        except:
+            return None
 
 @app.route('/carsearch')
 def carsearch():
@@ -46,6 +48,7 @@ def carsearch():
     modelslist, makeslist = Model.getDistinctModels()
     fuels = Car.getDistinctFuels()
     types = Car.getDistinctTypes()
+    print(current_user.name)
     for car in cars:
         if len(car.description) > 250:
             car.description = car.description[0:250] + "..."
@@ -55,10 +58,8 @@ def carsearch():
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        print(request.files)
         photoFile = request.files.get('file')
         photo = base64.b64encode(photoFile.read())
-        print(photo)
         new_user = User(request.form["username"],request.form["name"],request.form["email"],
                         request.form["password"],request.form["role"],request.form["address"],
                         photo,request.form["phone"])
