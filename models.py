@@ -14,6 +14,7 @@ class User(Base, UserMixin):
     address = Column(String)
     profilePic = Column(String)
     phone = Column(Integer)
+
     def __init__(self, id, name, email, password, role, address, profilePic, phone):
         self.id = id
         self.name = name
@@ -23,10 +24,24 @@ class User(Base, UserMixin):
         self.address = address
         self.profilePic = profilePic
         self.phone = phone
+
+    def get_users():
+        '''
+        An array of the registered users is retrieved in this method.
+        :return: The array that contains the information in every user.
+        '''
+        session_users = Session()
+        users = session_users.query(User)
+        users = users.all()
+        print(users)
+        return users
+
     def set_password(self, password):
         self.password = generate_password_hash(password)
+
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
     def __repr__(self):
         return '<User {}>'.format(self.email)
 

@@ -9,7 +9,23 @@ import os
 import base64
 
 app = Flask(__name__)
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
 
+@login_manager.user_loader
+def load_user(user_id):
+    '''
+    Implementation of LoginManager in Flask.
+    :param user_id: the ID of the user that will be logging in
+    :return: The user as an object, with his/her detailed information.
+    '''
+    users = User.get_users()
+    for user in users:
+        if user.id == int(user_id):
+            return user
+    return None
 
 @app.route('/')
 def index():
@@ -20,15 +36,16 @@ def register():
     if request.method == "POST":
         print(request.files)
         photoFile = request.files.get('file')
-        print(photoFile)
-      #  photo = base64.b64encode(photoFile.read())
+        photo = base64.b64encode(photoFile.read())
+        print(photo)
         new_user = User(request.form["username"],request.form["name"],request.form["email"],
                         request.form["password"],request.form["role"],request.form["address"],
-                        photoFile,request.form["phone"])
-    #    session.add(new_user)
-    #    session.commit()
-    #    session.expunge_all()
-    #    session.close()
+                        photo,request.form["phone"])
+        session = Session()
+        session.add(new_user)
+        session.commit()
+        session.expunge_all()
+        session.close()
         return redirect(url_for('login'))
     return render_template('register.html')
 
