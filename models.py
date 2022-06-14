@@ -1,19 +1,20 @@
 from base import Base, Session
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import create_engine, Column, String, Integer, ForeignKey, Boolean
+from sqlalchemy import Column, String
 import os
+import pymongo
 
 class User(Base, UserMixin):
     __tablename__='user'
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     name = Column(String)
     email = Column(String)
     password = Column(String)
     role = Column(String)
     address = Column(String)
     profilePic = Column(String)
-    phone = Column(Integer)
+    phone = Column(String)
 
     def __init__(self, id, name, email, password, role, address, profilePic, phone):
         self.id = id
@@ -53,20 +54,7 @@ class User(Base, UserMixin):
         '''
         users = User.get_users()
         for user in users:
-            if user.username == username:
-                return user
-        return None
-
-    def get_user_by_id(id):
-        '''
-        This method follows the same structure as the one before.
-        However, here, the ID is the parameter that will be used to search the user.
-        :param id: The ID of the user whose information is being retrieved.
-        :return: The user as an object with all of its details.
-        '''
-        users = User.get_users()
-        for user in users:
-            if user.id == id:
+            if user.id == username:
                 return user
         return None
 
@@ -82,6 +70,28 @@ class User(Base, UserMixin):
             if user.email == email:
                 return user
         return None
+
+
+class Model:
+    def __init__(self, make, model): #Another constructor is created with only the make and the model.
+        self.make = make
+        self.model = model
+
+    def getDistinctModels():
+        myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
+        mydb = myclient["myapp"]
+        mycol = mydb["models"]
+        carslist = []
+        makeslist = []
+        carsDicts = mycol.find()
+        for x in carsDicts:
+            car = Model(x['brand'], x['model'])
+            carslist.append(car)
+            if x['brand'] not in makeslist:
+                makeslist.append(x['brand'])
+        return carslist, makeslist
+
+
 
 class Car:
     def __init__(self, id, make, model, heading, year, mileage, bodyType, fuel, transmission, description, engineSize,
@@ -104,17 +114,17 @@ class Car:
         self.price = price
         self.images = images
 
-    def __init__(self, make, model): #Another constructor is created with only the make and the model.
-        self.make = make
-        self.model = model
 
     def parseDictToCars(carsDict):
         carslist = []
         for x in carsDict:
-            car = Car(x['id'], x['make'], x['model'], x['year'], x['miles'],x['body_type'],x['fuel_type'],
-                      x['transmission'], x['features'], x['engine_size'], x['exterior_color'], x['insurance_group'],
-                       x['city'], x['co2_emission'], x['price'], x['photo_url'])
-            carslist.append(car)
+            keyPhoto = "photo_url" #Some cars are not provided with images
+            keyColor = "exterior_color"  # Some cars are not provided with images
+            if keyPhoto in x and keyColor in x:
+                car = Car(x['id'], x['make'], x['model'], x['heading'], x['year'], x['miles'],x['body_type'],x['fuel_type'],
+                          x['transmission'], x['features'], x['engine_size'], x['exterior_color'], x['insurance_group'],
+                           x['city'], x['co2_emission'], x['price'], x['photo_url'])
+                carslist.append(car) #Provisional solution until dataset is fixed
         return carslist
 
     def getAllCars():
@@ -124,6 +134,22 @@ class Car:
         carsDicts = mycol.find()
         carslist = Car.parseDictToCars(carsDicts)
         return carslist
+
+    def getDistinctFuels():
+        cars = Car.getAllCars()
+        fuels = []
+        for car in cars:
+            if car.fuel not in fuels:
+                fuels.append(car.fuel)
+        return fuels
+
+    def getDistinctTypes():
+        cars = Car.getAllCars()
+        types = []
+        for car in cars:
+            if car.bodyType not in types:
+                types.append(car.bodyType)
+        return types
 
     def getCarsByAttribute(attr, value):
         '''
@@ -161,13 +187,3 @@ class Car:
         carslist = Car.parseDictToCars(carsdicts)
         return carslist
 
-    def getDistinctModels():
-        myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
-        mydb = myclient["myapp"]
-        mycol = mydb["models"]
-        carslist = []
-        carsDicts = mycol.find()
-        for x in carsDicts:
-            car = Car(x['make'], x['model'])
-            carslist.append(car)
-        return carslist

@@ -1,14 +1,27 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
 from base import Session, engine, Base
 import base64
-from models import User, Car
+from models import User, Car, Model
 import os
 
 import base64
+def create_app():
+    '''
+    This method creates the application and sets up some environment variables that will need to be accessed
+    later.
+    :return: The created application.
+    '''
+    app = Flask(__name__)
+    app.config["SECRET_KEY"] = "thisisasecretkey"
+    os.environ[
+        "DATABASE_URL"] = "postgres://vglacsrsmzejof:07d04f521d50bb923ad37e6fcc55deabdd2a80984ec9d118880d8401abfa0cfc@ec2-54-228-32-29.eu-west-1.compute.amazonaws.com:5432/d3krde6k3aj05f"
+    app.config["MONGO_CLIENT"] = "mongodb://localhost:27017"
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    return app
 
-app = Flask(__name__)
+app = create_app()
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -27,9 +40,17 @@ def load_user(user_id):
             return user
     return None
 
-@app.route('/')
-def index():
-    return render_template('properties.html')
+@app.route('/carsearch')
+def carsearch():
+    cars = Car.getAllCars()
+    modelslist, makeslist = Model.getDistinctModels()
+    fuels = Car.getDistinctFuels()
+    types = Car.getDistinctTypes()
+    for car in cars:
+        if len(car.description) > 250:
+            car.description = car.description[0:250] + "..."
+    return render_template('properties.html', cars = cars, makes = makeslist, models = modelslist, fuels = fuels,
+                           types = types)
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -51,6 +72,13 @@ def register():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        user = User.get_user(request.form['username'])
+        if user is not None and user.check_password(request.form['password']):
+            login_user(user)
+            return redirect(url_for('carsearch'))
+        else:
+            flash(u'Invalid user or password.', 'error')
     return render_template('login.html')
 
 def create_tables():
@@ -61,7 +89,4 @@ def create_tables():
     print("Tables have been created.")
 	
 if __name__ == '__main__':
-    os.environ["SECRET_KEY"] = "thisisasecretkey"
-    os.environ["DATABASE_URL"] = "postgres://vglacsrsmzejof:07d04f521d50bb923ad37e6fcc55deabdd2a80984ec9d118880d8401abfa0cfc@ec2-54-228-32-29.eu-west-1.compute.amazonaws.com:5432/d3krde6k3aj05f"
-    os.environ["MONGO_CLIENT"] = "mongodb://localhost:27017"
     app.run()
