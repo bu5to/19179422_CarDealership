@@ -107,12 +107,18 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse yamm" id="navigation">
             {% if current_user.is_authenticated %}
+            <div class="button navbar-right">
+            <button class="navbar-btn nav-button wow fadeInRight" onclick="location.href='{{ url_for('login') }}'">
+                List my car
+            </button>
+            </div>
             {% else %}
             <div class="button navbar-right">
                 <button class="navbar-btn nav-button wow fadeInRight" onclick="location.href='{{ url_for('login') }}'">
                     Login
                 </button>
-                <button class="navbar-btn nav-button wow fadeInRight" onclick="location.href='{{ url_for('register') }}'">
+                <button class="navbar-btn nav-button wow fadeInRight"
+                        onclick="location.href='{{ url_for('register') }}'">
                     Register
                 </button>
             </div>
