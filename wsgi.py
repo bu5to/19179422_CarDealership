@@ -5,9 +5,7 @@ from base import Session, engine, Base
 import base64
 from models import User, Car, Model
 import os
-
-import base64
-
+import random
 
 def create_app():
     '''
@@ -60,7 +58,12 @@ def photo(user_id):
 def viewcar(carId):
     car = Car.getCarById(carId)  # 4975facbbce511b65e14f44719340029-cf161184-91fc #Funciona con int, no con string
     seller = User.get_user(car.user_id)
-    return render_template("car.html", car=car, seller = seller)
+    numCars = len(Car.getCarsByAttribute("user", seller.id))
+    similarBodyDict = Car.getCarsByAttribute("type", car.bodyType)
+    similarPriceDict = Car.getCarsByAttribute("price", [car.price * 0.8, car.price * 1.2])
+    similarCarsDict = [x for x in similarBodyDict if x in similarPriceDict]
+    similarCars = random.choices(Car.parseDictToCars(similarCarsDict), k=3)
+    return render_template("car.html", car=car, seller = seller, numCars = numCars, similarCars = similarCars)
 
 
 @app.route('/carsearch', methods=["GET", "POST"])
@@ -70,11 +73,12 @@ def carsearch():
     fuels = Car.getDistinctFuels()
     types = Car.getDistinctTypes()
     ranges = Car.getPriceAndYearRange()
-    if request.method == "POST":
+    if 'user_id' in request.form:
+        carsDicts = Car.getCarsByAttribute("user", request.form['user_id'])
+        cars = Car.parseDictToCars(carsDicts)
+    if request.method == "POST" and 'user_id' not in request.form:
         pricerange = request.form["pricerange"].split(",")
         yearrange = request.form["yearrange"].split(",")
-        print(pricerange)
-        print(yearrange)
         headingSearch, descSearch, makeSearch, modelSearch, fuelSearch, bodyTypeSearch, priceSearch, yearSearch = (
             Car.getAllCardicts() for i in range(8))
         if request.form["keyword"] != "":
@@ -94,7 +98,6 @@ def carsearch():
             yearSearch = Car.getCarsByAttribute("year", [int(yearrange[0]), int(yearrange[1])])
         listSearch = [headingSearch, descSearch, makeSearch, modelSearch, fuelSearch, bodyTypeSearch, priceSearch,
                       yearSearch]
-        print(yearSearch)
         list1 = [x for x in headingSearch if x in descSearch]
         list2 = [x for x in list1 if x in makeSearch]
         list3 = [x for x in list2 if x in modelSearch]
