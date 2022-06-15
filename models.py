@@ -115,6 +115,18 @@ class Car:
         self.images = images
 
 
+    def getPriceAndYearRange():
+        myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
+        mydb = myclient["myapp"]
+        mycol = mydb["cars"]
+        minprice = mycol.find_one(sort=[("price", 1)])["price"]
+        maxprice = mycol.find_one(sort=[("price", -1)])["price"]
+        minyear = mycol.find_one(sort=[("price", 1)])["year"]
+        maxyear = mycol.find_one(sort=[("price", -1)])["year"]
+        ranges = [minyear, maxyear, minprice, maxprice]
+        return ranges
+
+
     def parseDictToCars(carsDict):
         carslist = []
         for x in carsDict:
@@ -127,13 +139,31 @@ class Car:
                 carslist.append(car) #Provisional solution until dataset is fixed
         return carslist
 
-    def getAllCars():
+
+    def getAllHeadings():
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
         carsDicts = mycol.find()
+        headings = []
+        for x in carsDicts:
+            headings.append(x['heading'])
+        return headings
+
+
+    def getAllCardicts():
+        myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
+        mydb = myclient["myapp"]
+        mycol = mydb["cars"]
+        carsDicts = list(mycol.find())
+        return carsDicts
+
+
+    def getAllCars():
+        carsDicts = Car.getAllCardicts()
         carslist = Car.parseDictToCars(carsDicts)
         return carslist
+
 
     def getDistinctFuels():
         cars = Car.getAllCars()
@@ -176,26 +206,28 @@ class Car:
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
         if attr == "make":
-            carsdicts = mycol.find({"make": value})
+            carsdicts = list(mycol.find({"make": value}))
         if attr == "model":
-            carsdicts = mycol.find({"model": value})
+            carsdicts = list(mycol.find({"model": value}))
         if attr == "miles":
-            carsdicts = mycol.find({"miles": {"$gte":value[0], "$lte":value[1]}})
+            carsdicts = list(mycol.find({"miles": {"$gte":value[0], "$lte":value[1]}}))
         if attr == "fuel":
-            carsdicts = mycol.find({"fuel": value})
+            carsdicts = list(mycol.find({"fuel": value}))
         if attr == "type":
-            carsdicts = mycol.find({"type": value})
+            carsdicts = list(mycol.find({"body_type": value}))
         if attr == "engine_size":
-            carsdicts = mycol.find({"engine_size": {"$gte": value[0], "$lte": value[1]}})
+            carsdicts = list(mycol.find({"engine_size": {"$gte": value[0], "$lte": value[1]}}))
         if attr == "price":
-            carsdicts = mycol.find({"price": {"$gte": value[0], "$lte": value[1]}})
+            carsdicts = list(mycol.find({"price": {"$gte": value[0], "$lte": value[1]}}))
         if attr == "year":
-            carsdicts = mycol.find({"year": value})
+            carsdicts = list(mycol.find({"year": {"$gte": value[0], "$lte": value[1]}}))
         if attr == "exterior_color":
-            carsdicts = mycol.find({"exterior_color": value})
+            carsdicts = list(mycol.find({"exterior_color": value}))
         if attr == "heading":
-            carsdicts = mycol.find({"heading": {"$regex" : value}})
+            carsdicts = list(mycol.find({"heading": {"$regex" : value}}))
+        if attr == "description":
+            carsdicts = list(mycol.find({"features": {"$regex" : value}}))
 
-        carslist = Car.parseDictToCars(carsdicts)
-        return carslist
+        #carslist = Car.parseDictToCars(carsdicts)
+        return carsdicts
 

@@ -14,11 +14,11 @@
                             <h3 class="panel-title">Search</h3>
                         </div>
                         <div class="panel-body search-widget">
-                            <form action="" class=" form-inline">
+                            <form action="{{url_for('carsearch')}}" class=" form-inline" method="POST">
                                 <fieldset>
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <input type="text" class="form-control" placeholder="Key word">
+                                            <input type="text" class="form-control" placeholder="Key word" name="keyword">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -28,7 +28,7 @@
                                         <div class="col-xs-6">
                                             <script>
                                                     $(document).on('change','#lunchBegins', function(){
-                                                        $('#basic').removeAttr('disabled');
+                                                        $('#selectmodel').hide();
                                                         $('#basic option').hide();
                                                         $('#basic option[value="'+$(this).val()+'"]').show()
                                                      });
@@ -36,7 +36,7 @@
 
                                             </script>
                                             <select id="lunchBegins" class="selectpicker" data-live-search="true"
-                                                    data-live-search-style="begins" title="Make">
+                                                    data-live-search-style="begins" title="Make" name="make">
                                                 {% for make in makes %}
                                                 <option value="{{make}}">{{ make }}</option>
                                                 {% endfor %}
@@ -45,9 +45,10 @@
                                         <div class="col-xs-6">
 
                                             <select id="basic" class="form-control" data-live-search="true"
-                                                    title="Model" disabled>
+                                                    title="Model" name="model">
+                                                <option id="selectmodel" value="">Model</option>
                                                 {% for model in models %}
-                                                <option value="{{model.make}}">{{ model.model }}</option>
+                                                <option value="{{model.make}}" style="display:none;">{{ model.model }}</option>
                                                 {% endfor %}
 
                                             </select>
@@ -59,19 +60,19 @@
                                     <div class="row">
                                         <div class="col-xs-6">
                                             <label for="price-range">Price range ($):</label>
-                                            <input type="text" class="span2" value="" data-slider-min="0"
-                                                   data-slider-max="100000" data-slider-step="100"
-                                                   data-slider-value="[0,100000]" id="price-range"><br/>
-                                            <b class="pull-left color">£ 2000</b>
-                                            <b class="pull-right color">£ 100000</b>
+                                            <input type="text" class="span2" value="" data-slider-min="{{ranges[2]}}"
+                                                   data-slider-max="{{ranges[3]}}" data-slider-step="100"
+                                                   data-slider-value="[{{ranges[2]}},{{ranges[3]}}]" id="price-range" name="pricerange"><br/>
+                                            <b class="pull-left color">£ {{ranges[2]}}</b>
+                                            <b class="pull-right color">£ {{ranges[3]}}</b>
                                         </div>
                                         <div class="col-xs-6">
                                             <label for="property-geo">Year :</label>
-                                            <input type="text" class="span2" value="" data-slider-min="1900"
-                                                   data-slider-max="2022" data-slider-step="1"
-                                                   data-slider-value="[1900,2022]" id="property-geo" name="year"><br/>
-                                            <b class="pull-left color">1900</b>
-                                            <b class="pull-right color">2022</b>
+                                            <input type="text" class="span2" value="" data-slider-min="{{ranges[0]}}"
+                                                   data-slider-max="{{ranges[1]}}" data-slider-step="1"
+                                                   data-slider-value="[{{ranges[0]}},{{ranges[1]}}]" id="property-geo" name="yearrange"><br/>
+                                            <b class="pull-left color">{{ranges[0]}}</b>
+                                            <b class="pull-right color">{{ranges[1]}}</b>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -101,14 +102,14 @@
                                 -->
                                 <fieldset class="padding-5">
                                     <div class="col-xs-6">
-                                        <select class="selectpicker" title="Fuel">
+                                        <select class="selectpicker" title="Fuel" name="fuel">
                                             {% for fuel in fuels %}
                                             <option value="{{fuel}}">{{ fuel }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
                                     <div class="col-xs-6">
-                                        <select class="selectpicker" title="Body type">
+                                        <select class="selectpicker" title="Body type" name="bodytype">
                                             {% for type in types %}
                                             <option value="{{fuel}}">{{ type }}</option>
                                             {% endfor %}

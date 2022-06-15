@@ -7,6 +7,8 @@ from models import User, Car, Model
 import os
 
 import base64
+
+
 def create_app():
     '''
     This method creates the application and sets up some environment variables that will need to be accessed
@@ -21,11 +23,13 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     return app
 
+
 app = create_app()
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -42,23 +46,64 @@ def load_user(user_id):
         except:
             return None
 
+
 @app.route('/viewcar/<int:carId>')
 def viewcar(carId):
-    car = Car.getCarById(carId) #4975facbbce511b65e14f44719340029-cf161184-91fc #Funciona con int, no con string
+    car = Car.getCarById(carId)  # 4975facbbce511b65e14f44719340029-cf161184-91fc #Funciona con int, no con string
     return render_template("car.html", car=car)
 
-@app.route('/carsearch')
+
+@app.route('/carsearch', methods=["GET", "POST"])
 def carsearch():
     cars = Car.getAllCars()
     modelslist, makeslist = Model.getDistinctModels()
     fuels = Car.getDistinctFuels()
     types = Car.getDistinctTypes()
+    ranges = Car.getPriceAndYearRange()
+    if request.method == "POST":
+        pricerange = request.form["pricerange"].split(",")
+        yearrange = request.form["yearrange"].split(",")
+        print(pricerange)
+        print(yearrange)
+        headingSearch, descSearch, makeSearch, modelSearch, fuelSearch, bodyTypeSearch, priceSearch, yearSearch = (
+            Car.getAllCardicts() for i in range(8))
+        if request.form["keyword"] != "":
+            headingSearch = Car.getCarsByAttribute("heading", request.form["keyword"])
+            descSearch = Car.getCarsByAttribute("heading", request.form["keyword"])
+        if request.form["make"] != "":
+            makeSearch = Car.getCarsByAttribute("make", request.form["make"])
+        if request.form["model"] != "":
+            modelSearch = Car.getCarsByAttribute("model", request.form["model"])
+        if request.form["fuel"] != "":
+            fuelSearch = Car.getCarsByAttribute("fuel", request.form["fuel"])
+        if request.form["bodytype"] != "":
+            bodyTypeSearch = Car.getCarsByAttribute("type", request.form["bodytype"])
+        if request.form["pricerange"] != "":
+            priceSearch = Car.getCarsByAttribute("price", [int(pricerange[0]), int(pricerange[1])])
+        if request.form["yearrange"] != "":
+            yearSearch = Car.getCarsByAttribute("year", [int(yearrange[0]), int(yearrange[1])])
+        listSearch = [headingSearch, descSearch, makeSearch, modelSearch, fuelSearch, bodyTypeSearch, priceSearch,
+                      yearSearch]
+        print(yearSearch)
+        list1 = [x for x in headingSearch if x in descSearch]
+        list2 = [x for x in list1 if x in makeSearch]
+        list3 = [x for x in list2 if x in modelSearch]
+        list4 = [x for x in list3 if x in fuelSearch]
+        list5 = [x for x in list4 if x in bodyTypeSearch]
+        list6 = [x for x in list5 if x in priceSearch]
+        carsDicts = [x for x in list6 if x in yearSearch]
+        cars = Car.parseDictToCars(carsDicts)
+
+    cars = cars[:50]
+
+    # intersection = headingSearch & descSearch & makeSearch & modelSearch & fuelSearch & bodyTypeSearch & priceSearch & yearSearch
+    # print(intersection)
+
     for car in cars:
         if len(car.description) > 250:
             car.description = car.description[0:250] + "..."
-    return render_template('properties.html', cars = cars, makes = makeslist, models = modelslist, fuels = fuels,
-                           types = types)
-
+    return render_template('properties.html', cars=cars, makes=makeslist, models=modelslist, fuels=fuels,
+                           types=types, ranges = ranges)
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -66,9 +111,9 @@ def register():
     if request.method == "POST":
         photoFile = request.files.get('file')
         photo = base64.b64encode(photoFile.read())
-        new_user = User(request.form["username"],request.form["name"],request.form["email"],
-                        request.form["password"],request.form["role"],request.form["address"],
-                        photo,request.form["phone"])
+        new_user = User(request.form["username"], request.form["name"], request.form["email"],
+                        request.form["password"], request.form["role"], request.form["address"],
+                        photo, request.form["phone"])
         session = Session()
         session.add(new_user)
         session.commit()
@@ -76,6 +121,7 @@ def register():
         session.close()
         return redirect(url_for('login'))
     return render_template('register.html')
+
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -87,6 +133,7 @@ def login():
         else:
             flash(u'Invalid user or password.', 'error')
     return render_template('login.html')
+
 
 @app.route('/logout')
 @login_required
@@ -105,6 +152,7 @@ def create_tables():
     '''
     Base.metadata.create_all(engine)
     print("Tables have been created.")
-	
+
+
 if __name__ == '__main__':
     app.run()
