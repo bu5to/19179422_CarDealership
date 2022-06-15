@@ -95,7 +95,7 @@ class Model:
 
 class Car:
     def __init__(self, id, make, model, heading, year, mileage, bodyType, fuel, transmission, description, engineSize,
-                 color, insuranceGroup, city, emissions, price, images):
+                 color, insuranceGroup, city, emissions, price, images, user_id):
         self.id = id
         self.make = make
         self.model = model
@@ -113,6 +113,7 @@ class Car:
         self.emissions = emissions
         self.price = price
         self.images = images
+        self.user_id = user_id
 
 
     def getPriceAndYearRange():
@@ -135,7 +136,7 @@ class Car:
             if keyPhoto in x and keyColor in x:
                 car = Car(x['id'], x['make'], x['model'], x['heading'], x['year'], x['miles'],x['body_type'],x['fuel_type'],
                           x['transmission'], x['features'], x['engine_size'], x['exterior_color'], x['insurance_group'],
-                           x['city'], x['co2_emission'], x['price'], x['photo_url'])
+                           x['city'], x['co2_emission'], x['price'], x['photo_url'], x['user_id'])
                 carslist.append(car) #Provisional solution until dataset is fixed
         return carslist
 
@@ -185,12 +186,13 @@ class Car:
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
-        cardict = mycol.find_one({"id": str(carId)})
+        cardict = mycol.find_one({"id": int(carId)})
+        print(cardict)
         car = Car(cardict['id'], cardict['make'], cardict['model'], cardict['heading'], cardict['year'],
                   cardict['miles'], cardict['body_type'], cardict['fuel_type'],
                   cardict['transmission'], cardict['features'], cardict['engine_size'], cardict['exterior_color'],
                   cardict['insurance_group'],
-                  cardict['city'], cardict['co2_emission'], cardict['price'], cardict['photo_url'])
+                  cardict['city'], cardict['co2_emission'], cardict['price'], cardict['photo_url'], cardict['user_id'])
         return car
 
     def getCarsByAttribute(attr, value):
@@ -213,6 +215,8 @@ class Car:
             carsdicts = list(mycol.find({"miles": {"$gte":value[0], "$lte":value[1]}}))
         if attr == "fuel":
             carsdicts = list(mycol.find({"fuel": value}))
+        if attr == "user":
+            carsdicts = list(mycol.find({"user_id": value}))
         if attr == "type":
             carsdicts = list(mycol.find({"body_type": value}))
         if attr == "engine_size":

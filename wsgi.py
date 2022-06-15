@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
 from base import Session, engine, Base
@@ -47,10 +47,20 @@ def load_user(user_id):
             return None
 
 
+@app.route('/photo/<int:user_id>')
+def photo(user_id):
+    user = User.get_user(str(user_id))
+    b64_string = user.profilePic
+    b64_string += "=" * ((4 - len(b64_string) % 4) % 4)
+    image_64_decode = base64.b64decode(b64_string)
+    return Response(image_64_decode, mimetype='image/jpg')
+
+
 @app.route('/viewcar/<int:carId>')
 def viewcar(carId):
     car = Car.getCarById(carId)  # 4975facbbce511b65e14f44719340029-cf161184-91fc #Funciona con int, no con string
-    return render_template("car.html", car=car)
+    seller = User.get_user(car.user_id)
+    return render_template("car.html", car=car, seller = seller)
 
 
 @app.route('/carsearch', methods=["GET", "POST"])
@@ -92,6 +102,7 @@ def carsearch():
         list5 = [x for x in list4 if x in bodyTypeSearch]
         list6 = [x for x in list5 if x in priceSearch]
         carsDicts = [x for x in list6 if x in yearSearch]
+        #Intersection done manually as there is no way to do an intersection between multiple lists of dicts
         cars = Car.parseDictToCars(carsDicts)
 
     cars = cars[:50]
