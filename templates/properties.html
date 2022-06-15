@@ -257,11 +257,11 @@
                         <div class="col-sm-6 col-md-4 p0">
                             <div class="box-two proerty-item">
                                 <div class="item-thumb">
-                                    <a href="property-1.html"><img src="{{ car.images }}"></a>
+                                    <a href="{{ url_for('viewcar', carId=car.id) }}"><img src="{{ car.images }}"></a>
                                 </div>
 
                                 <div class="item-entry overflow">
-                                    <h5><a href="property-1.html"> {{ car.heading }} </a></h5>
+                                    <h5><a href="{{ url_for('viewcar', carId=car.id) }}"> {{ car.heading }} </a></h5>
                                     <div class="dot-hr"></div>
                                     <!--<span class="pull-left"><b> Area :</b> 120m </span> -->
                                     <span class="proerty-price pull-left"> £ {{ car.price }}</span>

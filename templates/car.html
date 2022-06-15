@@ -32,17 +32,8 @@
 
                                     <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
                                         <li data-thumb="assets/img/property-1/property1.jpg"> 
-                                            <img src="assets/img/property-1/property1.jpg" />
+                                            <img src="{{car.images}}" />
                                         </li>
-                                        <li data-thumb="img/property-1/property2.jpg"> 
-                                            <img src="assets/img/property-1/property3.jpg" />
-                                        </li>
-                                        <li data-thumb="assets/img/property-1/property3.jpg"> 
-                                            <img src="assets/img/property-1/property3.jpg" />
-                                        </li>
-                                        <li data-thumb="assets/img/property-1/property4.jpg"> 
-                                            <img src="assets/img/property-1/property4.jpg" />
-                                        </li>                                         
                                     </ul>
                                 </div>
                             </div>
@@ -50,8 +41,8 @@
 
                         <div class="single-property-wrapper">
                             <div class="single-property-header">                                          
-                                <h1 class="property-title pull-left">Villa in Coral Gables</h1>
-                                <span class="property-price pull-right">$825,000</span>
+                                <h1 class="property-title pull-left">{{car.heading}}</h1>
+                                <span class="property-price pull-right">£ {{car.price}}</span>
                             </div>
 
                             <div class="property-meta entry-meta clearfix ">   
@@ -300,8 +291,8 @@
                                                 </span>
                                             </div>
                                             <div class="col-md-8 col-sm-8 col-xs-8 blg-entry">
-                                                <h6> <a href="single.html">Super nice villa </a></h6>
-                                                <span class="property-price">3000000$</span>
+                                                <h6> <a href="single.html">{{car.heading}} </a></h6>
+                                                <span class="property-price">£ {{car.price}}</span>
                                             </div>
                                         </li>
 

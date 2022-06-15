@@ -151,6 +151,18 @@ class Car:
                 types.append(car.bodyType)
         return types
 
+    def getCarById(carId):
+        myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
+        mydb = myclient["myapp"]
+        mycol = mydb["cars"]
+        cardict = mycol.find_one({"id": str(carId)})
+        car = Car(cardict['id'], cardict['make'], cardict['model'], cardict['heading'], cardict['year'],
+                  cardict['miles'], cardict['body_type'], cardict['fuel_type'],
+                  cardict['transmission'], cardict['features'], cardict['engine_size'], cardict['exterior_color'],
+                  cardict['insurance_group'],
+                  cardict['city'], cardict['co2_emission'], cardict['price'], cardict['photo_url'])
+        return car
+
     def getCarsByAttribute(attr, value):
         '''
         The aim of this method is to search the cars in the database given a certain attribute and a certain value.

@@ -42,18 +42,24 @@ def load_user(user_id):
         except:
             return None
 
+@app.route('/viewcar/<int:carId>')
+def viewcar(carId):
+    car = Car.getCarById(carId) #4975facbbce511b65e14f44719340029-cf161184-91fc #Funciona con int, no con string
+    return render_template("car.html", car=car)
+
 @app.route('/carsearch')
 def carsearch():
     cars = Car.getAllCars()
     modelslist, makeslist = Model.getDistinctModels()
     fuels = Car.getDistinctFuels()
     types = Car.getDistinctTypes()
-    print(current_user.name)
     for car in cars:
         if len(car.description) > 250:
             car.description = car.description[0:250] + "..."
     return render_template('properties.html', cars = cars, makes = makeslist, models = modelslist, fuels = fuels,
                            types = types)
+
+
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -81,6 +87,17 @@ def login():
         else:
             flash(u'Invalid user or password.', 'error')
     return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    '''
+    The user is logged out.
+    :return: Login webpage.
+    '''
+    logout_user()
+    return redirect(url_for('login'))
+
 
 def create_tables():
     '''
