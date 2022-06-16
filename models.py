@@ -174,6 +174,14 @@ class Car:
                 fuels.append(car.fuel)
         return fuels
 
+    def getDistinctTransmissions():
+        cars = Car.getAllCars()
+        transmissions = []
+        for car in cars:
+            if car.transmission not in transmissions:
+                transmissions.append(car.transmission)
+        return transmissions
+
     def getDistinctTypes():
         cars = Car.getAllCars()
         types = []
@@ -214,7 +222,7 @@ class Car:
         if attr == "miles":
             carsdicts = list(mycol.find({"miles": {"$gte":value[0], "$lte":value[1]}}))
         if attr == "fuel":
-            carsdicts = list(mycol.find({"fuel": value}))
+            carsdicts = list(mycol.find({"fuel_type": value}))
         if attr == "user":
             carsdicts = list(mycol.find({"user_id": value}))
         if attr == "type":

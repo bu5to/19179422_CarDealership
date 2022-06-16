@@ -108,9 +108,14 @@
         <div class="collapse navbar-collapse yamm" id="navigation">
             {% if current_user.is_authenticated %}
             <div class="button navbar-right">
-            <button class="navbar-btn nav-button wow fadeInRight" onclick="location.href='{{ url_for('login') }}'">
-                List my car
-            </button>
+                <button class="navbar-btn nav-button wow fadeInRight" onclick="location.href='{{ url_for('mycars') }}'">
+                    My cars
+                </button>
+            </div>
+            <div class="button navbar-right">
+                <button class="navbar-btn nav-button wow fadeInRight" onclick="location.href='{{ url_for('listmycar') }}'">
+                    List my car
+                </button>
             </div>
             {% else %}
             <div class="button navbar-right">
@@ -130,9 +135,6 @@
                        data-delay="200">Hello, {{current_user.name}} <b class="caret"></b></a>
                     <ul class="dropdown-menu navbar-nav">
                         <li>
-                            <a href="index-2.html">My cars</a>
-                        </li>
-                        <li>
                             <a href="index-3.html">Account settings</a>
                         </li>
                         <li>
@@ -142,7 +144,8 @@
                     </ul>
                 </li>
                 {% endif %}
-                <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="{{url_for('carsearch')}}">Search cars</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="{{url_for('carsearch')}}">Search
+                    cars</a></li>
                 <!--
                 <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="property.html">Property</a></li>
                 <li class="dropdown yamm-fw" data-wow-delay="0.1s">

@@ -77,6 +77,7 @@ def carsearch():
         carsDicts = Car.getCarsByAttribute("user", request.form['user_id'])
         cars = Car.parseDictToCars(carsDicts)
     if request.method == "POST" and 'user_id' not in request.form:
+        print(request.form)
         pricerange = request.form["pricerange"].split(",")
         yearrange = request.form["yearrange"].split(",")
         headingSearch, descSearch, makeSearch, modelSearch, fuelSearch, bodyTypeSearch, priceSearch, yearSearch = (
@@ -90,8 +91,8 @@ def carsearch():
             modelSearch = Car.getCarsByAttribute("model", request.form["model"])
         if request.form["fuel"] != "":
             fuelSearch = Car.getCarsByAttribute("fuel", request.form["fuel"])
-        if request.form["bodytype"] != "":
-            bodyTypeSearch = Car.getCarsByAttribute("type", request.form["bodytype"])
+        if request.form["body"] != "":
+            bodyTypeSearch = Car.getCarsByAttribute("type", request.form["body"])
         if request.form["pricerange"] != "":
             priceSearch = Car.getCarsByAttribute("price", [int(pricerange[0]), int(pricerange[1])])
         if request.form["yearrange"] != "":
@@ -147,6 +148,24 @@ def login():
         else:
             flash(u'Invalid user or password.', 'error')
     return render_template('login.html')
+
+
+@app.route('/listmycar', methods=["GET", "POST"])
+@login_required
+def listmycar():
+    models, makes = Model.getDistinctModels()
+    fuels = Car.getDistinctFuels()
+    types = Car.getDistinctTypes()
+    transmissions = Car.getDistinctTransmissions()
+    return render_template("submit-property.html",makes=makes, models=models, fuels=fuels, types=types, transmissions = transmissions)
+
+
+@app.route('/mycars')
+@login_required
+def mycars():
+    carsDicts = Car.getCarsByAttribute("user", current_user.id)
+    cars = Car.parseDictToCars(carsDicts)
+    return render_template("submit-property.html", cars = cars)
 
 
 @app.route('/logout')
