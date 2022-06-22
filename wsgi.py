@@ -157,6 +157,51 @@ def listmycar():
     fuels = Car.getDistinctFuels()
     types = Car.getDistinctTypes()
     transmissions = Car.getDistinctTransmissions()
+    if request.method == "POST": #Option to include asynchronous developing to predict the cars prices?
+        photoFile = request.files.get('file')
+        photo = base64.b64encode(photoFile.read())
+        heading = request.form('heading')
+        price = request.form('price')
+        description = request.form('description')
+        make = request.form('make')
+        if request.form('model') != "Other":
+            model = request.form("model")
+        else:
+            model = request.form("otherModel") #Yet to be implemented through JQuery
+        body_type = request.form('bodyType')
+        fuel_type = request.form('fuelType')
+        year = request.form('year')
+        transmission = request.form('transmission')
+        doors = request.form('doors')
+        color = request.form('color')
+        engine_size = request.form('engineSize')
+        insuranceGroup = request.form('insuranceGroup')
+        emissions = request.form('emissions')
+        mileage = request.form('mileage')
+        user_id = current_user.id
+        dictCar = {"heading": heading,
+                  "price": price,
+                  "miles": mileage,
+                  "year": year,
+                  "make": make,
+                  "model": model,
+                  "body_type": body_type,
+                  "fuel_type": fuel_type,
+                  "transmission": transmission,
+                  "doors": doors,
+                  "exterior_color": color,
+                  "photo_url": photo,
+                  "insurance_group": insuranceGroup,
+                  "engine_size": engine_size,
+                  "co2_emission": emissions,
+                  "features": description,
+                  "user_id": user_id
+        }
+        myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
+        mydb = myclient["myapp"]
+        mycol = mydb["cars"]
+        mycol.insert_one(dictCar)
+
     return render_template("submit-property.html",makes=makes, models=models, fuels=fuels, types=types, transmissions = transmissions)
 
 
