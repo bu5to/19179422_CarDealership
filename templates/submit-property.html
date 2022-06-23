@@ -41,7 +41,7 @@
                                                     $(document).on('change','#lunchBegins', function(){
                                                         $('#selectmodel').hide();
                                                         $('#basic option').hide();
-                                                        $('#basic option[value="'+$(this).val()+'"]').show()
+                                                        $('#basic option[class="'+$(this).val()+'"]').show()
                                                      });
                             </script>
 
@@ -103,7 +103,7 @@
                                                     title="Model" name="model">
                                                 <option id="selectmodel" value="">Model</option>
                                                 {% for model in models %}
-                                                <option value="{{model.make}}" style="display:none;">{{ model.model }}
+                                                <option value="{{model.model}}" class="{{model.make}}" style="display:none;">{{ model.model }}
                                                 </option>
                                                 {% endfor %}
                                                 <option id="other" value="Other">Other</option>
@@ -310,7 +310,8 @@
                         <div class="wizard-footer">
                             <div class="pull-right">
                                 <!-- <input type='button' class='btn btn-next btn-primary' name='next' value='Next' /> -->
-                                <input type='button' class='btn btn-finish btn-primary ' name='finish' value='Finish'/>
+                                <input type='submit' class='btn btn-finish btn-primary ' name='finish' value='Finish'/>
+                                <!--<input type='button' class='btn btn-finish btn-primary ' name='finish' value='Finish'/> -->
                             </div>
 
                             <!--<div class="pull-left">
