@@ -2,10 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for, flash, Res
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
 from base import Session, engine, Base
-import base64
 from models import User, Car, Model
+from regression import carsModel, parseAttributesToLabels
+import numpy as np
+import base64
 import os
+import pymongo
 import random
+
 
 def create_app():
     '''
@@ -63,7 +67,7 @@ def viewcar(carId):
     similarPriceDict = Car.getCarsByAttribute("price", [car.price * 0.8, car.price * 1.2])
     similarCarsDict = [x for x in similarBodyDict if x in similarPriceDict]
     similarCars = random.choices(Car.parseDictToCars(similarCarsDict), k=3)
-    return render_template("car.html", car=car, seller = seller, numCars = numCars, similarCars = similarCars)
+    return render_template("car.html", car=car, seller=seller, numCars=numCars, similarCars=similarCars)
 
 
 @app.route('/carsearch', methods=["GET", "POST"])
@@ -106,7 +110,7 @@ def carsearch():
         list5 = [x for x in list4 if x in bodyTypeSearch]
         list6 = [x for x in list5 if x in priceSearch]
         carsDicts = [x for x in list6 if x in yearSearch]
-        #Intersection done manually as there is no way to do an intersection between multiple lists of dicts
+        # Intersection done manually as there is no way to do an intersection between multiple lists of dicts
         cars = Car.parseDictToCars(carsDicts)
 
     cars = cars[:50]
@@ -118,7 +122,7 @@ def carsearch():
         if len(car.description) > 250:
             car.description = car.description[0:250] + "..."
     return render_template('properties.html', cars=cars, makes=makeslist, models=modelslist, fuels=fuels,
-                           types=types, ranges = ranges)
+                           types=types, ranges=ranges)
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -157,7 +161,7 @@ def listmycar():
     fuels = Car.getDistinctFuels()
     types = Car.getDistinctTypes()
     transmissions = Car.getDistinctTransmissions()
-    if request.method == "POST": #Option to include asynchronous developing to predict the cars prices?
+    if request.method == "POST":  # Option to include asynchronous developing to predict the cars prices?
         photoFile = request.files.get('file')
         photo = base64.b64encode(photoFile.read())
         heading = request.form('heading')
@@ -167,7 +171,7 @@ def listmycar():
         if request.form('model') != "Other":
             model = request.form("model")
         else:
-            model = request.form("otherModel") #Yet to be implemented through JQuery
+            model = request.form("otherModel")  # Yet to be implemented through JQuery
         body_type = request.form('bodyType')
         fuel_type = request.form('fuelType')
         year = request.form('year')
@@ -180,29 +184,43 @@ def listmycar():
         mileage = request.form('mileage')
         user_id = current_user.id
         dictCar = {"heading": heading,
-                  "price": price,
-                  "miles": mileage,
-                  "year": year,
-                  "make": make,
-                  "model": model,
-                  "body_type": body_type,
-                  "fuel_type": fuel_type,
-                  "transmission": transmission,
-                  "doors": doors,
-                  "exterior_color": color,
-                  "photo_url": photo,
-                  "insurance_group": insuranceGroup,
-                  "engine_size": engine_size,
-                  "co2_emission": emissions,
-                  "features": description,
-                  "user_id": user_id
-        }
+                   "price": price,
+                   "miles": mileage,
+                   "year": year,
+                   "make": make,
+                   "model": model,
+                   "body_type": body_type,
+                   "fuel_type": fuel_type,
+                   "transmission": transmission,
+                   "doors": doors,
+                   "exterior_color": color,
+                   "photo_url": photo,
+                   "insurance_group": insuranceGroup,
+                   "engine_size": engine_size,
+                   "co2_emission": emissions,
+                   "features": description,
+                   "user_id": user_id
+                   }
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
         mycol.insert_one(dictCar)
+        if 'predict' in request.data:
+            modelLabel, makeLabel, bodyLabel, fuelLabel, colorLabel, transLabel = parseAttributesToLabels(model, make,
+                                                                                                          body_type,
+                                                                                                          fuel_type,
+                                                                                                          color,
+                                                                                                          transmission)
+            X = [mileage, year, doors, insuranceGroup, engine_size, emissions, makeLabel, modelLabel, colorLabel,
+                 fuelLabel,
+                 transLabel, body_type]
+            regr = carsModel()
+            prediction = regr.predict(X)
+            predPrice = int(np.exp(prediction))
+            return predPrice
 
-    return render_template("submit-property.html",makes=makes, models=models, fuels=fuels, types=types, transmissions = transmissions)
+    return render_template("submit-property.html", makes=makes, models=models, fuels=fuels, types=types,
+                           transmissions=transmissions)
 
 
 @app.route('/mycars')
@@ -210,7 +228,7 @@ def listmycar():
 def mycars():
     carsDicts = Car.getCarsByAttribute("user", current_user.id)
     cars = Car.parseDictToCars(carsDicts)
-    return render_template("submit-property.html", cars = cars)
+    return render_template("submit-property.html", cars=cars)
 
 
 @app.route('/logout')

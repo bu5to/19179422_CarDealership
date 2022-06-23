@@ -142,3 +142,49 @@ sc_X = StandardScaler()
 df_train = sc_X.fit_transform(df_train)
 df_test = sc_X.transform(df_test)
 
+def carsModel():
+    df = pd.read_csv("carsWithLabels.csv", sep=';')
+    df = df.drop(columns="photo_links")
+    df = df.drop(columns="city")
+    df = df.drop(columns="zip")
+    df = df.drop(columns="country")
+    df = df.drop(columns="user_id")
+    df = df.drop(columns="seller_name")
+    df = df.drop(columns="currency_indicator")
+    df = df.drop(columns="heading")
+    df = df.drop(columns="id")
+    df = df.drop(columns="street")
+    df = df.drop(columns="photo_url")
+    df = df.drop(columns="features")
+    df = df.drop(columns="miles_indicator")
+    df = df.drop(columns="vdp_url")
+    df = df.drop(columns="make")
+    df = df.drop(columns="model")
+    df = df.drop(columns="exterior_color")
+    df = df.drop(columns="fuel_type")
+    df = df.drop(columns="transmission")
+    df = df.drop(columns="body_type")
+    df['log_price'] = np.log(df['price'])
+    df = df.drop(columns="price")
+    y = df['log_price']
+    X = df.loc[:, df.columns != 'log_price']
+    regr = LinearRegression()
+    regr.fit(X, y)
+    return regr
+
+def parseAttributesToLabels(model, make, body, fuel, exterior_color, transmission):
+    data = pd.read_csv("carsWithLabels.csv", sep=';')
+    modelMapping = dict(zip(data['model'], data['model_label']))
+    makeMapping = dict(zip(data['make'], data['make_label']))
+    bodyMapping = dict(zip(data['body'], data['body_type_label']))
+    fuelMapping = dict(zip(data['fuel'], data['fuel_type_label']))
+    colorMapping = dict(zip(data['exterior_color'], data['exterior_color_label']))
+    transMapping = dict(zip(data['transmission'], data['transmission_label']))
+    modelLabel = modelMapping[model]
+    makeLabel = makeMapping[make]
+    bodyLabel = bodyMapping[body]
+    fuelLabel = fuelMapping[fuel]
+    colorLabel = colorMapping[exterior_color]
+    transLabel = transMapping[transmission]
+    return modelLabel, makeLabel, bodyLabel, fuelLabel, colorLabel, transLabel
+
