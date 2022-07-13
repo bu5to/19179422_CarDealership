@@ -166,6 +166,13 @@ class Car:
         return carslist
 
 
+  #  def getLatestCars():
+   #     carsDicts = Car.getAllCardicts()
+    #    carslist = Car.parseDictToCars(carsDicts)[-2:]
+     #   latestCarsCookie = carslist[0].id + ":" + carslist[1].id + ":" + carslist[2].id
+      #  return latestCarsCookie
+
+
     def getDistinctFuels():
         cars = Car.getAllCars()
         fuels = []

@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 import os
 
 # The database is initialised.
-engine = create_engine("postgres://vglacsrsmzejof:07d04f521d50bb923ad37e6fcc55deabdd2a80984ec9d118880d8401abfa0cfc@ec2-54-228-32-29.eu-west-1.compute.amazonaws.com:5432/d3krde6k3aj05f")
+engine = create_engine("postgres://irfthlqtvpqjek:35496e5703ba65a8c9fe2a2075e9d4395a7aa6e29ccc710c8f3966ea4eea7ba5@ec2-99-81-16-126.eu-west-1.compute.amazonaws.com:5432/d6iso2pc6h1bkj")
 Session = sessionmaker(bind=engine)
 Session.expire_on_commit = False
 

@@ -1,14 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, Response
+from flask import Flask, render_template, request, redirect, url_for, flash, Response, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
 from base import Session, engine, Base
 from models import User, Car, Model
 from regression import carsModel, parseAttributesToLabels
+from werkzeug.security import generate_password_hash
 import numpy as np
 import base64
 import os
 import pymongo
 import random
+import string
 
 
 def create_app():
@@ -18,9 +20,9 @@ def create_app():
     :return: The created application.
     '''
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = "thisisasecretkey"
+    app.config["SECRET_KEY"] = ''.join(random.choice(string.ascii_letters) for i in range(64))
     os.environ[
-        "DATABASE_URL"] = "postgres://vglacsrsmzejof:07d04f521d50bb923ad37e6fcc55deabdd2a80984ec9d118880d8401abfa0cfc@ec2-54-228-32-29.eu-west-1.compute.amazonaws.com:5432/d3krde6k3aj05f"
+        "DATABASE_URL"] = "postgres://irfthlqtvpqjek:35496e5703ba65a8c9fe2a2075e9d4395a7aa6e29ccc710c8f3966ea4eea7ba5@ec2-99-81-16-126.eu-west-1.compute.amazonaws.com:5432/d6iso2pc6h1bkj"
     app.config["MONGO_CLIENT"] = "mongodb://localhost:27017"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     return app
@@ -58,6 +60,14 @@ def photo(user_id):
     return Response(image_64_decode, mimetype='image/jpg')
 
 
+@app.route('/carpic/<int:carId>')
+def carpic(carId):
+    car = Car.getCarById(carId)
+    b64_string = car.images
+    b64_string += "=" * ((4 - len(b64_string) % 4) % 4)
+    image_64_decode = base64.b64decode(b64_string)
+    return Response(image_64_decode, mimetype='image/jpg')
+
 @app.route('/viewcar/<int:carId>')
 def viewcar(carId):
     car = Car.getCarById(carId)  # 4975facbbce511b65e14f44719340029-cf161184-91fc #Funciona con int, no con string
@@ -70,7 +80,7 @@ def viewcar(carId):
     return render_template("car.html", car=car, seller=seller, numCars=numCars, similarCars=similarCars)
 
 
-@app.route('/carsearch', methods=["GET", "POST"])
+@app.route('/', methods=["GET", "POST"])
 def carsearch():
     cars = Car.getAllCars()
     modelslist, makeslist = Model.getDistinctModels()
@@ -82,8 +92,11 @@ def carsearch():
         cars = Car.parseDictToCars(carsDicts)
     if request.method == "POST" and 'user_id' not in request.form:
         print(request.form)
-        pricerange = request.form["pricerange"].split(",")
-        yearrange = request.form["yearrange"].split(",")
+        #pricerange = request.form["pricerange"].split(",")
+        #yearrange = request.form["yearrange"].split(",")
+        pricerange = [request.form["minPrice"], request.form["maxPrice"]]
+        yearrange = [request.form["minYear"], request.form["maxYear"]]
+
         headingSearch, descSearch, makeSearch, modelSearch, fuelSearch, bodyTypeSearch, priceSearch, yearSearch = (
             Car.getAllCardicts() for i in range(8))
         if request.form["keyword"] != "":
@@ -97,9 +110,9 @@ def carsearch():
             fuelSearch = Car.getCarsByAttribute("fuel", request.form["fuel"])
         if request.form["body"] != "":
             bodyTypeSearch = Car.getCarsByAttribute("type", request.form["body"])
-        if request.form["pricerange"] != "":
+        if request.form["minPrice"] != "" and request.form["maxPrice"] != "":
             priceSearch = Car.getCarsByAttribute("price", [int(pricerange[0]), int(pricerange[1])])
-        if request.form["yearrange"] != "":
+        if request.form["minYear"] != "" and request.form["maxYear"] != "":
             yearSearch = Car.getCarsByAttribute("year", [int(yearrange[0]), int(yearrange[1])])
         listSearch = [headingSearch, descSearch, makeSearch, modelSearch, fuelSearch, bodyTypeSearch, priceSearch,
                       yearSearch]
@@ -128,8 +141,12 @@ def carsearch():
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        photoFile = request.files.get('file')
-        photo = base64.b64encode(photoFile.read())
+        if request.files["file"].filename != '':
+            photoFile = request.files.get('file')
+            photo = base64.b64encode(photoFile.read())
+        else:
+            photoFile = open('static/assets/img/testuser.jpg', 'rb')
+            photo = base64.b64encode(photoFile.read())
         new_user = User(request.form["username"], request.form["name"], request.form["email"],
                         request.form["password"], request.form["role"], request.form["address"],
                         photo, request.form["phone"])
@@ -141,6 +158,31 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html')
 
+@app.route('/settings', methods=["GET", "POST"])
+def settings():
+    if request.method == "POST":
+        session = Session()
+        dictupdate = {User.id: request.form['username'],
+                      User.name: request.form['name'],
+                      User.email: request.form['email'],
+                      User.role: request.form['role'],
+                      User.address: request.form['address'],
+                      User.phone: request.form['phone']
+                      }
+        query.filter(User.id == current_user.id).update(dictupdate, synchronize_session=False)
+        session.commit()
+        if request.form["password"] != "":
+            if request.form["password"] == request.form["confPassword"]:
+                newpassword = generate_password_hash(request.form["password"])
+                dictupdate = {User.password: newpassword}
+                query.filter(User.id == current_user.id).update(dictupdate, synchronize_session=False)
+                session.commit()
+            else:
+                flash(u'Passwords do not match.', 'error')
+        session.close()
+        return redirect(url_for('settings'))
+    return render_template('account-settings.html')
+
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -150,7 +192,7 @@ def login():
             login_user(user)
             return redirect(url_for('carsearch'))
         else:
-            flash(u'Invalid user or password.', 'error')
+            flash(u'Invalid username or password.', 'error')
     return render_template('login.html')
 
 

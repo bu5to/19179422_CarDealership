@@ -59,23 +59,28 @@
                                 <fieldset class="padding-5">
                                     <div class="row">
                                         <div class="col-xs-6">
-                                            <label for="price-range">Price range ($):</label>
-                                            <input type="text" class="span2" value="" data-slider-min="{{ranges[2]}}"
-                                                   data-slider-max="{{ranges[3]}}" data-slider-step="100"
-                                                   data-slider-value="[{{ranges[2]}},{{ranges[3]}}]" id="price-range" name="pricerange"><br/>
-                                            <b class="pull-left color">£ {{ranges[2]}}</b>
-                                            <b class="pull-right color">£ {{ranges[3]}}</b>
+                                            <label for="minprice">Minimum price</label>
+                                            <input type="number" class="form-control" value="{{ranges[2]}}" id="minprice" name="minPrice">
                                         </div>
                                         <div class="col-xs-6">
-                                            <label for="property-geo">Year :</label>
-                                            <input type="text" class="span2" value="" data-slider-min="{{ranges[0]}}"
-                                                   data-slider-max="{{ranges[1]}}" data-slider-step="1"
-                                                   data-slider-value="[{{ranges[0]}},{{ranges[1]}}]" id="property-geo" name="yearrange"><br/>
-                                            <b class="pull-left color">{{ranges[0]}}</b>
-                                            <b class="pull-right color">{{ranges[1]}}</b>
+                                            <label for="maxprice">Maximum price</label>
+                                            <input type="number" class="form-control" value="{{ranges[3]}}" id="maxprice" name="maxPrice">
                                         </div>
                                     </div>
                                 </fieldset>
+                                <fieldset class="padding-5">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <label for="minYear">Minimum year</label>
+                                            <input type="number" class="form-control" value="{{ranges[0]}}" id="minYear" name="minYear">
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <label for="maxYear">Maximum price</label>
+                                            <input type="number" class="form-control" value="{{ranges[1]}}" id="maxYear" name="maxYear">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <br>
                                 <!--
                                                                     <fieldset class="padding-5">
                                                                         <div class="row">
@@ -100,7 +105,7 @@
                                                                         </div>
                                                                     </fieldset>
                                 -->
-                                <fieldset class="padding-5">
+                                <fieldset>
                                     <div class="col-xs-6">
                                         <select class="selectpicker" title="Fuel" name="fuel">
                                             {% for fuel in fuels %}
@@ -219,19 +224,19 @@
                             <li class="active">
                                 <a href="javascript:void(0);" class="order_by_date" data-orderby="property_date"
                                    data-order="ASC">
-                                    Property Date <i class="fa fa-sort-amount-asc"></i>
+                                    Car Date <i class="fa fa-sort-amount-asc"></i>
                                 </a>
                             </li>
                             <li class="">
                                 <a href="javascript:void(0);" class="order_by_price" data-orderby="property_price"
                                    data-order="DESC">
-                                    Property Price <i class="fa fa-sort-numeric-desc"></i>
+                                    Car Price <i class="fa fa-sort-numeric-desc"></i>
                                 </a>
                             </li>
                         </ul><!--/ .sort-by-list-->
 
                         <div class="items-per-page">
-                            <label for="items_per_page"><b>Property per page :</b></label>
+                            <label for="items_per_page"><b>Cars per page :</b></label>
                             <div class="sel">
                                 <select id="items_per_page" name="per_page">
                                     <option value="3">3</option>
@@ -259,7 +264,11 @@
                         <div class="col-sm-6 col-md-4 p0">
                             <div class="box-two proerty-item">
                                 <div class="item-thumb">
+                                    {% if car.images.startswith('http') %}
                                     <a href="{{ url_for('viewcar', carId=car.id) }}"><img src="{{ car.images }}"></a>
+                                    {% else %}
+                                    <a href="{{ url_for('viewcar', carId=car.id) }}"><img src="{{ url_for('carpic', carId=car.id) }}"></a>
+                                    {% endif %}
                                 </div>
 
                                 <div class="item-entry overflow">

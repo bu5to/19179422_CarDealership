@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GARO ESTATE | Full blog page</title>
+    <title>Title</title>
     <meta name="description" content="company is a real-estate template">
     <meta name="author" content="Kimarotec">
     <meta name="keyword" content="html5, css, bootstrap, property, real-estate theme , bootstrap template">
@@ -21,7 +21,10 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-
+    <!--
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+          -->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/normalize.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontello.css') }}">
@@ -40,8 +43,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css')}}">
     <script src="{{ url_for('static', filename='assets/js/modernizr-2.6.2.min.js') }}"></script>
 
-    <script src="{{ url_for('static', filename='assets/js/jquery-1.10.2.min.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+
     <script src="{{ url_for('static', filename='assets/js/bootstrap-select.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/bootstrap-hover-dropdown.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
@@ -69,20 +73,23 @@
             <div class="col-md-5 col-sm-8  col-xs-12">
                 <div class="header-half header-call">
                     <p>
-                        <span><i class="pe-7s-call"></i> +1 234 567 7890</span>
-                        <span><i class="pe-7s-mail"></i> your@company.com</span>
+                        <span><i class="pe-7s-call"></i> +34 676 892 280</span>
+                        <span><i class="pe-7s-mail"></i> 19179422@brookes.ac.uk</span>
                     </p>
                 </div>
             </div>
+
             <div class="col-md-2 col-md-offset-5  col-sm-3 col-sm-offset-1  col-xs-12">
                 <div class="header-half header-social">
                     <ul class="list-inline">
+                        <!--
                         <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-vine"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                         <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+
+                        -->
+                        <li><a href="https://twitter.com/bu5to"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="https://www.linkedin.com/in/jorge-el-busto/"><i class="fa fa-linkedin"></i></a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -113,7 +120,8 @@
                 </button>
             </div>
             <div class="button navbar-right">
-                <button class="navbar-btn nav-button wow fadeInRight" onclick="location.href='{{ url_for('listmycar') }}'">
+                <button class="navbar-btn nav-button wow fadeInRight"
+                        onclick="location.href='{{ url_for('listmycar') }}'">
                     List my car
                 </button>
             </div>
@@ -135,7 +143,7 @@
                        data-delay="200">Hello, {{current_user.name}} <b class="caret"></b></a>
                     <ul class="dropdown-menu navbar-nav">
                         <li>
-                            <a href="index-3.html">Account settings</a>
+                            <a href="{{url_for('settings')}}">Account settings</a>
                         </li>
                         <li>
                             <a href="{{url_for('logout')}}">Log out</a>
@@ -245,36 +253,24 @@
         <div class="container">
             <div class="row">
 
-                <div class="col-md-3 col-sm-6 wow fadeInRight animated">
+                <div class="col-md-6 col-sm-6 wow fadeInRight animated">
                     <div class="single-footer">
                         <h4>About us </h4>
                         <div class="footer-title-line"></div>
 
                         <img src="{{ url_for('static', filename='footer-logo.png')}}" alt="" class="wow pulse"
                              data-wow-delay="1s">
-                        <p>Lorem ipsum dolor cum necessitatibus su quisquam molestias. Vel unde, blanditiis.</p>
+                        <p>We are a car sales website willing to help inexperienced users selling their cars for a fair
+                            price.</p>
                         <ul class="footer-adress">
                             <li><i class="pe-7s-map-marker strong"> </i> 9089 your adress her</li>
-                            <li><i class="pe-7s-mail strong"> </i> email@yourcompany.com</li>
-                            <li><i class="pe-7s-call strong"> </i> +1 908 967 5906</li>
+                            <li><i class="pe-7s-mail strong"> </i> 19179422@brookes.ac.uk</li>
+                            <li><i class="pe-7s-call strong"> </i> +34 676 892 280</li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 wow fadeInRight animated">
-                    <div class="single-footer">
-                        <h4>Quick links </h4>
-                        <div class="footer-title-line"></div>
-                        <ul class="footer-menu">
-                            <li><a href="properties.html">Properties</a></li>
-                            <li><a href="#">Services</a></li>
-                            <li><a href="submit-property.html">Submit property </a></li>
-                            <li><a href="contact.html">Contact us</a></li>
-                            <li><a href="faq.html">fqa</a></li>
-                            <li><a href="faq.html">Terms </a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 wow fadeInRight animated">
+<!--
+                <div class="col-md-6 col-sm-6 wow fadeInRight animated">
                     <div class="single-footer">
                         <h4>Last News</h4>
                         <div class="footer-title-line"></div>
@@ -328,45 +324,11 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 wow fadeInRight animated">
-                    <div class="single-footer news-letter">
-                        <h4>Stay in touch</h4>
-                        <div class="footer-title-line"></div>
-                        <p>Lorem ipsum dolor sit amet, nulla suscipit similique quisquam molestias. Vel unde,
-                            blanditiis.</p>
-
-                        <form>
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="E-mail ... ">
-                                <span class="input-group-btn">
-                                            <button class="btn btn-primary subscribe" type="button"><i
-                                                    class="pe-7s-paper-plane pe-2x"></i></button>
-                                        </span>
-                            </div>
-                            <!-- /input-group -->
-                        </form>
-
-                        <div class="social pull-right">
-                            <ul>
-                                <li><a class="wow fadeInUp animated" href="https://twitter.com/kimarotec"><i
-                                        class="fa fa-twitter"></i></a></li>
-                                <li><a class="wow fadeInUp animated" href="https://www.facebook.com/kimarotec"
-                                       data-wow-delay="0.2s"><i class="fa fa-facebook"></i></a></li>
-                                <li><a class="wow fadeInUp animated" href="https://plus.google.com/kimarotec"
-                                       data-wow-delay="0.3s"><i class="fa fa-google-plus"></i></a></li>
-                                <li><a class="wow fadeInUp animated" href="https://instagram.com/kimarotec"
-                                       data-wow-delay="0.4s"><i class="fa fa-instagram"></i></a></li>
-                                <li><a class="wow fadeInUp animated" href="https://instagram.com/kimarotec"
-                                       data-wow-delay="0.6s"><i class="fa fa-dribbble"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
+-->
             </div>
         </div>
     </div>
-
+<!--
     <div class="footer-copy text-center">
         <div class="container">
             <div class="row">
@@ -384,7 +346,7 @@
             </div>
         </div>
     </div>
-
+-->
 </div>
 
 

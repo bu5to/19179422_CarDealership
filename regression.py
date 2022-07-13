@@ -22,8 +22,10 @@ def carsModel():
     y = df['log_price']
     X = df.loc[:, df.columns != 'log_price']
     regr = LinearRegression()
-    regr.fit(X, y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+    regr.fit(X_train, y_train)
     return regr
+
 
 def parseAttributesToLabels(make, model, body, fuel, exterior_color, transmission):
     data = pd.read_csv("carsWithLabels.csv", sep=';')
