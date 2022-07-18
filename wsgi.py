@@ -6,6 +6,7 @@ from models import User, Car, Model
 from regression import carsModel, parseAttributesToLabels
 from werkzeug.security import generate_password_hash
 import numpy as np
+import pgeocode
 import base64
 import os
 import pymongo
@@ -51,7 +52,7 @@ def load_user(user_id):
             return None
 
 
-@app.route('/photo/<int:user_id>')
+@app.route('/photo/<user_id>')
 def photo(user_id):
     user = User.get_user(str(user_id))
     b64_string = user.profilePic
@@ -143,10 +144,10 @@ def register():
     if request.method == "POST":
         if request.files["file"].filename != '':
             photoFile = request.files.get('file')
-            photo = base64.b64encode(photoFile.read())
+            photo = str(base64.b64encode(photoFile.read()).decode())
         else:
             photoFile = open('static/assets/img/testuser.jpg', 'rb')
-            photo = base64.b64encode(photoFile.read())
+            photo = str(base64.b64encode(photoFile.read()).decode())
         new_user = User(request.form["username"], request.form["name"], request.form["email"],
                         request.form["password"], request.form["role"], request.form["address"],
                         photo, request.form["phone"])
@@ -204,8 +205,8 @@ def listmycar():
     types = Car.getDistinctTypes()
     transmissions = Car.getDistinctTransmissions()
     if request.method == "POST":  # Option to include asynchronous developing to predict the cars prices?
-     #   photoFile = request.files.get['file']
-     #   photo = base64.b64encode(photoFile.read())
+        photoFile = request.files.get('file')
+        photo = str(base64.b64encode(photoFile.read()).decode())
         heading = request.form['heading']
         price = request.form['price']
         description = request.form['description']
@@ -237,7 +238,7 @@ def listmycar():
                        "transmission": transmission,
                        "doors": doors,
                        "exterior_color": color,
-                    #   "photo_url": photo,
+                       "photo_url": photo,
                        "insurance_group": insuranceGroup,
                        "engine_size": engine_size,
                        "co2_emission": emissions,
