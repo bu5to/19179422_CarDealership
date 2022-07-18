@@ -69,6 +69,21 @@ def carpic(carId):
     image_64_decode = base64.b64decode(b64_string)
     return Response(image_64_decode, mimetype='image/jpg')
 
+@app.route('/delete/<int:carId>')
+@login_required
+def delete(carId):
+    car = Car.getCarById(carId)
+    if car.user_id == current_user.id:
+        session = Session()
+        query = session.query(Car)
+        query = query.filter(Car.id == car.id).first()
+        session.delete(query)
+        session.commit()
+        session.close()
+    else:
+        return redirect("login")
+    return redirect("mycars")
+
 @app.route('/viewcar/<int:carId>')
 def viewcar(carId):
     car = Car.getCarById(carId)  # 4975facbbce511b65e14f44719340029-cf161184-91fc #Funciona con int, no con string
@@ -281,7 +296,10 @@ def listmycar():
 def mycars():
     carsDicts = Car.getCarsByAttribute("user", current_user.id)
     cars = Car.parseDictToCars(carsDicts)
-    return render_template("submit-property.html", cars=cars)
+    for car in cars:
+        if len(car.description) > 250:
+            car.description = car.description[0:250] + "..."
+    return render_template("user-properties.html", cars=cars)
 
 
 @app.route('/logout')
