@@ -208,7 +208,7 @@ def listmycar():
         photoFile = request.files.get('file')
         photo = str(base64.b64encode(photoFile.read()).decode())
         heading = request.form['heading']
-        price = request.form['price']
+        price = str(request.form['price'])
         description = request.form['description']
         make = request.form['make']
         if request.form['model'] != "Other":
@@ -217,15 +217,19 @@ def listmycar():
             model = request.form["otherModel"]  # Yet to be implemented through JQuery
         body_type = request.form['bodyType']
         fuel_type = request.form['fuelType']
-        year = request.form['year']
+        year = int(request.form['year'])
         transmission = request.form['transmission']
-        doors = request.form['doors']
+        doors = int(request.form['doors'])
         color = request.form['color']
         engine_size = request.form['engineSize']
-        insuranceGroup = request.form['insuranceGroup']
-        emissions = request.form['emissions']
-        mileage = request.form['mileage']
+        insuranceGroup = int(request.form['insuranceGroup'])
+        emissions = int(request.form['emissions'])
+        mileage = int(request.form['mileage'])
         user_id = current_user.id
+        tempAddr = current_user.address.split(" ")
+        postcode = tempAddr[-2] + " " + tempAddr[-1]
+        nomi = pgeocode.Nominatim('gb')
+        city = nomi.query_postal_code(postcode)
         if request.form['submit'] == "Finish":
             dictCar = {"heading": heading,
                        "price": price,
@@ -240,6 +244,7 @@ def listmycar():
                        "exterior_color": color,
                        "photo_url": photo,
                        "insurance_group": insuranceGroup,
+                       "city": city,
                        "engine_size": engine_size,
                        "co2_emission": emissions,
                        "features": description,

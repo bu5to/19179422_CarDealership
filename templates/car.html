@@ -34,7 +34,11 @@
 
                             <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
                                 <li data-thumb="assets/img/property-1/property1.jpg">
-                                    <img src="{{car.images}}"/>
+                                    {% if car.images.startswith('http') %}
+                                    <a href="{{ url_for('viewcar', carId=car.id) }}"><img src="{{ car.images }}"></a>
+                                    {% else %}
+                                    <a href="{{ url_for('viewcar', carId=car.id) }}"><img src="{{ url_for('carpic', carId=car.id) }}"></a>
+                                    {% endif %}
                                 </li>
                             </ul>
                         </div>
