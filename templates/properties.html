@@ -1,6 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
+<script>
+    function list() {
+ var element = document.getElementById('list-type');
+ element.classList.remove('proerty-th');
+element.classList.add('proerty-th-list');
+}
 
+
+</script>
+<script>
+    function grid() {
+ var element = document.getElementById('list-type');
+ element.classList.remove('proerty-th-list');
+element.classList.add('proerty-th');
+}
+
+
+</script>
 
 <!-- property area -->
 <div class="properties-area recent-property" style="background-color: #FFF;">
@@ -18,7 +35,8 @@
                                 <fieldset>
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <input type="text" class="form-control" placeholder="Key word" name="keyword">
+                                            <input type="text" class="form-control" placeholder="Key word"
+                                                   name="keyword">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -48,7 +66,9 @@
                                                     title="Model" name="model">
                                                 <option id="selectmodel" value="">Model</option>
                                                 {% for model in models %}
-                                                <option value="{{model.model}}" class="{{model.make}}" style="display:none;">{{ model.model }}</option>
+                                                <option value="{{model.model}}" class="{{model.make}}"
+                                                        style="display:none;">{{ model.model }}
+                                                </option>
                                                 {% endfor %}
 
                                             </select>
@@ -60,11 +80,13 @@
                                     <div class="row">
                                         <div class="col-xs-6">
                                             <label for="minprice">Minimum price</label>
-                                            <input type="number" class="form-control" value="{{ranges[2]}}" id="minprice" name="minPrice">
+                                            <input type="number" class="form-control" value="{{ranges[2]}}"
+                                                   id="minprice" name="minPrice">
                                         </div>
                                         <div class="col-xs-6">
                                             <label for="maxprice">Maximum price</label>
-                                            <input type="number" class="form-control" value="{{ranges[3]}}" id="maxprice" name="maxPrice">
+                                            <input type="number" class="form-control" value="{{ranges[3]}}"
+                                                   id="maxprice" name="maxPrice">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -72,11 +94,13 @@
                                     <div class="row">
                                         <div class="col-xs-6">
                                             <label for="minYear">From (year)</label>
-                                            <input type="number" class="form-control" value="{{ranges[0]}}" id="minYear" name="minYear">
+                                            <input type="number" class="form-control" value="{{ranges[0]}}" id="minYear"
+                                                   name="minYear">
                                         </div>
                                         <div class="col-xs-6">
                                             <label for="maxYear">To (year)</label>
-                                            <input type="number" class="form-control" value="{{ranges[1]}}" id="maxYear" name="maxYear">
+                                            <input type="number" class="form-control" value="{{ranges[1]}}" id="maxYear"
+                                                   name="maxYear">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -121,23 +145,23 @@
                                         </select>
                                     </div>
                                 </fieldset>
-<!--
-                                <fieldset class="padding-5">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <div class="checkbox">
-                                                <label> <input type="checkbox" checked> Fire Place</label>
-                                            </div>
-                                        </div>
+                                <!--
+                                                                <fieldset class="padding-5">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <div class="checkbox">
+                                                                                <label> <input type="checkbox" checked> Fire Place</label>
+                                                                            </div>
+                                                                        </div>
 
-                                        <div class="col-xs-6">
-                                            <div class="checkbox">
-                                                <label> <input type="checkbox"> Dual Sinks</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                                -->
+                                                                        <div class="col-xs-6">
+                                                                            <div class="checkbox">
+                                                                                <label> <input type="checkbox"> Dual Sinks</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </fieldset>
+                                                                -->
 
                                 <fieldset>
                                     <div class="row">
@@ -251,15 +275,30 @@
                             </div><!--/ .sel-->
                         </div><!--/ .items-per-page-->
                     </div>
+                    <script>
+    document.addEventListener('click', function handleClick(event) {
+  event.target.classList.add(
+    'bg-yellow',
+    'second-class',
+    'third-class'
+  );
 
+  event.target.classList.remove(
+    'second-class',
+    'third-class'
+  );
+});
+
+
+                    </script>
                     <div class="col-xs-2 layout-switcher">
-                        <a class="layout-list" href="javascript:void(0);"> <i class="fa fa-th-list"></i> </a>
-                        <a class="layout-grid active" href="javascript:void(0);"> <i class="fa fa-th"></i> </a>
+                        <a class="layout-list" href="javascript:list();"> <i class="fa fa-th-list"></i> </a>
+                        <a class="layout-grid" href="javascript:grid();"> <i class="fa fa-th"></i> </a>
                     </div><!--/ .layout-switcher-->
                 </div>
 
                 <div class="col-md-12 clear">
-                    <div id="list-type" class="proerty-th">
+                    <div id="list-type" class="proerty-th-list">
                         {% for car in cars %}
                         <div class="col-sm-6 col-md-4 p0">
                             <div class="box-two proerty-item">
@@ -267,7 +306,8 @@
                                     {% if car.images.startswith('http') %}
                                     <a href="{{ url_for('viewcar', carId=car.id) }}"><img src="{{ car.images }}"></a>
                                     {% else %}
-                                    <a href="{{ url_for('viewcar', carId=car.id) }}"><img src="{{ url_for('carpic', carId=car.id) }}"></a>
+                                    <a href="{{ url_for('viewcar', carId=car.id) }}"><img
+                                            src="{{ url_for('carpic', carId=car.id) }}"></a>
                                     {% endif %}
                                 </div>
 
