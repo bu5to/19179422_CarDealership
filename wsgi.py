@@ -69,6 +69,7 @@ def carpic(carId):
     image_64_decode = base64.b64decode(b64_string)
     return Response(image_64_decode, mimetype='image/jpg')
 
+
 @app.route('/delete/<int:carId>')
 @login_required
 def delete(carId):
@@ -83,6 +84,66 @@ def delete(carId):
     else:
         return redirect("login")
     return redirect("mycars")
+
+
+@app.route('/edit/<int:carId>', methods=["GET", "POST"])
+@login_required
+def edit(carId):
+    car = Car.getCarById(carId)
+    modelslist, makeslist = Model.getDistinctModels()
+    fuels = Car.getDistinctFuels()
+    types = Car.getDistinctTypes()
+    transmissions = Car.getDistinctTransmissions()
+    if request.method == "POST":
+        photoFile = request.files.get('file')
+        if photoFile.filename != "":
+            photo = str(base64.b64encode(photoFile.read()).decode())
+        else:
+            photo = car.images
+
+        heading = request.form['heading']
+        price = int(request.form['price'])
+        description = request.form['description']
+        make = request.form['make']
+        if request.form['model'] != "Other":
+            model = request.form["model"]
+        else:
+            model = request.form["otherModel"]  # Yet to be implemented through JQuery
+        body_type = request.form['bodyType']
+        fuel_type = request.form['fuelType']
+        year = int(request.form['year'])
+        transmission = request.form['transmission']
+        doors = int(request.form['doors'])
+        color = request.form['color']
+        engine_size = request.form['engineSize']
+        insuranceGroup = int(request.form['insuranceGroup'])
+        emissions = int(request.form['emissions'])
+        mileage = int(request.form['mileage'])
+        filter = {'id': carId}
+        newvalues = {"$set": {'heading': heading,
+                              'price': price,
+                              'miles': mileage,
+                              'year': year,
+                              'make': make,
+                              'model': model,
+                              'body_type': body_type,
+                              'fuel_type': fuel_type,
+                              'transmission': transmission,
+                              'exterior_color': color,
+                              'doors': doors,
+                              'photo_url': photo,
+                              'features': description,
+                              'engine_size': engine_size,
+                              'insurance_group': insuranceGroup,
+                              'emissions': emissions
+                              }}
+        myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
+        mydb = myclient["myapp"]
+        mycol = mydb["cars"]
+        mycol.update_one(filter, newvalues)
+    return render_template("edit-property.html", car=car, makes=makeslist, models=modelslist, fuels=fuels, types=types,
+                           transmissions=transmissions)
+
 
 @app.route('/viewcar/<int:carId>')
 def viewcar(carId):
@@ -102,14 +163,15 @@ def carsearch():
     modelslist, makeslist = Model.getDistinctModels()
     fuels = Car.getDistinctFuels()
     types = Car.getDistinctTypes()
+    transmissions = Car.getDistinctTransmissions()
     ranges = Car.getPriceAndYearRange()
     if 'user_id' in request.form:
         carsDicts = Car.getCarsByAttribute("user", request.form['user_id'])
         cars = Car.parseDictToCars(carsDicts)
     if request.method == "POST" and 'user_id' not in request.form:
         print(request.form)
-        #pricerange = request.form["pricerange"].split(",")
-        #yearrange = request.form["yearrange"].split(",")
+        # pricerange = request.form["pricerange"].split(",")
+        # yearrange = request.form["yearrange"].split(",")
         pricerange = [request.form["minPrice"], request.form["maxPrice"]]
         yearrange = [request.form["minYear"], request.form["maxYear"]]
 
@@ -151,7 +213,7 @@ def carsearch():
         if len(car.description) > 250:
             car.description = car.description[0:250] + "..."
     return render_template('properties.html', cars=cars, makes=makeslist, models=modelslist, fuels=fuels,
-                           types=types, ranges=ranges)
+                           types=types, ranges=ranges, transmissions=transmissions)
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -173,6 +235,7 @@ def register():
         session.close()
         return redirect(url_for('login'))
     return render_template('register.html')
+
 
 @app.route('/settings', methods=["GET", "POST"])
 def settings():
@@ -223,13 +286,10 @@ def listmycar():
         photoFile = request.files.get('file')
         photo = str(base64.b64encode(photoFile.read()).decode())
         heading = request.form['heading']
-        price = str(request.form['price'])
+        price = int(request.form['price'])
         description = request.form['description']
         make = request.form['make']
-        if request.form['model'] != "Other":
-            model = request.form["model"]
-        else:
-            model = request.form["otherModel"]  # Yet to be implemented through JQuery
+        model = request.form["model"]
         body_type = request.form['bodyType']
         fuel_type = request.form['fuelType']
         year = int(request.form['year'])
