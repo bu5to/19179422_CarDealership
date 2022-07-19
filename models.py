@@ -163,6 +163,9 @@ class Car:
     def getAllCars():
         carsDicts = Car.getAllCardicts()
         carslist = Car.parseDictToCars(carsDicts)
+        for car in carslist:
+            if "w1024h768" in car.images:
+                car.images = car.images.replace("w1024h768", "w400h300")
         return carslist
 
 

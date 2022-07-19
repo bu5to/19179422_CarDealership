@@ -1,4 +1,5 @@
 import pytest
+import base64
 import pymongo
 import time
 import random
@@ -46,6 +47,56 @@ def test_register(client):
     session.close()
     assert (end - start < 3 and response.status_code == 200)
 
+
+def test_login(client):
+    '''
+    QR-PE-02: Logging in
+    The logging-in process should not take longer than 2 seconds.
+    :param client:
+    :return:
+    '''
+    username = random.randint(1000000000, 9999999999)
+    password = random.randint(100000, 999999)
+
+    response = client.post("/register", data={
+        "username": username,
+        "name": "Sample user",
+        "email": "sampleuser@gmail.com",
+        "file": open('static/assets/img/testuser.jpg', 'rb'),
+        "password": password,
+        "role": "Dealership",
+        "phone": 34600000000,
+        "address": "Headington Rd, Headington, Oxford OX3 0BP, United Kingdom",
+    }, follow_redirects = True)
+    start = time.time()
+    response = client.post("/login", data={
+        "username": username,
+        "password": password
+    }, follow_redirects=True)
+    end = time.time()
+    session = Session()
+    query = session.query(User)
+    query = query.filter(User.email == "sampleuser@gmail.com").first()
+    session.delete(query)
+    session.commit()
+    session.close()
+    assert (end - start < 2 and response.status_code == 200)
+
+
+def test_image_encoding():
+    '''
+    QR-PE-03: Image encoding
+    The application will not be provided with a file system to store the cars’ images.
+    Alternatively, the submitted files will be converted to a Base64 string.
+    This conversion process should not take more than 2 seconds.
+    :param client:
+    :return:
+    '''
+    start = time.time()
+    with open("static/assets/img/testuser.jpg", "rb") as image_file:
+        encodedImg = base64.b64encode(image_file.read())
+    end = time.time()
+    assert (end - start < 2 and encodedImg != "")
 
 def test_image_decoding(client):
     '''
