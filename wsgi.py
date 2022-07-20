@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, Response, session
+from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
 from base import Session, engine, Base
@@ -13,11 +14,12 @@ import pymongo
 import random
 import string
 
+compress = Compress()
 
 def create_app():
     '''
     This method creates the application and sets up some environment variables that will need to be accessed
-    later.
+    later. Moreover, the application will compress its contents in Gzip.
     :return: The created application.
     '''
     app = Flask(__name__)
@@ -26,6 +28,9 @@ def create_app():
         "DATABASE_URL"] = "postgres://irfthlqtvpqjek:35496e5703ba65a8c9fe2a2075e9d4395a7aa6e29ccc710c8f3966ea4eea7ba5@ec2-99-81-16-126.eu-west-1.compute.amazonaws.com:5432/d6iso2pc6h1bkj"
     app.config["MONGO_CLIENT"] = "mongodb://localhost:27017"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    compress.init_app(app)
+    app.config["COMPRESS_REGISTER"] = False
+    app.config["COMPRESS_ALGORITHM"] = 'gzip'
     return app
 
 
@@ -146,6 +151,7 @@ def edit(carId):
 
 
 @app.route('/viewcar/<int:carId>')
+@compress.compressed()
 def viewcar(carId):
     car = Car.getCarById(carId)  # 4975facbbce511b65e14f44719340029-cf161184-91fc #Funciona con int, no con string
     seller = User.get_user(car.user_id)
@@ -158,6 +164,7 @@ def viewcar(carId):
 
 
 @app.route('/', methods=["GET", "POST"])
+@compress.compressed()
 def carsearch():
     cars = Car.getAllCars()
     modelslist, makeslist = Model.getDistinctModels()
@@ -210,8 +217,8 @@ def carsearch():
     # print(intersection)
 
     for car in cars:
-        if len(car.description) > 250:
-            car.description = car.description[0:250] + "..."
+        if len(car.description) > 140:
+            car.description = car.description[0:140] + "..."
     return render_template('properties.html', cars=cars, makes=makeslist, models=modelslist, fuels=fuels,
                            types=types, ranges=ranges, transmissions=transmissions)
 
@@ -357,8 +364,8 @@ def mycars():
     carsDicts = Car.getCarsByAttribute("user", current_user.id)
     cars = Car.parseDictToCars(carsDicts)
     for car in cars:
-        if len(car.description) > 250:
-            car.description = car.description[0:250] + "..."
+        if len(car.description) > 140:
+            car.description = car.description[0:140] + "..."
     return render_template("user-properties.html", cars=cars)
 
 

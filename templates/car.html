@@ -271,7 +271,7 @@
                                         <a href="{{url_for('viewcar', carId = car.id)}}"><img src="{{car.images}}"></a>
                                     </div>
                                     <div class="col-md-8 col-sm-8 col-xs-8 blg-entry">
-                                        <h6><a href="single.html">{{car.heading}}</a></h6>
+                                        <h6><a href="{{url_for('viewcar', carId = car.id)}}">{{car.heading}}</a></h6>
                                         <span class="property-price">£ {{car.price}}</span>
                                     </div>
                                 </li>

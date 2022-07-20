@@ -1,0 +1,25 @@
+{
+  "name": "PredictingCars",
+  "short_name": "PredictingCars",
+  "icons": [{
+    "src": "/static/assets/icon/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png",
+	  "purpose": "any maskable"
+    }, {
+    "src": "/static/assets/icon/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+	  "purpose": "any maskable"
+    },{
+      "src": "/static/assets/icon/favicon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+	  "purpose": "any maskable"
+    }],
+  "scope": "/",
+  "start_url": "http://127.0.0.1:5000/",
+  "display": "standalone",
+  "background_color": "white",
+  "theme_color": "#FFD434"
+}

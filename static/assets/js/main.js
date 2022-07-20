@@ -2,16 +2,13 @@ $(window).load(function () { // makes sure the whole site is loaded
     $('#status').fadeOut(); // will first fade out the loading animation
     $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
     $('body').delay(350).css({'overflow': 'visible'});
-})
+});
 $(document).ready(function () {
-
-    
     $('input').iCheck({
         checkboxClass: 'icheckbox_square-yellow',
         radioClass: 'iradio_square-yellow',
         increaseArea: '20%' // optional
     });
-
 
     $('.layout-grid').on('click', function () {
         $('.layout-grid').addClass('active');
@@ -33,6 +30,7 @@ $(document).ready(function () {
 
 });
 $(document).ready(function () {
+
     $("#bg-slider").owlCarousel({
         navigation: false, // Show next and prev buttons
         slideSpeed: 100,
@@ -122,6 +120,5 @@ $(document).ready(function () {
 
 })
 
-// Initializing WOW.JS
 
 new WOW().init();
