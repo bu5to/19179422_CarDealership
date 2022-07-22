@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-head">
+    <div class="container">
+        <div class="row">
+            <div class="page-head-content">
+                <h1 class="page-title">Log in </h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End page header -->
+
+
+<!-- register-area -->
+<div class="register-area" style="background-color: rgb(249, 249, 249);">
+    <div class="container">
+        <script>
+        function copyKey() {
+            var copy = document.getElementById("pyotpKey");
+            copy.select();
+            document.execCommand("copy");
+        }
+
+
+        </script>
+        <div class="col-md-6">
+            <div class="box-for overflow">
+                <div class="col-md-12 col-xs-12 login-blocks">
+                    <h2>Two-factor authentication </h2>
+                    <h4>Steps</h4>
+                    <ol>
+                        <li>
+                            Download Google Authenticator from <a
+                                href="https://support.google.com/accounts/answer/1066447?hl=en&ref_topic=2954345">here</a>.
+                        </li>
+                        <li>
+                            Add a new account by clicking "Enter a setup key".
+                        </li>
+                        <li>
+                            Introduce the token listed below along with your name.
+                        </li>
+                        <li>
+                            Copy the code obtained and paste it below, in "Generated OTP".
+                        </li>
+                    </ol>
+
+                    <form action="{{url_for('login2fa')}}" method="post">
+                        <div class="form-group">
+                            <label for="pyotpKey">Secret token</label>
+                            <input type="text" class="form-control" id="pyotpKey" name="pyotpKey" value="{{pyotpKey}}"
+                                   readonly>
+                        </div>
+                        <div class="text-center">
+                            <p id="copyKey" onclick="copyKey()"> Click <a>here</a> to copy your secret key.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="otp">Generated OTP</label>
+                            <input type="text" class="form-control" id="otp" name="otp">
+                        </div>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        <ul class=flashes>
+                            {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        {% endwith %}
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-default"> Log in</button>
+                        </div>
+                    </form>
+                    <br>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

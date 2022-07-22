@@ -34,7 +34,6 @@ class User(Base, UserMixin):
         session_users = Session()
         users = session_users.query(User)
         users = users.all()
-        print(users)
         return users
 
     def set_password(self, password):

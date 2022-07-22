@@ -8,6 +8,7 @@ from regression import carsModel, parseAttributesToLabels
 from werkzeug.security import generate_password_hash
 import numpy as np
 import pgeocode
+import pyotp
 import base64
 import os
 import pymongo
@@ -15,6 +16,7 @@ import random
 import string
 
 compress = Compress()
+
 
 def create_app():
     '''
@@ -176,7 +178,6 @@ def carsearch():
         carsDicts = Car.getCarsByAttribute("user", request.form['user_id'])
         cars = Car.parseDictToCars(carsDicts)
     if request.method == "POST" and 'user_id' not in request.form:
-        print(request.form)
         # pricerange = request.form["pricerange"].split(",")
         # yearrange = request.form["yearrange"].split(",")
         pricerange = [request.form["minPrice"], request.form["maxPrice"]]
@@ -275,11 +276,31 @@ def login():
     if request.method == "POST":
         user = User.get_user(request.form['username'])
         if user is not None and user.check_password(request.form['password']):
-            login_user(user)
-            return redirect(url_for('carsearch'))
+            session['username'] = request.form['username']
+            print(session['username'])
+            return redirect(url_for('login2fa'))
         else:
             flash(u'Invalid username or password.', 'error')
     return render_template('login.html')
+
+
+@app.route('/login2fa', methods=["GET", "POST"])
+def login2fa():
+    print(request.method)
+    if request.method == "POST":
+        pyotpKey = request.form.get("pyotpKey")
+        otp = int(request.form.get("otp"))
+        print(pyotpKey)
+        print(otp)
+        if pyotp.TOTP(pyotpKey).verify(otp):
+            user = User.get_user(session['username'])
+            login_user(user)
+            return redirect(url_for('carsearch'))
+        else:
+            flash("You have supplied an invalid 2FA token!", "error")
+            return render_template("2fa.html", pyotpKey=pyotpKey)
+    pyotpKey = pyotp.random_base32()
+    return render_template("2fa.html", pyotpKey=pyotpKey)
 
 
 @app.route('/listmycar', methods=["GET", "POST"])
@@ -337,7 +358,6 @@ def listmycar():
             mycol = mydb["cars"]
             mycol.insert_one(dictCar)
         if request.form['submit'] == "Predict":
-            print("aqui llega")
             makeLabel, modelLabel, bodyLabel, fuelLabel, colorLabel, transLabel = parseAttributesToLabels(make, model,
                                                                                                           body_type,
                                                                                                           fuel_type,
@@ -348,7 +368,6 @@ def listmycar():
                  modelLabel, colorLabel,
                  fuelLabel,
                  transLabel, bodyLabel]
-            print(X)
             regr = carsModel()
             prediction = regr.predict([X])
             predPrice = np.exp(prediction)
