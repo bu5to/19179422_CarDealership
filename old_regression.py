@@ -7,8 +7,13 @@ import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.api as sm
-matplotlib.style.use('ggplot')
+from sklearn.metrics import mean_squared_error
+import scipy.stats
+from sklearn.svm import SVR
+from sklearn.preprocessing import StandardScaler
 
+
+matplotlib.style.use('ggplot')
 
 lbl_encode = LabelEncoder()
 
@@ -64,7 +69,7 @@ ax2.set_title('After feature Scaling')
 sns.kdeplot(scaled_df['price'], ax=ax2)
 # sns.kdeplot(scaled_df['make_label'], ax=ax2)
 # sns.kdeplot(scaled_df['insurance_group'], ax=ax2)
-#plt.show()
+# plt.show()
 
 # X = df.iloc[:,:-1].values
 # y = df.iloc[:,0].values
@@ -84,7 +89,7 @@ regressor = LinearRegression()
 regressor.fit(X_train, y_train)  # predicting the test set results
 y_pred = regressor.predict(X_test)
 regressor_OLS = sm.OLS(endog=y_train, exog=X_train).fit()
-#regressor_OLS.summary()
+# regressor_OLS.summary()
 
 # Splitting the data to train/test with MLR
 df['log_price'] = np.log(df['price'])
@@ -116,7 +121,7 @@ predPrice = regr.predict([[26168, 2011, 1.2, 24, 53, 4, 121, 2, 1, 9]])
 predPrice = regr.predict([[86107, 2010, 1.4, 28, 43, 4, 129, 2, 1, 6]])
 predPrice = regr.predict([[66488, 2012, 3, 4, 63, 5, 177, 2, 1, 19]])
 
-#A way to predict the price from the front-end considering these parameters must be made.
+# A way to predict the price from the front-end considering these parameters must be made.
 
 # Applying log transformation
 data = df['price']
@@ -141,6 +146,7 @@ axs[2].set_title('Square root Transformed Data')
 sc_X = StandardScaler()
 df_train = sc_X.fit_transform(df_train)
 df_test = sc_X.transform(df_test)
+
 
 def carsModel():
     df = pd.read_csv("carsWithLabels.csv", sep=';')
@@ -172,6 +178,7 @@ def carsModel():
     regr.fit(X, y)
     return regr
 
+
 def parseAttributesToLabels(model, make, body, fuel, exterior_color, transmission):
     data = pd.read_csv("carsWithLabels.csv", sep=';')
     modelMapping = dict(zip(data['model'], data['model_label']))
@@ -187,3 +194,101 @@ def parseAttributesToLabels(model, make, body, fuel, exterior_color, transmissio
     colorLabel = colorMapping[exterior_color]
     transLabel = transMapping[transmission]
     return modelLabel, makeLabel, bodyLabel, fuelLabel, colorLabel, transLabel
+
+
+########################### AFTER PRESENTATION ####################################
+df = pd.read_csv("carsWithLabels.csv", sep=';')
+df = df.drop(columns="make")
+df = df.drop(columns="model")
+df = df.drop(columns="exterior_color")
+df = df.drop(columns="fuel_type")
+df = df.drop(columns="transmission")
+df = df.drop(columns="body_type")
+df['log_price'] = np.log(df['price'])
+df = df.drop(columns="price")
+y = df['log_price']
+X = df.loc[:, df.columns != 'log_price']
+regr = LinearRegression()
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+regr = regr.fit(X_train, y_train)
+regressor_OLS = sm.OLS(endog=y_train, exog=X_train).fit()
+regressor_OLS.summary()
+
+
+
+#Getting real and predicted prices
+
+
+regressor_SVR_rbf = SVR(kernel='rbf')
+regressor_SVR_rbf = regressor_SVR_rbf.fit(X_train,y_train)
+
+regressor_SVR_linear = SVR(kernel='linear')
+regressor_SVR_linear = regressor_SVR_linear.fit(X_train,y_train)
+
+regressor_SVR_poly = SVR(kernel='poly')
+regressor_SVR_poly = regressor_SVR_poly.fit(X_train,y_train)
+
+def getPredictedValues(df, regr):
+    predictedValues = []
+    for index, row in df.iterrows():
+        x = [row["miles"], row["year"], row["doors"], row["insurance_group"],
+                 row["engine_size"], row["co2_emission"], row["make_label"], row["model_label"],
+                 row["exterior_color_label"], row["fuel_type_label"], row["transmission_label"],
+                 row["body_type_label"]]
+        prediction = regr.predict([x])
+        predictedValues.append(prediction)
+   # for i in range(len(df)):
+    #    if i != 0:
+     #       x = [df.loc[i, "miles"], df.loc[i, "year"], df.loc[i, "doors"], df.loc[i, "insurance_group"],
+      #           df.loc[i, "engine_size"], df.loc[i, "co2_emission"], df.loc[i, "make_label"], df.loc[i, "model_label"],
+       #          df.loc[i, "exterior_color_label"], df.loc[i, "fuel_type_label"], df.loc[i, "transmission_label"],
+        #         df.loc[i, "body_type_label"]]
+         #   prediction = regr.predict([x])
+          #  predictedValues.append(prediction)
+    return predictedValues
+
+
+realPrices = y_test.to_numpy()
+predPrices = getPredictedValues(X_test, regr)
+predPricesSVR = getPredictedValues(X_test, regressor_SVR_rbf)
+predPricesSVRPoly = getPredictedValues(X_test, regressor_SVR_poly)
+predPricesSVRLinear = getPredictedValues(X_test, regressor_SVR_linear)
+
+predValues = []
+realValues = []
+predValuesSVR = []
+predValuesSVRPoly = []
+predValuesSVRLinear = []
+
+for x in predPrices:
+    predValues.append(x[0])
+for x in realPrices:
+    realValues.append(x)
+for x in predPricesSVR:
+    predValuesSVR.append(x[0])
+for x in predPricesSVRPoly:
+    predValuesSVRPoly.append(x[0])
+for x in predPricesSVRLinear:
+    predValuesSVRLinear.append(x[0])
+
+
+
+def mae(y_true, predictions):
+    y_true, predictions = np.array(y_true), np.array(predictions)
+    return np.mean(np.abs(y_true - predictions))
+
+A = np.identity(len(regressor_OLS.params))
+A = A[1:,:]
+print(regressor_OLS.f_test(A))
+
+mae_mlr = mae(realValues, predValues)
+mse_mlr = mean_squared_error(realValues, predValues)
+
+mae_svr = mae(realValues, predValuesSVR)
+mse_svr = mean_squared_error(realValues, predValuesSVR)
+
+mae_svr_poly = mae(realValues, predValuesSVRPoly)
+mse_svr_poly = mean_squared_error(realValues, predValuesSVRPoly)
+
+mae_svr_linear = mae(realValues, predValuesSVRLinear)
+mse_svr_linear = mean_squared_error(realValues, predValuesSVRLinear)
