@@ -2,7 +2,9 @@ import pytest
 import base64
 import pymongo
 import time
+import os
 import random
+from flask_login import login_user
 from base import Session
 from models import User
 from wsgi import app
@@ -11,6 +13,7 @@ from wsgi import app
 @pytest.fixture
 def client():
     app.secret_key = 'thisisasecretkey'
+    app.config["MONGO_CLIENT"] = "mongodb://localhost:27017"
     client = app.test_client()
     # with client.session_transaction(subdomain='blue') as session:
     #   session['user'] = 19179422
@@ -135,3 +138,71 @@ def test_custom_search(client):
     }, follow_redirects=True)
     end = time.time()
     assert (end - start < 5 and response.status_code == 200)
+
+
+def test_alterAd(client):
+    #QR-PE-07: Altering an advertisement: The process of changing certain information on an ad should not take longer than 2 seconds.
+    myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
+    mydb = myclient["myapp"]
+    mycol = mydb["cars"]
+    dictcar = {
+        "id": 1999999999,
+        "heading": "BMW 3 Series 2.0 318d M Sport 4dr",
+        "price": 2500,
+        "currency_indicator": "GBP",
+        "miles": 115950,
+        "miles_indicator": "KM",
+        "year": 2007,
+        "make": "BMW",
+        "model": "3 Series",
+        "body_type": "Saloon",
+        "fuel_type": "Diesel",
+        "transmission": "Manual",
+        "doors": 4,
+        "exterior_color": "Grey",
+        "seller_name": "Range Motor",
+        "street": "Whitton Road, Hounslow",
+        "city": "Hounslow",
+        "zip": "TW3 2EB",
+        "country": "UK",
+        "photo_url": "https://m.atcdn.co.uk/a/media/w1024h768/c7f181b534714dbb8a4521fc92466faa.jpg",
+        "insurance_group": "24E",
+        "engine_size": 2,
+        "co2_emission": 150,
+        "features": "Adjustable Steering Column/Wheel|Alloy Wheels (17in)|Air-Conditioning (Automatic)|Body Coloured Bumpers|Computer (Driver Information System)|Mirrors External (Electric Folding)|Cruise Control||Electric Windows (Front/Rear)||In Car Entertainment (Radio/CD)||Mirrors Internal||Seat Height Adjustment||Speakers||Steering Wheel Mounted Controls||Upholstery Cloth/Leather||Air Bag Driver|Air Bag Passenger|Air Bag Side|Central Door Locking|Centre Rear Seat Belt|Front Fog Lights|Head Air Bags|Head Restraints|Immobiliser|Parking Aid (Rear)|Power-Assisted Steering|Seat - ISOFIX Anchorage Point (Two Seats - Rear)|Traction Control System",
+        "photo_links": "https://m.atcdn.co.uk/a/media/w1024h768/c7f181b534714dbb8a4521fc92466faa.jpg",
+        "vdp_url": "https://www.rangemotor.co.uk/used-cars/bmw-3-series-2-0-318d-m-sport-4dr-hounslow-202104291983455",
+        "user_id": "19179422",
+        "tax": 145
+    }
+    mycol.insert_one(dictcar)
+    start = time.time()
+    response = client.post("/edit/1999999999", data={
+        "file": "",
+        "heading": "Petrol",
+        "price": 2222,
+        "description": "",
+        "make": "Make",
+        "model": "3 Series",
+        "bodyType": "Hatchback",
+        "fuelType": "Diesel",
+        "year": 2014,
+        "transmission": "Manual",
+        "doors": 3,
+        "tax": 3,
+        "engine_size": 3,
+        "insuranceGroup": 3,
+        "emissions": 3,
+        "mileage": 3
+
+    }, follow_redirects=True)
+    end = time.time()
+    assert end - start < 2 and response.status_code == 200
+
+
+def test_deleteAd(client):
+    #QR-PE-06: Deleting an advertisement: The process of deleting an ad should not take longer than 2 seconds.
+    start = time.time()
+    response = client.get("/delete/1999999999", follow_redirects=True)
+    end = time.time()
+    assert end - start < 2 and response.status_code == 200

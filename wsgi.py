@@ -84,15 +84,14 @@ def carpic(carId):
 def delete(carId):
     car = Car.getCarById(carId)
     if car.user_id == current_user.id:
-        session = Session()
-        query = session.query(Car)
-        query = query.filter(Car.id == car.id).first()
-        session.delete(query)
-        session.commit()
-        session.close()
+        myclient = pymongo.MongoClient(os.environ.get("MONGO_CLIENT"))
+        mydb = myclient["myapp"]
+        mycol = mydb["cars"]
+        myquery = {"id": int(carId)}
+        mycol.delete_many(myquery)
+        return redirect(url_for("mycars"))
     else:
-        return redirect("login")
-    return redirect("mycars")
+        return redirect(url_for("login"))
 
 
 @app.route('/edit/<int:carId>', methods=["GET", "POST"])
@@ -375,7 +374,6 @@ def listmycar():
 
     return render_template("submit-property.html", makes=makes, models=models, fuels=fuels, types=types,
                            transmissions=transmissions)
-
 
 @app.route('/mycars')
 @login_required
