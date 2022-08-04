@@ -10,13 +10,11 @@ import statsmodels.api as sm
 matplotlib.style.use('ggplot')
 
 def carsModel():
-    df = pd.read_csv("carsWithLabels.csv", sep=';')
+    df = pd.read_csv("resources/carsWithLabels.csv", sep=';')
     df = df.drop(columns="make")
     df = df.drop(columns="model")
-    df = df.drop(columns="exterior_color")
-    df = df.drop(columns="fuel_type")
+    df = df.drop(columns="fuelType")
     df = df.drop(columns="transmission")
-    df = df.drop(columns="body_type")
     df['log_price'] = np.log(df['price'])
     df = df.drop(columns="price")
     y = df['log_price']
@@ -27,19 +25,17 @@ def carsModel():
     return regr
 
 
-def parseAttributesToLabels(make, model, body, fuel, exterior_color, transmission):
-    data = pd.read_csv("carsWithLabels.csv", sep=';')
+def parseAttributesToLabels(make, model, fuel, transmission):
+    data = pd.read_csv("resources/carsWithLabels.csv", sep=';')
     makeMapping = dict(zip(data['make'], data['make_label']))
     modelMapping = dict(zip(data['model'], data['model_label']))
-    bodyMapping = dict(zip(data['body_type'], data['body_type_label']))
-    fuelMapping = dict(zip(data['fuel_type'], data['fuel_type_label']))
-    colorMapping = dict(zip(data['exterior_color'], data['exterior_color_label']))
+    fuelMapping = dict(zip(data['fuelType'], data['fuel_type_label']))
     transMapping = dict(zip(data['transmission'], data['transmission_label']))
     makeLabel = makeMapping[make]
+    print(makeLabel)
     modelLabel = modelMapping[model]
-    bodyLabel = bodyMapping[body]
+    print(modelLabel)
     fuelLabel = fuelMapping[fuel]
-    colorLabel = colorMapping[exterior_color]
     transLabel = transMapping[transmission]
-    return makeLabel, modelLabel, bodyLabel, fuelLabel, colorLabel, transLabel
+    return makeLabel, modelLabel, fuelLabel, transLabel
 

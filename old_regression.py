@@ -17,7 +17,7 @@ matplotlib.style.use('ggplot')
 
 lbl_encode = LabelEncoder()
 
-df = pd.read_csv("resources/cars_regression.csv", sep=';')
+df = pd.read_csv("resources/cars.csv", sep=';')
 # df[:,0] = labelencoder_X.fit_transform(df[:,0])
 df = df.drop(columns="photo_links")
 df = df.drop(columns="city")
@@ -35,17 +35,16 @@ df = df.drop(columns="miles_indicator")
 df = df.drop(columns="vdp_url")
 
 # df['log_price'] = np.log(df['price'])
-df['make_label'] = lbl_encode.fit_transform(df['make'])
+df['make_label'] = lbl_encode.fit_transform(df['brand'])
 # To count the make:  df['make'].value_counts() and  df['make_label'].value_counts()
 df['model_label'] = lbl_encode.fit_transform(df['model'])
-df['exterior_color_label'] = lbl_encode.fit_transform(df['exterior_color'])
-df['fuel_type_label'] = lbl_encode.fit_transform(df['fuel_type'])
+df['fuel_type_label'] = lbl_encode.fit_transform(df['fuelType'])
 df['transmission_label'] = lbl_encode.fit_transform(df['transmission'])
-df['body_type_label'] = lbl_encode.fit_transform(df['body_type'])
+df = df.dropna()
 
 df_backup = df  # Creating a backup DF to store the original values along with the labels
 # Use this only if testing in console
-df_backup.to_csv('carsWithLabels.csv', sep=';', index=False)
+df_backup.to_csv('resources/carsWithLabels.csv', sep=';', index=False)
 df = df.drop(columns="make")
 df = df.drop(columns="model")
 df = df.drop(columns="exterior_color")

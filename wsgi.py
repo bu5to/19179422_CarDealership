@@ -25,7 +25,9 @@ def create_app():
     :return: The created application.
     '''
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = ''.join(random.choice(string.ascii_letters) for i in range(64))
+    #app.config["SECRET_KEY"] = ''.join(random.choice(string.ascii_letters) for i in range(64))
+    app.config["SECRET_KEY"] = "constantsessionsecretkey"
+
     os.environ[
         "DATABASE_URL"] = "postgres://irfthlqtvpqjek:35496e5703ba65a8c9fe2a2075e9d4395a7aa6e29ccc710c8f3966ea4eea7ba5@ec2-99-81-16-126.eu-west-1.compute.amazonaws.com:5432/d6iso2pc6h1bkj"
     app.config["MONGO_CLIENT"] = "mongodb://localhost:27017"
@@ -121,7 +123,7 @@ def edit(carId):
         year = int(request.form['year'])
         transmission = request.form['transmission']
         doors = int(request.form['doors'])
-        color = request.form['color']
+        tax = request.form['tax']
         engine_size = request.form['engineSize']
         insuranceGroup = int(request.form['insuranceGroup'])
         emissions = int(request.form['emissions'])
@@ -136,7 +138,7 @@ def edit(carId):
                               'body_type': body_type,
                               'fuel_type': fuel_type,
                               'transmission': transmission,
-                              'exterior_color': color,
+                              'tax': tax,
                               'doors': doors,
                               'photo_url': photo,
                               'features': description,
@@ -323,7 +325,7 @@ def listmycar():
         year = int(request.form['year'])
         transmission = request.form['transmission']
         doors = int(request.form['doors'])
-        color = request.form['color']
+        tax = request.form['tax']
         engine_size = request.form['engineSize']
         insuranceGroup = int(request.form['insuranceGroup'])
         emissions = int(request.form['emissions'])
@@ -344,7 +346,7 @@ def listmycar():
                        "fuel_type": fuel_type,
                        "transmission": transmission,
                        "doors": doors,
-                       "exterior_color": color,
+                       "tax": tax,
                        "photo_url": photo,
                        "insurance_group": insuranceGroup,
                        "city": city,
@@ -358,16 +360,14 @@ def listmycar():
             mycol = mydb["cars"]
             mycol.insert_one(dictCar)
         if request.form['submit'] == "Predict":
-            makeLabel, modelLabel, bodyLabel, fuelLabel, colorLabel, transLabel = parseAttributesToLabels(make, model,
-                                                                                                          body_type,
+            makeLabel, modelLabel, fuelLabel, transLabel = parseAttributesToLabels(make, model,
                                                                                                           fuel_type,
-                                                                                                          color,
                                                                                                           transmission)
-            X = [int(mileage), int(year), int(doors), int(insuranceGroup), float(engine_size), int(emissions),
+            X = [int(year), int(mileage), int(tax), float(engine_size), float(emissions),
                  makeLabel,
-                 modelLabel, colorLabel,
+                 modelLabel,
                  fuelLabel,
-                 transLabel, bodyLabel]
+                 transLabel]
             regr = carsModel()
             prediction = regr.predict([X])
             predPrice = np.exp(prediction)

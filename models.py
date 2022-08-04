@@ -94,7 +94,7 @@ class Model:
 
 class Car:
     def __init__(self, id, make, model, heading, year, mileage, bodyType, fuel, transmission, description, engineSize,
-                 color, insuranceGroup, city, emissions, price, images, user_id):
+                 tax, insuranceGroup, city, emissions, price, images, user_id):
         self.id = id
         self.make = make
         self.model = model
@@ -106,7 +106,7 @@ class Car:
         self.transmission = transmission
         self.description = description
         self.engineSize = engineSize
-        self.color = color
+        self.tax = tax
         self.insuranceGroup = insuranceGroup
         self.city = city
         self.emissions = emissions
@@ -131,10 +131,10 @@ class Car:
         carslist = []
         for x in carsDict:
             keyPhoto = "photo_url" #Some cars are not provided with images
-            keyColor = "exterior_color"  # Some cars are not provided with images
-            if keyPhoto in x and keyColor in x:
+            tax = "tax"  # Some cars are not provided with images
+            if keyPhoto in x and tax in x:
                 car = Car(x['id'], x['make'], x['model'], x['heading'], x['year'], x['miles'],x['body_type'],x['fuel_type'],
-                          x['transmission'], x['features'], x['engine_size'], x['exterior_color'], x['insurance_group'],
+                          x['transmission'], x['features'], x['engine_size'], x['tax'], x['insurance_group'],
                            x['city'], x['co2_emission'], x['price'], x['photo_url'], x['user_id'])
                 carslist.append(car) #Provisional solution until dataset is fixed
         return carslist
@@ -207,7 +207,7 @@ class Car:
         print(cardict)
         car = Car(cardict['id'], cardict['make'], cardict['model'], cardict['heading'], cardict['year'],
                   cardict['miles'], cardict['body_type'], cardict['fuel_type'],
-                  cardict['transmission'], cardict['features'], cardict['engine_size'], cardict['exterior_color'],
+                  cardict['transmission'], cardict['features'], cardict['engine_size'], cardict['tax'],
                   cardict['insurance_group'],
                   cardict['city'], cardict['co2_emission'], cardict['price'], cardict['photo_url'], cardict['user_id'])
         return car
@@ -242,8 +242,8 @@ class Car:
             carsdicts = list(mycol.find({"price": {"$gte": value[0], "$lte": value[1]}}))
         if attr == "year":
             carsdicts = list(mycol.find({"year": {"$gte": value[0], "$lte": value[1]}}))
-        if attr == "exterior_color":
-            carsdicts = list(mycol.find({"exterior_color": value}))
+        if attr == "tax":
+            carsdicts = list(mycol.find({"tax": value}))
         if attr == "heading":
             carsdicts = list(mycol.find({"heading": {"$regex" : value}}))
         if attr == "description":
