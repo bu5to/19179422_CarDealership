@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, Response, session
+from flask import Flask, render_template, request, redirect, url_for, flash, Response, session, make_response, \
+    send_from_directory
 from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
@@ -25,7 +26,7 @@ def create_app():
     :return: The created application.
     '''
     app = Flask(__name__)
-    #app.config["SECRET_KEY"] = ''.join(random.choice(string.ascii_letters) for i in range(64))
+    # app.config["SECRET_KEY"] = ''.join(random.choice(string.ascii_letters) for i in range(64))
     app.config["SECRET_KEY"] = "constantsessionsecretkey"
 
     os.environ[
@@ -59,6 +60,13 @@ def load_user(user_id):
                 return user
         except:
             return None
+
+
+@app.route('/sw.js')
+def sw():
+    response = make_response(send_from_directory('static', filename='assets/sw.js'))
+    response.headers['Content-Type'] = 'application/javascript'
+    return response
 
 
 @app.route('/photo/<user_id>')
@@ -360,8 +368,8 @@ def listmycar():
             mycol.insert_one(dictCar)
         if request.form['submit'] == "Predict":
             makeLabel, modelLabel, fuelLabel, transLabel = parseAttributesToLabels(make, model,
-                                                                                                          fuel_type,
-                                                                                                          transmission)
+                                                                                   fuel_type,
+                                                                                   transmission)
             X = [int(year), int(mileage), int(tax), float(engine_size), float(emissions),
                  makeLabel,
                  modelLabel,
@@ -374,6 +382,7 @@ def listmycar():
 
     return render_template("submit-property.html", makes=makes, models=models, fuels=fuels, types=types,
                            transmissions=transmissions)
+
 
 @app.route('/mycars')
 @login_required

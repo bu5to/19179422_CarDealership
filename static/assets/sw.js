@@ -2,14 +2,7 @@ var cacheName = 'PredictingCars';
 var filesToCache = [
   './static/assets/css/style.css',
   './static/assets/css/responsive.css',
-  './static/assets/css/wizard.css',
-  './templates/base.html',
-  './templates/car.html',
-  './templates/properties.html',
-  './templates/submit-property.html',
-  './templates/account-settings.html',
-  './templates/login.html',
-  './templates/register.html'
+  './static/assets/css/wizard.css'
 ];
 
 self.addEventListener('install', function(e) {
