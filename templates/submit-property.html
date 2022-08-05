@@ -43,6 +43,10 @@
                                                         $('#basic option').hide();
                                                         $('#basic option[class="'+$(this).val()+'"]').show()
                                                      });
+
+
+
+
                             </script>
 
                             <div class="row p-b-15  ">
@@ -58,17 +62,28 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Car model and version <small>(required)</small></label>
+                                        {% if heading != None %}
+                                        <input name="heading" type="text" class="form-control"
+                                               placeholder="Eg: Volkswagen Polo 1.0 TSI" value="{{heading}}" required>
+                                        {% else %}
                                         <input name="heading" type="text" class="form-control"
                                                placeholder="Eg: Volkswagen Polo 1.0 TSI" required>
+                                        {% endif %}
                                     </div>
 
                                     <div class="form-group">
                                         <label>Car price <small>(required)</small></label>
+                                        {% if predPrice != None %}
+                                        <input name="price" type="number" step="1" class="form-control"
+                                               placeholder="Price (£)" value="{{predPrice}}"
+                                               required>
+                                        {% else %}
                                         <input name="price" type="number" step="1" class="form-control"
                                                placeholder="Price (£)"
                                                required>
+                                        {% endif %}
                                         <input type='submit' class='btn btn-primary ' name='submit' value='Predict'/>
-                                       <!-- <input type='button' class='btn btn-primary ' name='predict' value='Predict'/> -->
+                                        <!-- <input type='button' class='btn btn-primary ' name='predict' value='Predict'/> -->
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +94,11 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>Description:</label>
+                                            {% if description != None %}
+                                            <textarea name="description" class="form-control">{{description}}</textarea>
+                                            {% else %}
                                             <textarea name="description" class="form-control"></textarea>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -91,8 +110,11 @@
                                             <label>Car make:</label>
                                             <select id="lunchBegins" class="selectpicker" data-live-search="true"
                                                     data-live-search-style="begins" title="Make" name="make" required>
-                                                {% for make in makes %}
-                                                <option value="{{make}}">{{ make }}</option>
+                                                {% if make != None %}
+                                                <option value="{{make}}" selected>{{ make }}</option>
+                                                {% endif %}
+                                                {% for m in makes %}
+                                                <option value="{{m}}">{{ m }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
@@ -103,8 +125,12 @@
                                             <select id="basic" class="form-control" data-live-search="true"
                                                     title="Model" name="model">
                                                 <option id="selectmodel" value="">Model</option>
-                                                {% for model in models %}
-                                                <option value="{{model.model}}" class="{{model.make}}" style="display:none;">{{ model.model }}
+                                                {% if model != None %}
+                                                <option value="{{model}}" selected>{{ model }}</option>
+                                                {% endif %}
+                                                {% for m in models %}
+                                                <option value="{{m.model}}" class="{{m.make}}" style="display:none;">{{
+                                                    m.model }}
                                                 </option>
                                                 {% endfor %}
                                                 <option id="other" value="Other">Other</option>
@@ -116,6 +142,9 @@
                                             <label>Body type:</label>
                                             <select id="basic" class="selectpicker show-tick form-control"
                                                     name="bodyType">
+                                                {% if body != None %}
+                                                <option value="{{body}}" selected>{{ body }}</option>
+                                                {% endif %}
                                                 {% for type in types %}
                                                 <option value="{{type}}"> {{type}}</option>
                                                 {% endfor %}
@@ -127,6 +156,9 @@
                                             <label>Fuel type:</label>
                                             <select id="basic" class="selectpicker show-tick form-control"
                                                     name="fuelType">
+                                                {% if fueltype != None %}
+                                                <option value="{{fueltype}}" selected>{{ fueltype }}</option>
+                                                {% endif %}
                                                 {% for fuel in fuels %}
                                                 <option value="{{fuel}}"> {{fuel}}</option>
                                                 {% endfor %}
@@ -139,8 +171,13 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Year</label>
+                                            {% if year != None %}
+                                            <input name="year" type="text" class="form-control" placeholder="Year"
+                                                   value="{{year}}" required>
+                                            {% else %}
                                             <input name="year" type="text" class="form-control" placeholder="Year"
                                                    required>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -148,8 +185,11 @@
                                             <label>Transmission:</label>
                                             <select class="form-control" data-live-search="true"
                                                     title="Transmission" name="transmission">
-                                                {% for transmission in transmissions %}
-                                                <option value="{{transmission}}">{{ transmission }}</option>
+                                                {% if transmission != None %}
+                                                <option value="{{transmission}}" selected>{{ transmission }}</option>
+                                                {% endif %}
+                                                {% for t in transmissions %}
+                                                <option value="{{t}}">{{ t }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
@@ -159,6 +199,9 @@
                                             <label>Number of doors:</label>
                                             <select class="form-control" data-live-search="true"
                                                     title="doors" name="doors">
+                                                {% if doors != None %}
+                                                <option value="{{doors}}" selected>{{ doors }}</option>
+                                                {% endif %}
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -170,8 +213,13 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Tax</label>
+                                            {% if tax != None %}
+                                            <input name="tax" type="number" class="form-control" placeholder="Tax"
+                                                   value="{{tax}}" required>
+                                            {% else %}
                                             <input name="tax" type="number" class="form-control" placeholder="Tax"
                                                    required>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -180,33 +228,58 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Engine size (in litres)</label>
+                                            {% if engine_size != None %}
+                                            <input name="engineSize" type="number" step="0.1" class="form-control"
+                                                   placeholder="Engine size (L)" value="{{engine_size}}"
+                                                   required>
+                                            {% else %}
                                             <input name="engineSize" type="number" step="0.1" class="form-control"
                                                    placeholder="Engine size (L)"
                                                    required>
+                                            {% endif %}
+
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Insurance group</label>
+                                            {% if insuranceGroup != None %}
+                                            <input name="insuranceGroup" type="number" step="1" class="form-control"
+                                                   placeholder="Insurance group" value="{{insuranceGroup}}"
+                                                   required>
+                                            {% else %}
                                             <input name="insuranceGroup" type="number" step="1" class="form-control"
                                                    placeholder="Insurance group"
                                                    required>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>CO2 Emissions (in g/km)</label>
+                                            {% if emissions != None %}
+                                            <input name="emissions" type="number" step="1" class="form-control"
+                                                   placeholder="Emissions" value="{{emissions}}"
+                                                   required>
+                                            {% else %}
                                             <input name="emissions" type="number" step="1" class="form-control"
                                                    placeholder="Emissions"
                                                    required>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Mileage</label>
+                                            {% if mileage != None %}
+                                            <input name="mileage" type="number" step="1" class="form-control"
+                                                   placeholder="Miles" value="{{mileage}}"
+                                                   required>
+                                            {% else %}
                                             <input name="mileage" type="number" step="1" class="form-control"
                                                    placeholder="Miles"
                                                    required>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

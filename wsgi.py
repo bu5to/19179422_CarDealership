@@ -376,8 +376,15 @@ def listmycar():
                  transLabel]
             regr = carsModel()
             prediction = regr.predict([X])
-            predPrice = np.exp(prediction)
-            return str(predPrice)
+            expPrice = np.exp(prediction)
+            predPrice = expPrice.astype(int)[0]
+            return render_template("submit-property.html", makes=makes, models=models, heading=heading, fuels=fuels,
+                                   types=types, year=year,
+                                   transmissions=transmissions, make=make, model=model, fueltype=fuel_type,
+                                   predPrice=predPrice,
+                                   mileage=mileage, body=body_type, transmission=transmission, doors=doors, tax=tax,
+                                   insuranceGroup=insuranceGroup, engine_size=engine_size, emissions=emissions,
+                                   description=description)
 
     return render_template("submit-property.html", makes=makes, models=models, fuels=fuels, types=types,
                            transmissions=transmissions)
