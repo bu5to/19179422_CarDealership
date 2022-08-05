@@ -1,0 +1,255 @@
+_id,brand,model
+62a499444d5dddaecfddf646,Audi,A1
+62a499444d5dddaecfddf647,Audi,A3
+62a499444d5dddaecfddf648,Audi,A4
+62a499444d5dddaecfddf649,Audi,A5
+62a499444d5dddaecfddf64a,Audi,A6
+62a499444d5dddaecfddf64b,Audi,A7
+62a499444d5dddaecfddf64c,Audi,A8
+62a499444d5dddaecfddf64d,Audi,E-Tron
+62a499444d5dddaecfddf64e,Audi,Q2
+62a499444d5dddaecfddf64f,Audi,Q3
+62a499444d5dddaecfddf650,Audi,Q5
+62a499444d5dddaecfddf651,Audi,Q7
+62a499444d5dddaecfddf652,Audi,Q8
+62a499444d5dddaecfddf653,Audi,R8
+62a499444d5dddaecfddf654,Audi,TT
+62a499444d5dddaecfddf655,Audi,100
+62a499444d5dddaecfddf656,Audi,200
+62a499444d5dddaecfddf657,Audi,80
+62a499444d5dddaecfddf658,Audi,90
+62a499444d5dddaecfddf659,Audi,A2
+62a499444d5dddaecfddf65a,Audi,Cabriolet
+62a499444d5dddaecfddf65b,Audi,Coupe
+62a499444d5dddaecfddf65c,Audi,V8
+62a499444d5dddaecfddf66c,BMW,1-Series
+62a499444d5dddaecfddf66d,BMW,2-Series
+62a499444d5dddaecfddf66e,BMW,3-Series
+62a499444d5dddaecfddf66f,BMW,4-Series
+62a499444d5dddaecfddf670,BMW,5-Series
+62a499444d5dddaecfddf671,BMW,6-Series
+62a499444d5dddaecfddf672,BMW,7-Series
+62a499444d5dddaecfddf673,BMW,8-Series
+62a499444d5dddaecfddf674,BMW,Alpina
+62a499444d5dddaecfddf675,BMW,i3
+62a499444d5dddaecfddf676,BMW,i8
+62a499444d5dddaecfddf677,BMW,X1
+62a499444d5dddaecfddf678,BMW,X2
+62a499444d5dddaecfddf679,BMW,X3
+62a499444d5dddaecfddf67a,BMW,X4
+62a499444d5dddaecfddf67b,BMW,X5
+62a499444d5dddaecfddf67c,BMW,X6
+62a499444d5dddaecfddf67d,BMW,X7
+62a499444d5dddaecfddf67e,BMW,Z4
+62a499444d5dddaecfddf67f,BMW,Z1
+62a499444d5dddaecfddf680,BMW,Z3
+62a499444d5dddaecfddf681,BMW,Z8
+62a499444d5dddaecfddf74b,Ford,C-MAX
+62a499444d5dddaecfddf74c,Ford,EcoSport
+62a499444d5dddaecfddf74d,Ford,Edge
+62a499444d5dddaecfddf74e,Ford,Fiesta
+62a499444d5dddaecfddf74f,Ford,Focus
+62a499444d5dddaecfddf750,Ford,Galaxy
+62a499444d5dddaecfddf751,Ford,Grand C-MAX
+62a499444d5dddaecfddf752,Ford,Grand Tourneo Connect
+62a499444d5dddaecfddf753,Ford,Ka
+62a499444d5dddaecfddf754,Ford,Kuga
+62a499444d5dddaecfddf755,Ford,Mondeo
+62a499444d5dddaecfddf756,Ford,Mustang
+62a499444d5dddaecfddf757,Ford,Puma
+62a499444d5dddaecfddf758,Ford,S-MAX
+62a499444d5dddaecfddf759,Ford,Tourneo Connect
+62a499444d5dddaecfddf75a,Ford,B-MAX
+62a499444d5dddaecfddf75b,Ford,Capri
+62a499444d5dddaecfddf75c,Ford,Cougar
+62a499444d5dddaecfddf75d,Ford,Escort
+62a499444d5dddaecfddf75e,Ford,Explorer
+62a499444d5dddaecfddf75f,Ford,Focus C-MAX
+62a499444d5dddaecfddf760,Ford,Fusion
+62a499444d5dddaecfddf761,Ford,Granada
+62a499444d5dddaecfddf762,Ford,Maverick
+62a499444d5dddaecfddf763,Ford,Orion
+62a499444d5dddaecfddf764,Ford,Probe
+62a499444d5dddaecfddf765,Ford,Scorpio
+62a499444d5dddaecfddf766,Ford,Sierra
+62a499444d5dddaecfddf767,Ford,Sierra Sapphire
+62a499444d5dddaecfddf768,Ford,StreetKa
+62a499444d5dddaecfddf784,Hyundai,i10
+62a499444d5dddaecfddf785,Hyundai,i20
+62a499444d5dddaecfddf786,Hyundai,i30
+62a499444d5dddaecfddf787,Hyundai,i40
+62a499444d5dddaecfddf788,Hyundai,i800
+62a499444d5dddaecfddf789,Hyundai,Ioniq
+62a499444d5dddaecfddf78a,Hyundai,Ioniq Electric
+62a499444d5dddaecfddf78b,Hyundai,ix20
+62a499444d5dddaecfddf78c,Hyundai,Kona
+62a499444d5dddaecfddf78d,Hyundai,Kona Electric
+62a499444d5dddaecfddf78e,Hyundai,Santa Fe
+62a499444d5dddaecfddf78f,Hyundai,Tucson
+62a499444d5dddaecfddf790,Hyundai,Accent
+62a499444d5dddaecfddf791,Hyundai,Amica
+62a499444d5dddaecfddf792,Hyundai,Atoz
+62a499444d5dddaecfddf793,Hyundai,Coupe
+62a499444d5dddaecfddf794,Hyundai,Elantra
+62a499444d5dddaecfddf795,Hyundai,Genesis
+62a499444d5dddaecfddf796,Hyundai,Getz
+62a499444d5dddaecfddf797,Hyundai,Grandeur
+62a499444d5dddaecfddf798,Hyundai,ix35
+62a499444d5dddaecfddf799,Hyundai,Lantra
+62a499444d5dddaecfddf79a,Hyundai,Matrix
+62a499444d5dddaecfddf79b,Hyundai,Pony
+62a499444d5dddaecfddf79c,Hyundai,Pony X2
+62a499444d5dddaecfddf79d,Hyundai,S-Coupe
+62a499444d5dddaecfddf79e,Hyundai,Sonata
+62a499444d5dddaecfddf79f,Hyundai,Stellar
+62a499444d5dddaecfddf7a0,Hyundai,Terracan
+62a499444d5dddaecfddf7a1,Hyundai,Trajet
+62a499444d5dddaecfddf7a2,Hyundai,Veloster
+62a499444d5dddaecfddf7a3,Hyundai,XG30
+62a499444d5dddaecfddf847,Mercedes-Benz,A-Class
+62a499444d5dddaecfddf848,Mercedes-Benz,AMG GT
+62a499444d5dddaecfddf849,Mercedes-Benz,B-Class
+62a499444d5dddaecfddf84a,Mercedes-Benz,C-Class
+62a499444d5dddaecfddf84b,Mercedes-Benz,CLA
+62a499444d5dddaecfddf84c,Mercedes-Benz,CLA-Class
+62a499444d5dddaecfddf84d,Mercedes-Benz,CLS
+62a499444d5dddaecfddf84e,Mercedes-Benz,E-Class
+62a499444d5dddaecfddf84f,Mercedes-Benz,EQC
+62a499444d5dddaecfddf850,Mercedes-Benz,G-Class
+62a499444d5dddaecfddf851,Mercedes-Benz,GLA-Class
+62a499444d5dddaecfddf852,Mercedes-Benz,GLB
+62a499444d5dddaecfddf853,Mercedes-Benz,GLC-Class
+62a499444d5dddaecfddf854,Mercedes-Benz,GLE
+62a499444d5dddaecfddf855,Mercedes-Benz,GLE-Class
+62a499444d5dddaecfddf856,Mercedes-Benz,GLS
+62a499444d5dddaecfddf857,Mercedes-Benz,GLS-Class
+62a499444d5dddaecfddf858,Mercedes-Benz,S-Class
+62a499444d5dddaecfddf859,Mercedes-Benz,SLC-Class
+62a499444d5dddaecfddf85a,Mercedes-Benz,SL-Class
+62a499444d5dddaecfddf85b,Mercedes-Benz,V-Class
+62a499444d5dddaecfddf85c,Mercedes-Benz,190 Series
+62a499444d5dddaecfddf85d,Mercedes-Benz,200-300 W123 Series
+62a499444d5dddaecfddf85e,Mercedes-Benz,CE-Class
+62a499444d5dddaecfddf85f,Mercedes-Benz,CL
+62a499444d5dddaecfddf860,Mercedes-Benz,CLC
+62a499444d5dddaecfddf861,Mercedes-Benz,CLK
+62a499444d5dddaecfddf862,Mercedes-Benz,GL-Class
+62a499444d5dddaecfddf863,Mercedes-Benz,G-Wagen
+62a499444d5dddaecfddf864,Mercedes-Benz,M-Class
+62a499444d5dddaecfddf865,Mercedes-Benz,R-Class
+62a499444d5dddaecfddf866,Mercedes-Benz,SEC
+62a499444d5dddaecfddf867,Mercedes-Benz,SLK
+62a499444d5dddaecfddf868,Mercedes-Benz,SLS-Class
+62a499444d5dddaecfddf869,Mercedes-Benz,Vaneo
+62a499444d5dddaecfddf86a,Mercedes-Benz,Viano
+62a499444d5dddaecfddf96c,Skoda,Citigo
+62a499444d5dddaecfddf96d,Skoda,Citigo-e
+62a499444d5dddaecfddf96e,Skoda,Fabia
+62a499444d5dddaecfddf96f,Skoda,Kamiq
+62a499444d5dddaecfddf970,Skoda,Karoq
+62a499444d5dddaecfddf971,Skoda,Kodiaq
+62a499444d5dddaecfddf972,Skoda,Octavia
+62a499444d5dddaecfddf973,Skoda,Rapid
+62a499444d5dddaecfddf974,Skoda,Scala
+62a499444d5dddaecfddf975,Skoda,Superb
+62a499444d5dddaecfddf976,Skoda,Estelle
+62a499444d5dddaecfddf977,Skoda,Favorit
+62a499444d5dddaecfddf978,Skoda,Felicia
+62a499444d5dddaecfddf979,Skoda,Roomster
+62a499444d5dddaecfddf97a,Skoda,Yeti
+62a499444d5dddaecfddf9b7,Toyota,Auris
+62a499444d5dddaecfddf9b8,Toyota,Aygo
+62a499444d5dddaecfddf9b9,Toyota,Camry
+62a499444d5dddaecfddf9ba,Toyota,C-HR
+62a499444d5dddaecfddf9bb,Toyota,Corolla
+62a499444d5dddaecfddf9bc,Toyota,GR Supra
+62a499444d5dddaecfddf9bd,Toyota,GT86
+62a499444d5dddaecfddf9be,Toyota,Land Cruiser
+62a499444d5dddaecfddf9bf,Toyota,Prius
+62a499444d5dddaecfddf9c0,Toyota,Proace City Verso
+62a499444d5dddaecfddf9c1,Toyota,RAV4
+62a499444d5dddaecfddf9c2,Toyota,Yaris
+62a499444d5dddaecfddf9c3,Toyota,4-Runner
+62a499444d5dddaecfddf9c4,Toyota,Avensis
+62a499444d5dddaecfddf9c5,Toyota,Avensis Verso
+62a499444d5dddaecfddf9c6,Toyota,Carina
+62a499444d5dddaecfddf9c7,Toyota,Carina E
+62a499444d5dddaecfddf9c8,Toyota,Celica
+62a499444d5dddaecfddf9c9,Toyota,IQ
+62a499444d5dddaecfddf9ca,Toyota,Land Cruiser Amazon
+62a499444d5dddaecfddf9cb,Toyota,Land Cruiser Colorado
+62a499444d5dddaecfddf9cc,Toyota,Land Cruiser V8
+62a499444d5dddaecfddf9cd,Toyota,MR2
+62a499444d5dddaecfddf9ce,Toyota,Paseo
+62a499444d5dddaecfddf9cf,Toyota,Picnic
+62a499444d5dddaecfddf9d0,Toyota,Previa
+62a499444d5dddaecfddf9d1,Toyota,Space Cruiser
+62a499444d5dddaecfddf9d2,Toyota,Starlet
+62a499444d5dddaecfddf9d3,Toyota,Supra
+62a499444d5dddaecfddf9d4,Toyota,Tercel
+62a499444d5dddaecfddf9d5,Toyota,Urban Cruiser
+62a499444d5dddaecfddf9d6,Toyota,Verso
+62a499444d5dddaecfddf9e3,Vauxhall,Adam
+62a499444d5dddaecfddf9e4,Vauxhall,Astra
+62a499444d5dddaecfddf9e5,Vauxhall,Combo
+62a499444d5dddaecfddf9e6,Vauxhall,Corsa
+62a499444d5dddaecfddf9e7,Vauxhall,Corsa-e
+62a499444d5dddaecfddf9e8,Vauxhall,Crossland X
+62a499444d5dddaecfddf9e9,Vauxhall,Grandland X
+62a499444d5dddaecfddf9ea,Vauxhall,Insignia
+62a499444d5dddaecfddf9eb,Vauxhall,Mokka
+62a499444d5dddaecfddf9ec,Vauxhall,Viva
+62a499444d5dddaecfddf9ed,Vauxhall,Agila
+62a499444d5dddaecfddf9ee,Vauxhall,Ampera
+62a499444d5dddaecfddf9ef,Vauxhall,Antara
+62a499444d5dddaecfddf9f0,Vauxhall,Astra Belmont
+62a499444d5dddaecfddf9f1,Vauxhall,Calibra
+62a499444d5dddaecfddf9f2,Vauxhall,Carlton
+62a499444d5dddaecfddf9f3,Vauxhall,Cascada
+62a499444d5dddaecfddf9f4,Vauxhall,Cavalier
+62a499444d5dddaecfddf9f5,Vauxhall,Combo Tour
+62a499444d5dddaecfddf9f6,Vauxhall,Frontera
+62a499444d5dddaecfddf9f7,Vauxhall,Meriva
+62a499444d5dddaecfddf9f8,Vauxhall,Monaro
+62a499444d5dddaecfddf9f9,Vauxhall,Monterey
+62a499444d5dddaecfddf9fa,Vauxhall,Nova
+62a499444d5dddaecfddf9fb,Vauxhall,Omega
+62a499444d5dddaecfddf9fc,Vauxhall,Senator
+62a499444d5dddaecfddf9fd,Vauxhall,Signum
+62a499444d5dddaecfddf9fe,Vauxhall,Sintra
+62a499444d5dddaecfddf9ff,Vauxhall,Tigra
+62a499444d5dddaecfddfa00,Vauxhall,Vectra
+62a499444d5dddaecfddfa01,Vauxhall,Vivaro
+62a499444d5dddaecfddfa02,Vauxhall,VX220
+62a499444d5dddaecfddfa03,Vauxhall,VXR8
+62a499444d5dddaecfddfa04,Vauxhall,Zafira
+62a499444d5dddaecfddfa05,Volkswagen,Arteon
+62a499444d5dddaecfddfa06,Volkswagen,Caddy Life
+62a499444d5dddaecfddfa07,Volkswagen,Caddy Maxi Life
+62a499444d5dddaecfddfa08,Volkswagen,California
+62a499444d5dddaecfddfa09,Volkswagen,Caravelle
+62a499444d5dddaecfddfa0a,Volkswagen,e-Golf
+62a499444d5dddaecfddfa0b,Volkswagen,e-Up
+62a499444d5dddaecfddfa0c,Volkswagen,Golf
+62a499444d5dddaecfddfa0d,Volkswagen,Passat
+62a499444d5dddaecfddfa0e,Volkswagen,Polo
+62a499444d5dddaecfddfa0f,Volkswagen,Sharan
+62a499444d5dddaecfddfa10,Volkswagen,T-Cross
+62a499444d5dddaecfddfa11,Volkswagen,Tiguan
+62a499444d5dddaecfddfa12,Volkswagen,Touareg
+62a499444d5dddaecfddfa13,Volkswagen,Touran
+62a499444d5dddaecfddfa14,Volkswagen,T-Roc
+62a499444d5dddaecfddfa15,Volkswagen,Up
+62a499444d5dddaecfddfa16,Volkswagen,Beetle
+62a499444d5dddaecfddfa17,Volkswagen,Beetle Dune
+62a499444d5dddaecfddfa18,Volkswagen,Bora
+62a499444d5dddaecfddfa19,Volkswagen,Caddy Maxi Camper
+62a499444d5dddaecfddfa1a,Volkswagen,CC
+62a499444d5dddaecfddfa1b,Volkswagen,Corrado
+62a499444d5dddaecfddfa1c,Volkswagen,Eos
+62a499444d5dddaecfddfa1d,Volkswagen,Fox
+62a499444d5dddaecfddfa1e,Volkswagen,Jetta
+62a499444d5dddaecfddfa1f,Volkswagen,Lupo
+62a499444d5dddaecfddfa20,Volkswagen,Phaeton
+62a499444d5dddaecfddfa21,Volkswagen,Scirocco
+62a499444d5dddaecfddfa22,Volkswagen,Vento
