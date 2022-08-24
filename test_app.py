@@ -137,7 +137,7 @@ def test_custom_search(client):
         "body": ""
     }, follow_redirects=True)
     end = time.time()
-    assert (end - start < 5 and response.status_code == 200)
+    assert (end - start < 10 and response.status_code == 200)
 
 
 def test_alterAd(client):
