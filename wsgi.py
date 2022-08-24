@@ -265,6 +265,7 @@ def settings():
                       User.address: request.form['address'],
                       User.phone: request.form['phone']
                       }
+        query = session.query(User)
         query.filter(User.id == current_user.id).update(dictupdate, synchronize_session=False)
         session.commit()
         if request.form["password"] != "":
