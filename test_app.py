@@ -13,7 +13,7 @@ from wsgi import app
 @pytest.fixture
 def client():
     app.secret_key = 'thisisasecretkey'
-    app.config["MONGO_CLIENT"] = "mongodb://localhost:27017"
+    app.config["MONGO_CLIENT"] = os.environ.get('MONGO_CLIENT')
     client = app.test_client()
     # with client.session_transaction(subdomain='blue') as session:
     #   session['user'] = 19179422
