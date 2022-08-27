@@ -1,12 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" xmlns="http://www.w3.org/1999/html"> <!--<![endif]-->
+<html class="no-js" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -46,13 +39,6 @@
     <noscript>
         <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontello.css') }}">
     </noscript>
-    <link rel="preload" href="{{ url_for('static', filename='assets/css/pe-icon-7-stroke.css') }}" as="style"
-          onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/pe-icon-7-stroke.css') }}">
-    </noscript>
-    <link rel="preload" href="{{ url_for('static', filename='assets/css/helper.css') }}" as="style"
-          onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/helper.css') }}">
     </noscript>
@@ -134,8 +120,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{url_for('carsearch')}}"><img src="assets/img/logo.png" alt=""> (Will be
-                later substituted by the logo)</a>
+            <a class="navbar-brand" href="{{url_for('carsearch')}}"><img src="{{ url_for('static', filename='assets/img/logo.png') }}" alt=""></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -285,7 +270,7 @@
                         <h4>About us </h4>
                         <div class="footer-title-line"></div>
 
-                        <img src="{{ url_for('static', filename='footer-logo.png')}}" alt="" class="wow pulse"
+                        <img src="{{ url_for('static', filename='assets/img/footer-logo.png')}}" alt="" class="wow pulse"
                              data-wow-delay="1s">
                         <p>We are a car sales website willing to help inexperienced users selling their cars for a fair
                             price.</p>
