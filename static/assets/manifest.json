@@ -18,7 +18,7 @@
 	  "purpose": "any maskable"
     }],
   "scope": "/",
-  "start_url": "http://127.0.0.1:5000/",
+  "start_url": "https://127.0.0.1:5000/",
   "display": "standalone",
   "background_color": "white",
   "theme_color": "#FFD434"
