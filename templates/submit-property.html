@@ -38,13 +38,11 @@
 
                         <div class="tab-content" enctype="multipart/form-data">
                             <script>
-                                                    $(document).on('change','#lunchBegins', function(){
-                                                        $('#selectmodel').hide();
-                                                        $('#basic option').hide();
-                                                        $('#basic option[class="'+$(this).val()+'"]').show()
-                                                     });
-
-
+                                $(document).on('change', '#lunchBegins', function () {
+                                    $('#selectmodel').hide();
+                                    $('#basic option').hide();
+                                    $('#basic option[class="' + $(this).val() + '"]').show()
+                                });
 
 
                             </script>
@@ -83,6 +81,15 @@
                                                required>
                                         {% endif %}
                                         <input type='submit' class='btn btn-primary ' name='submit' value='Predict'/>
+                                        {% with messages = get_flashed_messages() %}
+                                        {% if messages %}
+                                        <ul class=flashes>
+                                            {% for message in messages %}
+                                            <p>{{ message }}</p>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endif %}
+                                        {% endwith %}
                                         <!-- <input type='button' class='btn btn-primary ' name='predict' value='Predict'/> -->
                                     </div>
                                 </div>

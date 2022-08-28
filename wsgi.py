@@ -380,6 +380,9 @@ def listmycar():
             prediction = regr.predict([X])
             expPrice = np.exp(prediction)
             predPrice = expPrice.astype(int)[0]
+            flash("Price predicted. Note that this price is an approximated value between " + (
+                        predPrice * 1.01941) and + (predPrice / 1.01941))
+
             return render_template("submit-property.html", makes=makes, models=models, heading=heading, fuels=fuels,
                                    types=types, year=year,
                                    transmissions=transmissions, make=make, model=model, fueltype=fuel_type,
