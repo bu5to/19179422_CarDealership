@@ -222,7 +222,48 @@ def test_CarMatchesMake():
 
 
 def test_CarMatchesModel():
-    # Test to verify that the cars retrieved from the database matches the specified model.
+    # Test to verify that the cars retrieved from the database match the specified model.
     carsdict = Car.getCarsByAttribute("model", "Fabia")
     cars = [x for x in carsdict]
     assert (car.model == "Fabia" for car in cars)
+
+
+def test_CarMatchesFuelType():
+    # Test to verify that the cars retrieved from the database given a fuel type match the specified fuel type.
+    carsdict = Car.getCarsByAttribute("fuel_type", "Diesel")
+    cars = [x for x in carsdict]
+    assert (car.fuel == "Diesel" for car in cars)
+
+
+def test_CarMatchesPriceRange():
+    # Test to verify that the cars retrieved from the database given a price range match the established price range.
+    carsdict = Car.getCarsByAttribute("price", [2000, 10000])
+    cars = [x for x in carsdict]
+    assert (car.price >= 2000 and car.price <= 10000 for car in cars)
+
+
+def test_CarMatchesYearRange():
+    # Test to verify that the cars retrieved from the database given a year range match the established year range.
+    carsdict = Car.getCarsByAttribute("year", [2010, 2017])
+    cars = [x for x in carsdict]
+    assert (car.year >= 2010 and car.year <= 2017 for car in cars)
+
+
+def test_CarMatchesMilesRange():
+    # Test to verify that the cars retrieved from the database given a mileage range match the established miles range.
+    carsdict = Car.getCarsByAttribute("miles", [10000, 40000])
+    cars = [x for x in carsdict]
+    assert (car.mileage >= 10000 and car.mileage <= 40000 for car in cars)
+
+
+def test_user():
+    # Test to verify that the retrieved user given a certain email matches the expected user.
+    email = "19179422@brookes.ac.uk"
+    user = User.get_user_by_email(email)
+    assert user.email == email
+
+def test_user():
+    # Test to verify that the retrieved user given a certain ID matches the expected user.
+    username = "19179422"
+    user = User.get_user(username)
+    assert user.id == username
