@@ -168,7 +168,7 @@ def test_alterAd(client):
         "insurance_group": "24E",
         "engine_size": 2,
         "co2_emission": 150,
-        "features": "Adjustable Steering Column/Wheel|Alloy Wheels (17in)|Air-Conditioning (Automatic)|Body Coloured Bumpers|Computer (Driver Information System)|Mirrors External (Electric Folding)|Cruise Control||Electric Windows (Front/Rear)||In Car Entertainment (Radio/CD)||Mirrors Internal||Seat Height Adjustment||Speakers||Steering Wheel Mounted Controls||Upholstery Cloth/Leather||Air Bag Driver|Air Bag Passenger|Air Bag Side|Central Door Locking|Centre Rear Seat Belt|Front Fog Lights|Head Air Bags|Head Restraints|Immobiliser|Parking Aid (Rear)|Power-Assisted Steering|Seat - ISOFIX Anchorage Point (Two Seats - Rear)|Traction Control System",
+        "features": "Some sample features",
         "photo_links": "https://m.atcdn.co.uk/a/media/w1024h768/c7f181b534714dbb8a4521fc92466faa.jpg",
         "vdp_url": "https://www.rangemotor.co.uk/used-cars/bmw-3-series-2-0-318d-m-sport-4dr-hounslow-202104291983455",
         "user_id": "19179422",
@@ -209,7 +209,7 @@ def test_deleteAd(client):
 
 def test_CarMatchesId():
     # Test to verify that the car retrieved from the database matches the car ID.
-    carId = "908848246"
+    carId = 908848246
     car = Car.getCarById(carId)
     assert (car.id == carId)
 

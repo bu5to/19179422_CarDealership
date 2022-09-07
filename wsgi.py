@@ -55,10 +55,9 @@ def load_user(user_id):
     '''
     users = User.get_users()
     for user in users:
-        try:
-            if user.id == user_id:
-                return user
-        except:
+        if user.id == user_id:
+            return user
+        else:
             return None
 
 
@@ -243,8 +242,6 @@ def carsearch():
             priceSearch = Car.getCarsByAttribute("price", [int(pricerange[0]), int(pricerange[1])])
         if request.form["minYear"] != "" and request.form["maxYear"] != "":
             yearSearch = Car.getCarsByAttribute("year", [int(yearrange[0]), int(yearrange[1])])
-        listSearch = [headingSearch, descSearch, makeSearch, modelSearch, fuelSearch, bodyTypeSearch, priceSearch,
-                      yearSearch]
         list1 = [x for x in headingSearch if x in descSearch]
         list2 = [x for x in list1 if x in makeSearch]
         list3 = [x for x in list2 if x in modelSearch]
@@ -256,9 +253,6 @@ def carsearch():
         cars = Car.parseDictToCars(carsDicts)
 
     cars = cars[:50]
-
-    # intersection = headingSearch & descSearch & makeSearch & modelSearch & fuelSearch & bodyTypeSearch & priceSearch & yearSearch
-    # print(intersection)
 
     for car in cars:
         if len(car.description) > 140:
@@ -485,5 +479,5 @@ def create_tables():
 
 
 if __name__ == '__main__':
-    #    app.run(debug=True)
-    app.run(ssl_context=('cert.pem', 'key.pem'), threaded=True) #SSL is enabled.
+    # app.run(debug=True)
+    app.run(ssl_context=('cert.pem', 'key.pem'), threaded=True) # SSL is enabled.
