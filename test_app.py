@@ -4,9 +4,8 @@ import pymongo
 import time
 import os
 import random
-from flask_login import login_user
 from base import Session
-from models import User
+from models import User, Car
 from wsgi import app
 
 
@@ -15,8 +14,6 @@ def client():
     app.secret_key = 'thisisasecretkey'
     app.config["MONGO_CLIENT"] = os.environ.get('MONGO_CLIENT')
     client = app.test_client()
-    # with client.session_transaction(subdomain='blue') as session:
-    #   session['user'] = 19179422
     return client
 
 
@@ -40,7 +37,7 @@ def test_register(client):
         "role": "Dealership",
         "phone": 34600000000,
         "address": "Headington Rd, Headington, Oxford OX3 0BP, United Kingdom",
-    }, follow_redirects = True)
+    }, follow_redirects=True)
     end = time.time()
     session = Session()
     query = session.query(User)
@@ -70,7 +67,7 @@ def test_login(client):
         "role": "Dealership",
         "phone": 34600000000,
         "address": "Headington Rd, Headington, Oxford OX3 0BP, United Kingdom",
-    }, follow_redirects = True)
+    }, follow_redirects=True)
     start = time.time()
     response = client.post("/login", data={
         "username": username,
@@ -101,6 +98,7 @@ def test_image_encoding():
     end = time.time()
     assert (end - start < 2 and encodedImg != "")
 
+
 def test_image_decoding(client):
     '''
     QR-PE-04: Image decoding
@@ -121,10 +119,8 @@ def test_custom_search(client):
     Certain search tasks will be performed following criteria defined by the user in a form.
     Processing the information, filtering it according to the criteria established, and returning the given search
     in the front-end should not take more than 5 seconds.
-    :param client:
-    :return:
+    :param client: The app client.
     '''
-    start = time.time()
     response = client.post("/", data={
         "make": "Audi",
         "fuel": "Petrol",
@@ -136,12 +132,15 @@ def test_custom_search(client):
         "maxYear": 2014,
         "body": ""
     }, follow_redirects=True)
-    end = time.time()
     assert (response.status_code == 200)
 
 
 def test_alterAd(client):
-    #QR-PE-07: Altering an advertisement: The process of changing certain information on an ad should not take longer than 2 seconds.
+    '''
+    QR-PE-07: Altering an advertisement: The process of changing certain information on an ad should not take longer
+    than 2 seconds.
+    :param client: The app client.
+    '''
     myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
     mydb = myclient["myapp"]
     mycol = mydb["cars"]
@@ -201,8 +200,29 @@ def test_alterAd(client):
 
 
 def test_deleteAd(client):
-    #QR-PE-06: Deleting an advertisement: The process of deleting an ad should not take longer than 2 seconds.
+    # QR-PE-06: Deleting an advertisement: The process of deleting an ad should not take longer than 2 seconds.
     start = time.time()
     response = client.get("/delete/1999999999", follow_redirects=True)
     end = time.time()
     assert end - start < 2 and response.status_code == 200
+
+
+def test_CarMatchesId():
+    # Test to verify that the car retrieved from the database matches the car ID.
+    carId = "908848246"
+    car = Car.getCarById(carId)
+    assert (car.id == carId)
+
+
+def test_CarMatchesMake():
+    # Test to verify that the cars retrieved from the database matches the specified make.
+    carsdict = Car.getCarsByAttribute("make", "Audi")
+    cars = [x for x in carsdict]
+    assert (car.make == "Audi" for car in cars)
+
+
+def test_CarMatchesModel():
+    # Test to verify that the cars retrieved from the database matches the specified model.
+    carsdict = Car.getCarsByAttribute("model", "Fabia")
+    cars = [x for x in carsdict]
+    assert (car.model == "Fabia" for car in cars)

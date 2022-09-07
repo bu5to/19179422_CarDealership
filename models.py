@@ -5,8 +5,9 @@ from sqlalchemy import Column, String
 import os
 import pymongo
 
+
 class User(Base, UserMixin):
-    __tablename__='user'
+    __tablename__ = 'user'
     id = Column(String, primary_key=True)
     name = Column(String)
     email = Column(String)
@@ -72,7 +73,7 @@ class User(Base, UserMixin):
 
 
 class Model:
-    def __init__(self, make, model): #Another constructor is created with only the make and the model.
+    def __init__(self, make, model):  # Another constructor is created with only the make and the model.
         self.make = make
         self.model = model
 
@@ -89,7 +90,6 @@ class Model:
             if x['brand'] not in makeslist:
                 makeslist.append(x['brand'])
         return carslist, makeslist
-
 
 
 class Car:
@@ -114,7 +114,6 @@ class Car:
         self.images = images
         self.user_id = user_id
 
-
     def getPriceAndYearRange():
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
@@ -126,19 +125,18 @@ class Car:
         ranges = [minyear, maxyear, minprice, maxprice]
         return ranges
 
-
     def parseDictToCars(carsDict):
         carslist = []
         for x in carsDict:
-            keyPhoto = "photo_url" #Some cars are not provided with images
+            keyPhoto = "photo_url"  # Some cars are not provided with images
             tax = "tax"  # Some cars are not provided with images
             if keyPhoto in x and tax in x:
-                car = Car(x['id'], x['make'], x['model'], x['heading'], x['year'], x['miles'],x['body_type'],x['fuel_type'],
+                car = Car(x['id'], x['make'], x['model'], x['heading'], x['year'], x['miles'], x['body_type'],
+                          x['fuel_type'],
                           x['transmission'], x['features'], x['engine_size'], x['tax'], x['insurance_group'],
-                           x['city'], x['co2_emission'], x['price'], x['photo_url'], x['user_id'])
-                carslist.append(car) #Provisional solution until dataset is fixed
+                          x['city'], x['co2_emission'], x['price'], x['photo_url'], x['user_id'])
+                carslist.append(car)  # Provisional solution until dataset is fixed
         return carslist
-
 
     def getAllHeadings():
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
@@ -150,14 +148,12 @@ class Car:
             headings.append(x['heading'])
         return headings
 
-
     def getAllCardicts():
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
         carsDicts = list(mycol.find())
         return carsDicts
-
 
     def getAllCars():
         carsDicts = Car.getAllCardicts()
@@ -166,14 +162,6 @@ class Car:
             if "w1024h768" in car.images:
                 car.images = car.images.replace("w1024h768", "w400h300")
         return carslist
-
-
-  #  def getLatestCars():
-   #     carsDicts = Car.getAllCardicts()
-    #    carslist = Car.parseDictToCars(carsDicts)[-2:]
-     #   latestCarsCookie = carslist[0].id + ":" + carslist[1].id + ":" + carslist[2].id
-      #  return latestCarsCookie
-
 
     def getDistinctFuels():
         cars = Car.getAllCars()
@@ -229,7 +217,7 @@ class Car:
         if attr == "model":
             carsdicts = list(mycol.find({"model": value}))
         if attr == "miles":
-            carsdicts = list(mycol.find({"miles": {"$gte":value[0], "$lte":value[1]}}))
+            carsdicts = list(mycol.find({"miles": {"$gte": value[0], "$lte": value[1]}}))
         if attr == "fuel":
             carsdicts = list(mycol.find({"fuel_type": value}))
         if attr == "user":
@@ -245,10 +233,7 @@ class Car:
         if attr == "tax":
             carsdicts = list(mycol.find({"tax": value}))
         if attr == "heading":
-            carsdicts = list(mycol.find({"heading": {"$regex" : value}}))
+            carsdicts = list(mycol.find({"heading": {"$regex": value}}))
         if attr == "description":
-            carsdicts = list(mycol.find({"features": {"$regex" : value}}))
-
-        #carslist = Car.parseDictToCars(carsdicts)
+            carsdicts = list(mycol.find({"features": {"$regex": value}}))
         return carsdicts
-
