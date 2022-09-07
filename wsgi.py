@@ -64,6 +64,10 @@ def load_user(user_id):
 
 @app.route('/sw.js')
 def sw():
+    '''
+    Loads the service worker file within the application.
+    :return: The service worker's content as a response.
+    '''
     response = make_response(send_from_directory('static', path='assets/sw.js'))
     response.headers['Content-Type'] = 'application/javascript'
     return response
@@ -71,6 +75,11 @@ def sw():
 
 @app.route('/photo/<user_id>')
 def photo(user_id):
+    '''
+    URL that returns the decoded Base64 string as an image containing the profile picture of an user.
+    :param user_id: The ID of the user whose picture is intended to be returned.
+    :return: The decoded image as a response.
+    '''
     user = User.get_user(str(user_id))
     b64_string = user.profilePic
     b64_string += "=" * ((4 - len(b64_string) % 4) % 4)
@@ -80,6 +89,11 @@ def photo(user_id):
 
 @app.route('/carpic/<int:carId>')
 def carpic(carId):
+    '''
+    URL that returns the decoded Base64 string as an image containing the picture of a car.
+    :param user_id: The ID of the car whose picture is intended to be returned.
+    :return: The decoded image as a response.
+    '''
     car = Car.getCarById(carId)
     b64_string = car.images
     b64_string += "=" * ((4 - len(b64_string) % 4) % 4)
@@ -90,6 +104,11 @@ def carpic(carId):
 @app.route('/delete/<int:carId>')
 @login_required
 def delete(carId):
+    '''
+    Method that deletes a certain car from the database.
+    :param carId: The ID of the car that will be deleted.
+    :return: The URL containing the cars listed by the user.
+    '''
     car = Car.getCarById(carId)
     if car.user_id == current_user.id:
         myclient = pymongo.MongoClient(os.environ.get("MONGO_CLIENT"))
@@ -105,6 +124,11 @@ def delete(carId):
 @app.route('/edit/<int:carId>', methods=["GET", "POST"])
 @login_required
 def edit(carId):
+    '''
+    Method that edits the information of a car listed by the user.
+    :param carId: The ID of the car whose information is intended to be edited.
+    :return: The form containing the parameters of the car.
+    '''
     car = Car.getCarById(carId)
     modelslist, makeslist = Model.getDistinctModels()
     fuels = Car.getDistinctFuels()
@@ -164,7 +188,12 @@ def edit(carId):
 @app.route('/viewcar/<int:carId>')
 @compress.compressed()
 def viewcar(carId):
-    car = Car.getCarById(carId)  # 4975facbbce511b65e14f44719340029-cf161184-91fc #Funciona con int, no con string
+    '''
+    Method that allows the user to view the details of a certain car.
+    :param carId: The car whose information will be viewed.
+    :return: The URL containing the information of the car.
+    '''
+    car = Car.getCarById(carId)
     seller = User.get_user(car.user_id)
     numCars = len(Car.getCarsByAttribute("user", seller.id))
     similarBodyDict = Car.getCarsByAttribute("type", car.bodyType)
@@ -177,6 +206,11 @@ def viewcar(carId):
 @app.route('/', methods=["GET", "POST"])
 @compress.compressed()
 def carsearch():
+    '''
+    This URL will be used for the main search engine of the website.
+    Cars will be searched using this address.
+    :return: The main search engine, or the results of a certain query.
+    '''
     cars = Car.getAllCars()
     modelslist, makeslist = Model.getDistinctModels()
     fuels = Car.getDistinctFuels()
@@ -235,6 +269,10 @@ def carsearch():
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
+    '''
+    Method that allows a user to create an account.
+    :return: The form that the user will use to register.
+    '''
     if request.method == "POST":
         if request.files["file"].filename != '':
             photoFile = request.files.get('file')
@@ -256,6 +294,10 @@ def register():
 
 @app.route('/settings', methods=["GET", "POST"])
 def settings():
+    '''
+    This URL allows the user to update his/her account details.
+    :return: A form with the user's account details.
+    '''
     if request.method == "POST":
         session = Session()
         dictupdate = {User.id: request.form['username'],
@@ -283,6 +325,10 @@ def settings():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    '''
+    A method that allows the user to log into his/her account.
+    :return: The log-in screen, or the 2FA screen, depending if the login is successful or not.
+    '''
     if request.method == "POST":
         user = User.get_user(request.form['username'])
         if user is not None and user.check_password(request.form['password']):
@@ -296,6 +342,10 @@ def login():
 
 @app.route('/login2fa', methods=["GET", "POST"])
 def login2fa():
+    '''
+    This URL serves as a 2-factor authentication step that the user will need to take to log in.
+    :return: The 2FA screen, containing the key and a form to introduce an one-time password.
+    '''
     print(request.method)
     if request.method == "POST":
         pyotpKey = request.form.get("pyotpKey")
@@ -316,6 +366,11 @@ def login2fa():
 @app.route('/listmycar', methods=["GET", "POST"])
 @login_required
 def listmycar():
+    '''
+    An URL through which the user will be able to list his car along with certain details, and predict its price.
+    :return: A form at which the user will introduce details on the car intended to be sold...
+    or the predicted price, depending on if the user has clicked "Predict" or not.
+    '''
     models, makes = Model.getDistinctModels()
     fuels = Car.getDistinctFuels()
     types = Car.getDistinctTypes()
@@ -381,7 +436,7 @@ def listmycar():
             expPrice = np.exp(prediction)
             predPrice = expPrice.astype(int)[0]
             flash("Price predicted. Note that this price is an approximated value between " + (
-                        predPrice * 1.01941) and + (predPrice / 1.01941))
+                    predPrice * 1.01941) and + (predPrice / 1.01941))
 
             return render_template("submit-property.html", makes=makes, models=models, heading=heading, fuels=fuels,
                                    types=types, year=year,
@@ -398,6 +453,10 @@ def listmycar():
 @app.route('/mycars')
 @login_required
 def mycars():
+    '''
+    Through this URL, the user will be able to view details on cars listed by him/her.
+    :return: The URL containing details on the cars.
+    '''
     carsDicts = Car.getCarsByAttribute("user", current_user.id)
     cars = Car.parseDictToCars(carsDicts)
     for car in cars:
@@ -426,4 +485,5 @@ def create_tables():
 
 
 if __name__ == '__main__':
-    app.run(ssl_context=('cert.pem', 'key.pem'), threaded=True)
+    #    app.run(debug=True)
+    app.run(ssl_context=('cert.pem', 'key.pem'), threaded=True) #SSL is enabled.

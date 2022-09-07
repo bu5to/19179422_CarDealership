@@ -1,15 +1,14 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-import matplotlib
-import matplotlib.pyplot as plt
-import seaborn as sns
-import statsmodels.api as sm
-matplotlib.style.use('ggplot')
+
 
 def carsModel():
+    '''
+    Creates the linear regression model, applies logarithmic transformation and fits it.
+    :return: The fitted linear regression model.
+    '''
     df = pd.read_csv("resources/carsWithLabels.csv", sep=';')
     df = df.drop(columns="make")
     df = df.drop(columns="model")
@@ -26,6 +25,15 @@ def carsModel():
 
 
 def parseAttributesToLabels(make, model, fuel, transmission):
+    '''
+    Searches the attributes through the CSV files and converts it to the labels that represents
+    the attributes passed.
+    :param make: The make of the car.
+    :param model: The model of the car.
+    :param fuel: The fuel type of the car.
+    :param transmission: The transmission of the car.
+    :return: The list of labels that will be used to make predictions in the car price prediction model.
+    '''
     data = pd.read_csv("resources/carsWithLabels.csv", sep=';')
     makeMapping = dict(zip(data['make'], data['make_label']))
     modelMapping = dict(zip(data['model'], data['model_label']))
@@ -38,4 +46,3 @@ def parseAttributesToLabels(make, model, fuel, transmission):
     fuelLabel = fuelMapping[fuel]
     transLabel = transMapping[transmission]
     return makeLabel, modelLabel, fuelLabel, transLabel
-
