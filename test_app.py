@@ -230,7 +230,7 @@ def test_CarMatchesModel():
 
 def test_CarMatchesFuelType():
     # Test to verify that the cars retrieved from the database given a fuel type match the specified fuel type.
-    carsdict = Car.getCarsByAttribute("fuel_type", "Diesel")
+    carsdict = Car.getCarsByAttribute("fuel", "Diesel")
     cars = [x for x in carsdict]
     assert (car.fuel == "Diesel" for car in cars)
 
@@ -261,6 +261,7 @@ def test_user():
     email = "19179422@brookes.ac.uk"
     user = User.get_user_by_email(email)
     assert user.email == email
+
 
 def test_user():
     # Test to verify that the retrieved user given a certain ID matches the expected user.
