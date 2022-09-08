@@ -327,7 +327,6 @@ def login():
         user = User.get_user(request.form['username'])
         if user is not None and user.check_password(request.form['password']):
             session['username'] = request.form['username']
-            print(session['username'])
             return redirect(url_for('login2fa'))
         else:
             flash(u'Invalid username or password.', 'error')
@@ -340,12 +339,9 @@ def login2fa():
     This URL serves as a 2-factor authentication step that the user will need to take to log in.
     :return: The 2FA screen, containing the key and a form to introduce an one-time password.
     '''
-    print(request.method)
     if request.method == "POST":
         pyotpKey = request.form.get("pyotpKey")
         otp = int(request.form.get("otp"))
-        print(pyotpKey)
-        print(otp)
         if pyotp.TOTP(pyotpKey).verify(otp):
             user = User.get_user(session['username'])
             login_user(user)

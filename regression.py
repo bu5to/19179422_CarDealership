@@ -40,9 +40,7 @@ def parseAttributesToLabels(make, model, fuel, transmission):
     fuelMapping = dict(zip(data['fuelType'], data['fuel_type_label']))
     transMapping = dict(zip(data['transmission'], data['transmission_label']))
     makeLabel = makeMapping[make]
-    print(makeLabel)
     modelLabel = modelMapping[model]
-    print(modelLabel)
     fuelLabel = fuelMapping[fuel]
     transLabel = transMapping[transmission]
     return makeLabel, modelLabel, fuelLabel, transLabel

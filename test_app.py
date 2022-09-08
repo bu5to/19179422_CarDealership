@@ -20,9 +20,8 @@ def client():
 def test_register(client):
     '''
     QR-PE-01: Registering
-    After having submitted the form, the registering process should not take longer than 5 seconds.
-    :param client:
-    :return:
+    After having submitted the form, the registration process should not take longer than 5 seconds.
+    :param client: The app client.
     '''
     username = random.randint(1000000000, 9999999999)
     password = random.randint(100000, 999999)
@@ -45,15 +44,14 @@ def test_register(client):
     session.delete(query)
     session.commit()
     session.close()
-    assert (end - start < 3 and response.status_code == 200)
+    assert (end - start < 5 and response.status_code == 200)
 
 
 def test_login(client):
     '''
     QR-PE-02: Logging in
     The logging-in process should not take longer than 2 seconds.
-    :param client:
-    :return:
+    :param client: The app client.
     '''
     username = random.randint(1000000000, 9999999999)
     password = random.randint(100000, 999999)
@@ -89,8 +87,7 @@ def test_image_encoding():
     The application will not be provided with a file system to store the cars’ images.
     Alternatively, the submitted files will be converted to a Base64 string.
     This conversion process should not take more than 2 seconds.
-    :param client:
-    :return:
+    :param client: The app client.
     '''
     start = time.time()
     with open("static/assets/img/testuser.jpg", "rb") as image_file:
@@ -104,8 +101,7 @@ def test_image_decoding(client):
     QR-PE-04: Image decoding
     The Base64 string containing the image will be decompressed when displaying the image in the front end.
     This process of painting the image in the front end should take less than 3 seconds.
-    :param client:
-    :return:
+    :param client: The app client.
     '''
     start = time.time()
     response = client.get("/photo/19179422")
@@ -207,63 +203,63 @@ def test_deleteAd(client):
     assert end - start < 2 and response.status_code == 200
 
 
-def test_CarMatchesId():
+def test_carMatchesId():
     # Test to verify that the car retrieved from the database matches the car ID.
     carId = 908848246
     car = Car.getCarById(carId)
     assert (car.id == carId)
 
 
-def test_CarMatchesMake():
+def test_carMatchesMake():
     # Test to verify that the cars retrieved from the database matches the specified make.
     carsdict = Car.getCarsByAttribute("make", "Audi")
     cars = [x for x in carsdict]
     assert (car.make == "Audi" for car in cars)
 
 
-def test_CarMatchesModel():
+def test_carMatchesModel():
     # Test to verify that the cars retrieved from the database match the specified model.
     carsdict = Car.getCarsByAttribute("model", "Fabia")
     cars = [x for x in carsdict]
     assert (car.model == "Fabia" for car in cars)
 
 
-def test_CarMatchesFuelType():
+def test_carMatchesFuelType():
     # Test to verify that the cars retrieved from the database given a fuel type match the specified fuel type.
     carsdict = Car.getCarsByAttribute("fuel", "Diesel")
     cars = [x for x in carsdict]
     assert (car.fuel == "Diesel" for car in cars)
 
 
-def test_CarMatchesPriceRange():
+def test_carMatchesPriceRange():
     # Test to verify that the cars retrieved from the database given a price range match the established price range.
     carsdict = Car.getCarsByAttribute("price", [2000, 10000])
     cars = [x for x in carsdict]
     assert (car.price >= 2000 and car.price <= 10000 for car in cars)
 
 
-def test_CarMatchesYearRange():
+def test_carMatchesYearRange():
     # Test to verify that the cars retrieved from the database given a year range match the established year range.
     carsdict = Car.getCarsByAttribute("year", [2010, 2017])
     cars = [x for x in carsdict]
     assert (car.year >= 2010 and car.year <= 2017 for car in cars)
 
 
-def test_CarMatchesMilesRange():
+def test_carMatchesMilesRange():
     # Test to verify that the cars retrieved from the database given a mileage range match the established miles range.
     carsdict = Car.getCarsByAttribute("miles", [10000, 40000])
     cars = [x for x in carsdict]
     assert (car.mileage >= 10000 and car.mileage <= 40000 for car in cars)
 
 
-def test_user():
+def test_user_email():
     # Test to verify that the retrieved user given a certain email matches the expected user.
     email = "19179422@brookes.ac.uk"
     user = User.get_user_by_email(email)
     assert user.email == email
 
 
-def test_user():
+def test_username():
     # Test to verify that the retrieved user given a certain ID matches the expected user.
     username = "19179422"
     user = User.get_user(username)

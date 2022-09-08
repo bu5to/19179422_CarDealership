@@ -115,6 +115,12 @@ class Car:
         self.user_id = user_id
 
     def getPriceAndYearRange():
+        '''
+        This method searches the cheapest and most expensive prices and the oldest and the newest cars
+        registered in the database. Their values are returned as an array to the front end to establish the boundaries
+        of the year and price inputs.
+        :return: The array with the prices and years.
+        '''
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
@@ -126,6 +132,10 @@ class Car:
         return ranges
 
     def parseDictToCars(carsDict):
+        '''
+        The dictionary with the cars retrieved from the MongoDB query is parsed to a list of Car objects.
+        :return: The array with the cars.
+        '''
         carslist = []
         for x in carsDict:
             keyPhoto = "photo_url"  # Some cars are not provided with images
@@ -135,10 +145,14 @@ class Car:
                           x['fuel_type'],
                           x['transmission'], x['features'], x['engine_size'], x['tax'], x['insurance_group'],
                           x['city'], x['co2_emission'], x['price'], x['photo_url'], x['user_id'])
-                carslist.append(car)  # Provisional solution until dataset is fixed
+                carslist.append(car)
         return carslist
 
     def getAllHeadings():
+        '''
+        All the headings of the cars listed on the database are searched and appended to an array.
+        :return: The list with the car headings.
+        '''
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
@@ -149,6 +163,10 @@ class Car:
         return headings
 
     def getAllCardicts():
+        '''
+        Method that retrieves the results of a MongoDB query as dictionaries.
+        :return: The list of car dictionaries.
+        '''
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
@@ -156,6 +174,11 @@ class Car:
         return carsDicts
 
     def getAllCars():
+        '''
+        Method that parses the retrieved MongoDB query searching for all the cars in the database
+        into actual Car objects.
+        :return: The list of cars.
+        '''
         carsDicts = Car.getAllCardicts()
         carslist = Car.parseDictToCars(carsDicts)
         for car in carslist:
@@ -164,6 +187,11 @@ class Car:
         return carslist
 
     def getDistinctFuels():
+        '''
+        Method that retrieves the different fuel types registered in the database and passes them
+        to the front end.
+        :return: The list of the different fuel types.
+        '''
         cars = Car.getAllCars()
         fuels = []
         for car in cars:
@@ -172,6 +200,11 @@ class Car:
         return fuels
 
     def getDistinctTransmissions():
+        '''
+        Method that retrieves the different fuel types registered in the database and passes them
+        to the front end.
+        :return: The list of the different fuel types.
+        '''
         cars = Car.getAllCars()
         transmissions = []
         for car in cars:
@@ -180,6 +213,11 @@ class Car:
         return transmissions
 
     def getDistinctTypes():
+        '''
+        Method that retrieves the different car body types registered in the database and passes them
+        to the front end.
+        :return: The list of the different car body types.
+        '''
         cars = Car.getAllCars()
         types = []
         for car in cars:
@@ -188,11 +226,14 @@ class Car:
         return types
 
     def getCarById(carId):
+        '''
+        Method that retrieves the car given a certain car ID.
+        :return: The car as an object.
+        '''
         myclient = pymongo.MongoClient(os.environ.get('MONGO_CLIENT'))
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
         cardict = mycol.find_one({"id": int(carId)})
-        print(cardict)
         car = Car(cardict['id'], cardict['make'], cardict['model'], cardict['heading'], cardict['year'],
                   cardict['miles'], cardict['body_type'], cardict['fuel_type'],
                   cardict['transmission'], cardict['features'], cardict['engine_size'], cardict['tax'],
