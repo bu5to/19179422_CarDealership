@@ -45,16 +45,13 @@
                                     <div class="row">
                                         <div class="col-xs-6">
                                             <script>
-                                                $(document).on('change', '#lunchBegins', function () {
+                                                $(document.body).on('change', '#carmakes', function () {
                                                     $('#selectmodel').hide();
                                                     $('#basic option').hide();
                                                     $('#basic option[class="' + $(this).val() + '"]').show()
                                                 });
-
-
                                             </script>
-                                            <select id="lunchBegins" class="selectpicker" data-live-search="true"
-                                                    data-live-search-style="begins" title="Make" name="make">
+                                            <select class="form-control" id="carmakes" title="Make" name="make">
                                                 {% for make in makes %}
                                                 <option value="{{make}}">{{ make }}</option>
                                                 {% endfor %}
@@ -62,7 +59,7 @@
                                         </div>
                                         <div class="col-xs-6">
 
-                                            <select id="basic" class="form-control" data-live-search="true"
+                                            <select class="form-control" id="basic"
                                                     title="Model" name="model">
                                                 <option id="selectmodel" value="">Model</option>
                                                 {% for model in models %}
@@ -70,7 +67,6 @@
                                                         style="display:none;">{{ model.model }}
                                                 </option>
                                                 {% endfor %}
-
                                             </select>
                                         </div>
                                     </div>
@@ -105,64 +101,24 @@
                                     </div>
                                 </fieldset>
                                 <br>
-                                <!--
-                                                                    <fieldset class="padding-5">
-                                                                        <div class="row">
-                                                                            <div class="col-xs-6">
-                                                                                <label for="price-range">Min baths :</label>
-                                                                                <input type="text" class="span2" value="" data-slider-min="0"
-                                                                                       data-slider-max="600" data-slider-step="5"
-                                                                                       data-slider-value="[250,450]" id="min-baths" ><br />
-                                                                                <b class="pull-left color">1</b>
-                                                                                <b class="pull-right color">120</b>
-                                                                            </div>
-
-                                                                            <div class="col-xs-6">
-                                                                                <label for="property-geo">Min bed :</label>
-                                                                                <input type="text" class="span2" value="" data-slider-min="0"
-                                                                                       data-slider-max="600" data-slider-step="5"
-                                                                                       data-slider-value="[250,450]" id="min-bed" ><br />
-                                                                                <b class="pull-left color">1</b>
-                                                                                <b class="pull-right color">120</b>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </fieldset>
-                                -->
                                 <fieldset>
-                                    <div class="col-xs-6">
-                                        <select class="selectpicker" title="Fuel" name="fuel">
-                                            {% for fuel in fuels %}
-                                            <option value="{{fuel}}">{{ fuel }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <select class="selectpicker" title="Body type" name="body">
-                                            {% for type in types %}
-                                            <option value="{{type}}">{{ type }}</option>
-                                            {% endfor %}
-                                        </select>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <select class="form-control" title="Fuel" name="fuel">
+                                                {% for fuel in fuels %}
+                                                <option value="{{fuel}}">{{ fuel }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <select class="form-control" title="Body type" name="body">
+                                                {% for type in types %}
+                                                <option value="{{type}}">{{ type }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     </div>
                                 </fieldset>
-                                <!--
-                                                                <fieldset class="padding-5">
-                                                                    <div class="row">
-                                                                        <div class="col-xs-6">
-                                                                            <div class="checkbox">
-                                                                                <label> <input type="checkbox" checked> Fire Place</label>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="col-xs-6">
-                                                                            <div class="checkbox">
-                                                                                <label> <input type="checkbox"> Dual Sinks</label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </fieldset>
-                                                                -->
-
                                 <fieldset>
                                     <div class="row">
                                         <div class="col-xs-12">

@@ -180,7 +180,7 @@ def edit(carId):
         mydb = myclient["myapp"]
         mycol = mydb["cars"]
         mycol.update_one(filter, newvalues)
-    return render_template("edit-property.html", car=car, makes=makeslist, models=modelslist, fuels=fuels, types=types,
+    return render_template("edit-car.html", car=car, makes=makeslist, models=modelslist, fuels=fuels, types=types,
                            transmissions=transmissions)
 
 
@@ -257,7 +257,7 @@ def carsearch():
     for car in cars:
         if len(car.description) > 140:
             car.description = car.description[0:140] + "..."
-    return render_template('properties.html', cars=cars, makes=makeslist, models=modelslist, fuels=fuels,
+    return render_template('cars.html', cars=cars, makes=makeslist, models=modelslist, fuels=fuels,
                            types=types, ranges=ranges, transmissions=transmissions)
 
 
@@ -428,7 +428,7 @@ def listmycar():
             flash("Price predicted. Note that this price is an approximated value between " + (
                     predPrice * 1.01941) and + (predPrice / 1.01941))
 
-            return render_template("submit-property.html", makes=makes, models=models, heading=heading, fuels=fuels,
+            return render_template("submit-car.html", makes=makes, models=models, heading=heading, fuels=fuels,
                                    types=types, year=year,
                                    transmissions=transmissions, make=make, model=model, fueltype=fuel_type,
                                    predPrice=predPrice,
@@ -436,7 +436,7 @@ def listmycar():
                                    insuranceGroup=insuranceGroup, engine_size=engine_size, emissions=emissions,
                                    description=description)
 
-    return render_template("submit-property.html", makes=makes, models=models, fuels=fuels, types=types,
+    return render_template("submit-car.html", makes=makes, models=models, fuels=fuels, types=types,
                            transmissions=transmissions)
 
 
@@ -452,7 +452,7 @@ def mycars():
     for car in cars:
         if len(car.description) > 140:
             car.description = car.description[0:140] + "..."
-    return render_template("user-properties.html", cars=cars)
+    return render_template("user-cars.html", cars=cars)
 
 
 @app.route('/logout')
