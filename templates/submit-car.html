@@ -115,8 +115,8 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Car make:</label>
-                                            <select id="lunchBegins" class="selectpicker" data-live-search="true"
-                                                    data-live-search-style="begins" title="Make" name="make" required>
+                                            <select id="lunchBegins" class="form-control" title="Make" name="make"
+                                                    required>
                                                 {% if make != None %}
                                                 <option value="{{make}}" selected>{{ make }}</option>
                                                 {% endif %}
@@ -147,7 +147,7 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Body type:</label>
-                                            <select id="basic" class="selectpicker show-tick form-control"
+                                            <select id="basic" class="form-control"
                                                     name="bodyType">
                                                 {% if body != None %}
                                                 <option value="{{body}}" selected>{{ body }}</option>
@@ -161,7 +161,7 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Fuel type:</label>
-                                            <select id="basic" class="selectpicker show-tick form-control"
+                                            <select id="basic" class="form-control"
                                                     name="fuelType">
                                                 {% if fueltype != None %}
                                                 <option value="{{fueltype}}" selected>{{ fueltype }}</option>
@@ -190,7 +190,7 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Transmission:</label>
-                                            <select class="form-control" data-live-search="true"
+                                            <select class="form-control"
                                                     title="Transmission" name="transmission">
                                                 {% if transmission != None %}
                                                 <option value="{{transmission}}" selected>{{ transmission }}</option>
