@@ -444,8 +444,8 @@ def listmycar():
             predPriceMin = (predPrice / 1.01941).astype(int)[0]
             predPriceMax = (predPrice * 1.01941).astype(int)[0]
             flash("Price predicted. Note that this price is an approximated value between " + predPriceMin +
-                  and + predPriceMax)
-            
+                  "and" + predPriceMax)
+
             return render_template("submit-car.html", makes=makes, models=models, heading=heading, fuels=fuels,
                                    types=types, year=year,
                                    transmissions=transmissions, make=make, model=model, fueltype=fuel_type,
