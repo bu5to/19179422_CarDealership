@@ -337,6 +337,8 @@ def login():
         user = User.get_user(request.form['username'])
         if user is not None and user.check_password(request.form['password']):
             session['username'] = request.form['username']
+            print("Session username llega aqui" + session['username'])
+
             return redirect(url_for('login2fa'))
         else:
             flash(u'Invalid username or password.', 'error')
@@ -350,6 +352,7 @@ def login2fa():
     :return: The 2FA screen, containing the key and a form to introduce an one-time password.
     '''
     if request.method == "POST":
+        print("Session username llega aqui" + session['username'])
         pyotpKey = request.form.get("pyotpKey")
         otp = int(request.form.get("otp"))
         otp = pyotp.TOTP(pyotpKey).now()
