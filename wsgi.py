@@ -441,8 +441,8 @@ def listmycar():
             prediction = regr.predict([X])
             expPrice = np.exp(prediction)
             predPrice = expPrice.astype(int)[0]
-            predPriceMin = (predPrice / 1.01941).astype(int)[0]
-            predPriceMax = (predPrice * 1.01941).astype(int)[0]
+            predPriceMin = (predPrice / 1.01941).astype(int)
+            predPriceMax = (predPrice * 1.01941).astype(int)
             flash("Price predicted. Note that this price is an approximated value between " + predPriceMin +
                   "and" + predPriceMax)
 
