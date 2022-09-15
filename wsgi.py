@@ -46,6 +46,18 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 
 
+@app.before_request
+def before_request():
+    '''
+    HSTS is enabled and the requests starting with HTTP are forced to be replaced with HTTPS.
+    :return: Redirect to the new HTTPS URL.
+    '''
+    if request.url.startswith('http://'):
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
+
+
 @login_manager.user_loader
 def load_user(user_id):
     '''
@@ -220,8 +232,6 @@ def carsearch():
         carsDicts = Car.getCarsByAttribute("user", request.form['user_id'])
         cars = Car.parseDictToCars(carsDicts)
     if request.method == "POST" and 'user_id' not in request.form:
-        # pricerange = request.form["pricerange"].split(",")
-        # yearrange = request.form["yearrange"].split(",")
         pricerange = [request.form["minPrice"], request.form["maxPrice"]]
         yearrange = [request.form["minYear"], request.form["maxYear"]]
 
@@ -475,5 +485,5 @@ def create_tables():
 
 
 if __name__ == '__main__':
-    # app.run(debug=True)
-    app.run(ssl_context=('cert.pem', 'key.pem'), threaded=True)  # SSL is enabled.
+    app.run(debug=True)
+    #app.run(ssl_context=('cert.pem', 'key.pem'), threaded=True)  # SSL is enabled.
