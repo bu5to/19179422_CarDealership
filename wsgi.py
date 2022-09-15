@@ -444,7 +444,7 @@ def listmycar():
             predPriceMin = repr((predPrice / 1.01941).astype(int))
             predPriceMax = repr((predPrice * 1.01941).astype(int))
             flash("Price predicted. Note that this price is an approximated value between " + predPriceMin +
-                  "and" + predPriceMax)
+                  " and " + predPriceMax)
 
             return render_template("submit-car.html", makes=makes, models=models, heading=heading, fuels=fuels,
                                    types=types, year=year,
@@ -493,5 +493,4 @@ def create_tables():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    #app.run(ssl_context=('cert.pem', 'key.pem'), threaded=True)  # SSL is enabled.
+    app.run(ssl_context=('cert.pem', 'key.pem'), threaded=True)  # SSL is enabled.
