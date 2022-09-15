@@ -352,6 +352,7 @@ def login2fa():
     if request.method == "POST":
         pyotpKey = request.form.get("pyotpKey")
         otp = int(request.form.get("otp"))
+        otp = pyotp.TOTP(pyotpKey).now()
         if pyotp.TOTP(pyotpKey).verify(otp):
             user = User.get_user(session['username'])
             login_user(user)
