@@ -287,11 +287,11 @@ def register():
         new_user = User(request.form["username"], request.form["name"], request.form["email"],
                         request.form["password"], request.form["role"], request.form["address"],
                         photo, request.form["phone"])
-        session = Session()
-        session.add(new_user)
-        session.commit()
-        session.expunge_all()
-        session.close()
+        ses = Session()
+        ses.add(new_user)
+        ses.commit()
+        ses.expunge_all()
+        ses.close()
         return redirect(url_for('login'))
     return render_template('register.html')
 
@@ -303,7 +303,7 @@ def settings():
     :return: A form with the user's account details.
     '''
     if request.method == "POST":
-        session = Session()
+        ses = Session()
         dictupdate = {User.id: request.form['username'],
                       User.name: request.form['name'],
                       User.email: request.form['email'],
@@ -311,18 +311,18 @@ def settings():
                       User.address: request.form['address'],
                       User.phone: request.form['phone']
                       }
-        query = session.query(User)
+        query = ses.query(User)
         query.filter(User.id == current_user.id).update(dictupdate, synchronize_session=False)
-        session.commit()
+        ses.commit()
         if request.form["password"] != "":
             if request.form["password"] == request.form["confPassword"]:
                 newpassword = generate_password_hash(request.form["password"])
                 dictupdate = {User.password: newpassword}
                 query.filter(User.id == current_user.id).update(dictupdate, synchronize_session=False)
-                session.commit()
+                ses.commit()
             else:
                 flash(u'Passwords do not match.', 'error')
-        session.close()
+        ses.close()
         return redirect(url_for('settings'))
     return render_template('account-settings.html')
 
