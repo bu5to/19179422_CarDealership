@@ -80,7 +80,7 @@
                                                placeholder="Price (£)"
                                                required>
                                         {% endif %}
-                                        <input type='submit' class='btn btn-primary ' name='submit' value='Predict'/>
+                                        <input type='submit' class='btn btn-primary' name='submit' value='Predict'/>
                                         {% with messages = get_flashed_messages() %}
                                         {% if messages %}
                                         <ul class=flashes>
@@ -147,7 +147,7 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Body type:</label>
-                                            <select id="basic" class="form-control"
+                                            <select class="form-control"
                                                     name="bodyType">
                                                 {% if body != None %}
                                                 <option value="{{body}}" selected>{{ body }}</option>
@@ -161,7 +161,7 @@
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Fuel type:</label>
-                                            <select id="basic" class="form-control"
+                                            <select class="form-control"
                                                     name="fuelType">
                                                 {% if fueltype != None %}
                                                 <option value="{{fueltype}}" selected>{{ fueltype }}</option>

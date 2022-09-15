@@ -28,6 +28,7 @@ def create_app():
     '''
     app = Flask(__name__)
     app.config["SECRET_KEY"] = ''.join(random.choice(string.ascii_letters) for i in range(64))
+    app.config["SECRET_KEY"] = 'secretkey'
 
     app.config[
         "DATABASE_URL"] = os.environ.get('DATABASE_URL')
@@ -427,6 +428,7 @@ def listmycar():
             mycol = mydb["cars"]
             mycol.insert_one(dictCar)
         if request.form['submit'] == "Predict":
+            print("pricepredict")
             makeLabel, modelLabel, fuelLabel, transLabel = parseAttributesToLabels(make, model,
                                                                                    fuel_type,
                                                                                    transmission)
