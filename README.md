@@ -195,154 +195,25 @@ plt.show()
 
 | Test | Description | Precondition | Expected outcome | Pass or fail? |
 | --- | --- | --- | --- | --- |
-| test_register | The requirement  QR-PE-01 is tested. After having submitted the form, the registration process should not take longer than 5 seconds. | The client is up and running, both Mongo and Postgres databases are up and running, and the user has not been
-registered before. | The difference between the
+| test_register | The requirement  QR-PE-01 is tested. After having submitted the form, the registration process should not take longer than 5 seconds. | The client is up and running, both Mongo and Postgres databases are up and running, and the user has not been registered before. | The difference between the
 timestamps recorded before
 and after the request should be
 less than 3 seconds. The
 response to the request should
 have the status code of 200,
 which means OK. | Pass |
-| test_login | The requirement QR-PE-02 is
-tested. The logging-in process should not take longer than 2
-seconds. Throughout this test, a
-mock user is registered in order
-to, later, log in. | The client is up and running,
-both Mongo and Postgres databases are up and running,
-and the user has already been
-registered. | The difference between the
-timestamps recorded before and after the request should be
-less than 2 seconds. The
-response to the request should
-have the status code of 200,
-which means OK. | Pass |
-| test_image_encoding | In this test, the quality
-requirement QR-PE-03 is
-tested. The process of encoding
-an uploaded image to a Base64
-string should not take more than
-2 seconds. | The image file to be encoded
-already exists in the project file
-system. | The difference between the
-timestamps recorded before
-and after encoding the image
-should be less than 2 seconds.
-The returned encoded string
-should be valid and not empty. | Pass |
-| test_image_decoding | In this test, the compliance with
-quality requirement QR-PE-04
-is tested. The Base64 string
-containing the image will be
-decompressed when displaying
-the image in the front end. This
-process of painting the image in
-the front end should take less
-than 3 seconds. | The ID of the user whose image
-is intended to be decoded
-already exists in the database.
-The user has a profile picture
-assigned to him/her. | The difference between the
-timestamps recorded before
-and after having performed the
-request to return the image in
-the front end should be less
-than 3 seconds. The response
-for the request should have the
-status code of 200, which
-means OK. | Pass |
-| test_custom_search | In this test, the quality
-requirement QR-PE-05 is
-tested. A POST request is made
-in order to return the expected results for a search given certain parameters. This image searching process should be
-successful and should not take
-longer than 5 seconds. | The application server and the
-Mongo database should be up
-and running. | The difference between the
-timestamps recorded before
-and after the request should be
-less than 5 seconds. The response for the request should
-have the status code of 200,
-which means OK. | Pass |
-| test_alterAd | In this test, the quality requirement QR-PE-07 is tested. A mock car is listed on the website, and then, from a
-POST request, some information on the car is requested to be changed. This
-process of changing information
-in the advertisement should not
-take longer than 2 seconds. | The application server, the
-Postgres database and the Mongo database should be up
-and running. | The difference between the
-timestamps recorded before
-and after the request should be
-less than 2 seconds. The
-response for the request should
-have the status code of 200,
-which means OK. | Pass |
-| test_deleteAd | In this test, the quality requirement QR-PE-06 is tested. The process of deleting
-an advertisement should not take longer than two seconds. | The car intended to be deleted
-already exists in the database.
-The server, the MongoDB
-database and the Postgres
-database are up and running. | The difference between the
-timestamps recorded before
-and after the request should be
-less than 2 seconds. The
-response for the request should
-have the status code of 200,
-which means OK. | Pass |
-| test_carMatchesId | This test is run to verify that the
-method GetCarById returns the expected car given a certain ID. | The car searched for already exists in the database. The Mongo database is up and
-running. | The ID of the retrieved car
-matches the ID that has been passed as an input. | Pass |
-| test_carMatchesMake | This test is run to verify that the
-method GetCarByAttribute
-returns the expected list of cars given a certain make. | There is at least one car with
-the specified make in the database. The Mongo database
-is up and running. | The make of every car on the
-list matches the make that has
-been passed as input. | Pass |
-| test_carMatchesModel | This test is run to verify that the
-method GetCarByAttribute
-returns the expected list of cars given a certain model. | There is at least one car with
-the specified model in the
-database. The Mongo database
-is up and running. | The model of every car on the
-list matches the model that has
-been passed as input. | Pass |
-| test_carMatchesFuelType | This test is run to verify that the
-method GetCarByAttribute
-returns the expected list of cars given a certain fuel type. | There is at least one car with
-the specified fuel type in the
-database. The Mongo database
-is up and running. | The fuel type of every car on the
-list matches the fuel type that
-has been passed as an input. | Pass |
-| test_carMatchesPriceRange | This test is run to verify that the
-method GetCarByAttribute
-returns the expected list of cars given two inputs that serve as
-the boundaries of a price range. | There is at least one car within
-the specified price range in the
-database. The Mongo database
-is up and running. | All the cars returned in the list
-have got a price between the
-previously specified values. | Pass |
-| test_carMatchesYearRange | This test is run to verify that the
-method GetCarByAttribute
-returns the expected list of cars given two inputs that serve as the boundaries of a year range. | There is at least one car within
-the specified year range in the
-database. The Mongo database
-is up and running. | All the cars returned in the list
-were built in a year between the
-previously specified values. | Pass |
-| test_carMatchesMilesRange | This test is run to verify that the
-method GetCarByAttribute
-returns the expected list of cars given two inputs that serve as
-the boundaries of a mileage range. | There is at least one car within
-the specified mileage range in
-the database. The Mongo database is up and running. | All the cars returned in the list
-have got a mileage between the
-previously specified values. | Pass |
-| test_user_email | The test is run to verify that the retrieved user given a certain
-email matches the expected user. | The user searched for already exists in the database. The Postgres database is up and running. | The email of the retrieved user
-matches the specified input. | Pass |
-| test_username | The test is run to verify that the retrieved user given a certain username matches the expected user. | The user searched for already exists in the database. The Postgres database is up and running. | The username of the retrieved
-user matches the specified
-input. | Pass |
+| test_login | The requirement QR-PE-02 is tested. The logging-in process should not take longer than 2 seconds. Throughout this test, a mock user is registered in order to, later, log in. | The client is up and running, both Mongo and Postgres databases are up and running, and the user has already been registered. | The difference between the timestamps recorded before and after the request should be less than 2 seconds. The response to the request should have the status code of 200, which means OK. | Pass |
+| test_image_encoding | In this test, the quality requirement QR-PE-03 is tested. The process of encoding an uploaded image to a Base64 string should not take more than 2 seconds. | The image file to be encoded already exists in the project file system. | The difference between the timestamps recorded before and after encoding the image should be less than 2 seconds. The returned encoded string should be valid and not empty. | Pass |
+| test_image_decoding | In this test, the compliance with quality requirement QR-PE-04 is tested. The Base64 string containing the image will be decompressed when displaying the image in the front end. This process of painting the image in the front end should take less than 3 seconds. | The ID of the user whose image is intended to be decoded already exists in the database. The user has a profile picture assigned to him/her. | The difference between the timestamps recorded before and after having performed the request to return the image in the front end should be less than 3 seconds. The response for the request should have the status code of 200, which means OK. | Pass |
+| test_custom_search | In this test, the quality requirement QR-PE-05 is tested. A POST request is made in order to return the expected results for a search given certain parameters. This image searching process should be successful and should not take longer than 5 seconds. | The application server and the Mongo database should be up and running. | The difference between the timestamps recorded before and after the request should be less than 5 seconds. The response for the request should have the status code of 200, which means OK. | Pass |
+| test_alterAd | In this test, the quality requirement QR-PE-07 is tested. A mock car is listed on the website, and then, from a POST request, some information on the car is requested to be changed. This process of changing information in the advertisement should not take longer than 2 seconds. | The application server, the Postgres database and the Mongo database should be up and running. | The difference between the timestamps recorded before and after the request should be less than 2 seconds. The response for the request should have the status code of 200, which means OK. | Pass |
+| test_deleteAd | In this test, the quality requirement QR-PE-06 is tested. The process of deleting an advertisement should not take longer than two seconds. | The car intended to be deleted already exists in the database. The server, the MongoDB database and the Postgres database are up and running. | The difference between the timestamps recorded before and after the request should be less than 2 seconds. The response for the request should have the status code of 200, which means OK. | Pass |
+| test_carMatchesId | This test is run to verify that the method GetCarById returns the expected car given a certain ID. | The car searched for already exists in the database. The Mongo database is up and running. | The ID of the retrieved car matches the ID that has been passed as an input. | Pass |
+| test_carMatchesMake | This test is run to verify that the method GetCarByAttribute returns the expected list of cars given a certain make. | There is at least one car with the specified make in the database. The Mongo database is up and running. | The make of every car on the list matches the make that has been passed as input. | Pass |
+| test_carMatchesModel | This test is run to verify that the method GetCarByAttribute returns the expected list of cars given a certain model. | There is at least one car with the specified model in the database. The Mongo database is up and running. | The model of every car on the list matches the model that has been passed as input. | Pass |
+| test_carMatchesFuelType | This test is run to verify that the method GetCarByAttribute returns the expected list of cars given a certain fuel type. | There is at least one car with the specified fuel type in the database. The Mongo database is up and running. | The fuel type of every car on the list matches the fuel type that has been passed as an input. | Pass |
+| test_carMatchesPriceRange | This test is run to verify that the method GetCarByAttribute returns the expected list of cars given two inputs that serve as the boundaries of a price range. | There is at least one car within the specified price range in the database. The Mongo database is up and running. | All the cars returned in the list have got a price between the previously specified values. | Pass |
+| test_carMatchesYearRange | This test is run to verify that the method GetCarByAttribute returns the expected list of cars given two inputs that serve as the boundaries of a year range. | There is at least one car within the specified year range in the database. The Mongo database is up and running. | All the cars returned in the list were built in a year between the previously specified values. | Pass |
+| test_carMatchesMilesRange | This test is run to verify that the method GetCarByAttribute returns the expected list of cars given two inputs that serve as the boundaries of a mileage range. | There is at least one car within the specified mileage range in the database. The Mongo database is up and running. | All the cars returned in the list have got a mileage between the previously specified values. | Pass |
+| test_user_email | The test is run to verify that the retrieved user given a certain email matches the expected user. | The user searched for already exists in the database. The Postgres database is up and running. | The email of the retrieved user matches the specified input. | Pass |
+| test_username | The test is run to verify that the retrieved user given a certain username matches the expected user. | The user searched for already exists in the database. The Postgres database is up and running. | The username of the retrieved user matches the specified input. | Pass |
