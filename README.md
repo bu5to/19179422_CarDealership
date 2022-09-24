@@ -195,13 +195,7 @@ plt.show()
 
 | Test | Description | Precondition | Expected outcome | Pass or fail? |
 | --- | --- | --- | --- | --- |
-| test_register | The requirement  QR-PE-01 is tested. After having submitted the form, the registration process should not take longer than 5 seconds. | The client is up and running, both Mongo and Postgres databases are up and running, and the user has not been registered before. | The difference between the
-timestamps recorded before
-and after the request should be
-less than 3 seconds. The
-response to the request should
-have the status code of 200,
-which means OK. | Pass |
+| test_register | The requirement  QR-PE-01 is tested. After having submitted the form, the registration process should not take longer than 5 seconds. | The client is up and running, both Mongo and Postgres databases are up and running, and the user has not been registered before. | The difference between the timestamps recorded before and after the request should be less than 3 seconds. The response to the request should have the status code of 200, which means OK. | Pass |
 | test_login | The requirement QR-PE-02 is tested. The logging-in process should not take longer than 2 seconds. Throughout this test, a mock user is registered in order to, later, log in. | The client is up and running, both Mongo and Postgres databases are up and running, and the user has already been registered. | The difference between the timestamps recorded before and after the request should be less than 2 seconds. The response to the request should have the status code of 200, which means OK. | Pass |
 | test_image_encoding | In this test, the quality requirement QR-PE-03 is tested. The process of encoding an uploaded image to a Base64 string should not take more than 2 seconds. | The image file to be encoded already exists in the project file system. | The difference between the timestamps recorded before and after encoding the image should be less than 2 seconds. The returned encoded string should be valid and not empty. | Pass |
 | test_image_decoding | In this test, the compliance with quality requirement QR-PE-04 is tested. The Base64 string containing the image will be decompressed when displaying the image in the front end. This process of painting the image in the front end should take less than 3 seconds. | The ID of the user whose image is intended to be decoded already exists in the database. The user has a profile picture assigned to him/her. | The difference between the timestamps recorded before and after having performed the request to return the image in the front end should be less than 3 seconds. The response for the request should have the status code of 200, which means OK. | Pass |
